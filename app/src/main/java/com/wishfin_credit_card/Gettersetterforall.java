@@ -5,6 +5,24 @@ import org.json.JSONArray;
 public class Gettersetterforall {
 private String name;
     private String id;
+    private String desc;
+    private String card_state;
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getCard_state() {
+        return card_state;
+    }
+
+    public void setCard_state(String card_state) {
+        this.card_state = card_state;
+    }
 
     public String getName() {
         return name;

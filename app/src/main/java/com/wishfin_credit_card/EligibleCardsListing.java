@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,25 +42,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExploreCreditCard extends Activity implements View.OnClickListener {
+public class EligibleCardsListing extends Activity {
 
     RecyclerView card_list;
     KProgressHUD progressDialog;
     SharedPreferences prefs;
     RequestQueue queue;
     ArrayList<Gettersetterforall> list1 = new ArrayList<>();
-    Share_Adapter radio_question_list_adapter;
-    LinearLayout line1, line2, line3, line5;
-    boolean doubleBackToExitPressedOnce = false;
+    EligibleCardsListing.Share_Adapter radio_question_list_adapter;
     EditText search_bar;
+    String id = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.explorecreditcard);
+        setContentView(R.layout.eligiblecardslisting);
 
-        queue = Volley.newRequestQueue(ExploreCreditCard.this);
-        prefs = PreferenceManager.getDefaultSharedPreferences(ExploreCreditCard.this);
+        queue = Volley.newRequestQueue(EligibleCardsListing.this);
+        prefs = PreferenceManager.getDefaultSharedPreferences(EligibleCardsListing.this);
 
         progressDialog = KProgressHUD.create(this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
@@ -71,24 +68,25 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
                 .setAnimationSpeed(1)
                 .setDimAmount(0.5f);
 
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras == null) {
+                id = "";
+            } else {
+                id = extras.getString("id");
+            }
+        } else {
+            id = (String) savedInstanceState.getSerializable("id");
+        }
+
         getaouth();
 
-        ////////////////////Testing//////////////////
-        SessionManager.save_cibil_score(prefs, "576");
+
         progressDialog.show();
         get_card_list();
-        ///////////////////To Be Removed/////////////
 
         card_list = findViewById(R.id.card_list);
-        line1 = findViewById(R.id.line1);
-        line2 = findViewById(R.id.line2);
-        line3 = findViewById(R.id.line3);
-        line5 = findViewById(R.id.line5);
 
-        line1.setOnClickListener(this);
-        line2.setOnClickListener(this);
-        line3.setOnClickListener(this);
-        line5.setOnClickListener(this);
         search_bar = findViewById(R.id.search_bar);
 
         search_bar.addTextChangedListener(new TextWatcher() {
@@ -110,10 +108,10 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
         });
 
 
-        LinearLayoutManager layoutManager1 = new LinearLayoutManager(ExploreCreditCard.this) {
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(EligibleCardsListing.this) {
             @Override
             public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
-                LinearSmoothScroller smoothScroller = new LinearSmoothScroller(ExploreCreditCard.this) {
+                LinearSmoothScroller smoothScroller = new LinearSmoothScroller(EligibleCardsListing.this) {
                     private static final float SPEED = 4000f;
 
                     @Override
@@ -128,7 +126,7 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
         };
 
         layoutManager1.setOrientation(LinearLayoutManager.VERTICAL);
-        card_list.addItemDecoration(new DividerItemDecoration(ExploreCreditCard.this, DividerItemDecoration.VERTICAL));
+        card_list.addItemDecoration(new DividerItemDecoration(EligibleCardsListing.this, DividerItemDecoration.VERTICAL));
         card_list.setLayoutManager(layoutManager1);
 
     }
@@ -136,7 +134,7 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
     public void get_card_list() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL) + "/api/v1/credit-card-quotes-by-cibil/" + SessionManager.get_cibil_score(prefs);
+        String url = getString(R.string.BASE_URL) + "/credit-card-quotes/" + id;
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // response
@@ -187,7 +185,7 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
                             if (list1.size() > 0) {
                                 card_list.setVisibility(View.VISIBLE);
 
-                                radio_question_list_adapter = new Share_Adapter(ExploreCreditCard.this, list1);
+                                radio_question_list_adapter = new EligibleCardsListing.Share_Adapter(EligibleCardsListing.this, list1);
                                 card_list.setAdapter(radio_question_list_adapter);
 
                             } else {
@@ -200,7 +198,7 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
                             if (progressDialog != null && progressDialog.isShowing()) {
                                 progressDialog.dismiss();
                             }
-                            Toast.makeText(ExploreCreditCard.this, "" + jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                            Toast.makeText(EligibleCardsListing.this, "" + jsonObject.getString("message"), Toast.LENGTH_LONG).show();
 
                         }
 
@@ -245,7 +243,7 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
 
     }
 
-    public class Share_Adapter extends RecyclerView.Adapter<Share_Adapter.MyViewHolder> {
+    public class Share_Adapter extends RecyclerView.Adapter<EligibleCardsListing.Share_Adapter.MyViewHolder> {
 
         private ArrayList<Gettersetterforall> list_car;
         Activity context;
@@ -283,15 +281,15 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
         }
 
         @Override
-        public Share_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public EligibleCardsListing.Share_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.card_list_adapter, parent, false);
 
-            return new Share_Adapter.MyViewHolder(itemView);
+            return new EligibleCardsListing.Share_Adapter.MyViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(Share_Adapter.MyViewHolder holder, final int position) {
+        public void onBindViewHolder(EligibleCardsListing.Share_Adapter.MyViewHolder holder, final int position) {
 
             holder.tv1.setText(list_car.get(position).getName());
             holder.tv2.setText(list_car.get(position).getId());
@@ -306,7 +304,7 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
                 @Override
                 public void onClick(View view) {
 
-                    Intent intent = new Intent(ExploreCreditCard.this, CardDetailPage.class);
+                    Intent intent = new Intent(EligibleCardsListing.this, CardDetailPage.class);
                     intent.putExtra("id", "" + list_car.get(position).getId());
                     intent.putExtra("cardname", "" + list_car.get(position).getName());
                     intent.putExtra("imagepath", "" + list_car.get(position).getImage());
@@ -384,48 +382,5 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
 
 
     }
-
-    @Override
-    public void onClick(View view) {
-
-        switch (view.getId()) {
-
-            case R.id.line1:
-                Intent intent2 = new Intent(ExploreCreditCard.this, Dashboard.class);
-                startActivity(intent2);
-                finish();
-                break;
-            case R.id.line3:
-                Intent intent3 = new Intent(ExploreCreditCard.this, OfferlistingPge.class);
-                startActivity(intent3);
-                finish();
-                break;
-            case R.id.line5:
-                Intent intent4 = new Intent(ExploreCreditCard.this, Profilepage.class);
-                startActivity(intent4);
-                finish();
-                break;
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
-        }
-
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
-            }
-        }, 2000);
-    }
-
 
 }

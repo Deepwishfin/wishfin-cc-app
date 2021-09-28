@@ -97,7 +97,7 @@
                         android:orientation="horizontal">
 
                         <RadioButton
-                            android:id="@+id/salariedcheck"
+                            android:id="@+id/maleradio"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -108,7 +108,7 @@
                             android:textSize="16dp" />
 
                         <RadioButton
-                            android:id="@+id/selfemployedcheck"
+                            android:id="@+id/femaleradio"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -135,7 +135,7 @@
                             android:imeOptions="actionNext"
                             android:inputType="number"
                             android:longClickable="false"
-                            android:maxLength="10"
+                            android:maxLength="6"
                             android:singleLine="true"
                             android:textColor="#304258"
                             android:textColorHint="#B0BAC9"
@@ -151,7 +151,7 @@
                         android:layout_marginTop="10dp">
 
                         <com.wishfin_credit_card.MenuHidingEditText
-                            android:id="@+id/address"
+                            android:id="@+id/annualincome"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:backgroundTint="#FFFFFF"
@@ -201,7 +201,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:backgroundTint="#FFF"
+                            android:backgroundTint="#FFFFFF"
                             android:ems="10"
                             android:hint="City name"
                             android:padding="15dp"
@@ -213,13 +213,6 @@
 
                         </AutoCompleteTextView>
                     </com.google.android.material.textfield.TextInputLayout>
-
-                    <Spinner
-                        android:id="@+id/state_spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/bg_spinner_blackborder" />
 
                     <com.wishfin_credit_card.FontClasses.PoppinsMedium
                         android:id="@+id/continuebtn"
