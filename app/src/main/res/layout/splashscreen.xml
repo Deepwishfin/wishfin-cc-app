@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_app_screen_back"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:contentDescription="TODO"
+            android:src="@drawable/ic_logo" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/lin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView2"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.wishfin_credit_card.FontClasses.PopinsSemibold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Path for "
+            android:textColor="@color/primary"
+            android:textSize="24dp" />
+
+        <com.wishfin_credit_card.FontClasses.PopinsSemibold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Credit Card"
+            android:textSize="24dp" />
+
+
+    </LinearLayout>
+
+    <com.wishfin_credit_card.FontClasses.PoppinsRegular
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lin"
+        android:gravity="center"
+        android:text=""
+        android:textColor="#788691"
+        android:textSize="12dp" />
+
+
+</RelativeLayout>

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FAFBFD"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingTop="15dp"
+                android:paddingRight="15dp"
+                tools:ignore="MissingConstraints">
+
+                <RelativeLayout
+                    android:id="@+id/backbutton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:gravity="center|left">
+
+
+                    <ImageView
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/backarrowblack"
+                        android:contentDescription="TODO" />
+                </RelativeLayout>
+
+                <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Personal Informations"
+                    android:textColor="#2E384D"
+                    android:textSize="16dp" />
+
+            </LinearLayout>
+
+            <com.wishfin_credit_card.FontClasses.PoppinsRegular
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="16dp"
+                android:text="Few Steps Away"
+                android:textColor="#788691"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/pageone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="15dp"
+                    android:visibility="visible"
+                    tools:ignore="MissingConstraints">
+
+                    <com.wishfin_credit_card.FontClasses.PoppinsRegular
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Gender"
+                        android:textColor="#8492A6"
+                        android:textSize="12dp" />
+
+                    <RadioGroup
+                        android:id="@+id/rg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/salariedcheck"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/primary"
+                            android:checked="true"
+                            android:text="Male"
+                            android:textColor="#001738"
+                            android:textSize="16dp" />
+
+                        <RadioButton
+                            android:id="@+id/selfemployedcheck"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/primary"
+                            android:text="Female"
+                            android:textColor="#001738"
+                            android:textSize="16dp" />
+                    </RadioGroup>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/input_layout_monthlyincome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+                        <com.wishfin_credit_card.MenuHidingEditText
+                            android:id="@+id/monthlyincome"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:backgroundTint="#FFFFFF"
+                            android:hint="Current Pincode"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:longClickable="false"
+                            android:maxLength="10"
+                            android:singleLine="true"
+                            android:textColor="#304258"
+                            android:textColorHint="#B0BAC9"
+                            android:textSize="14dp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/input_layout_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+                        <com.wishfin_credit_card.MenuHidingEditText
+                            android:id="@+id/address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="#FFFFFF"
+                            android:hint="Annual Income"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:longClickable="false"
+                            android:maxLength="10"
+                            android:maxLines="1"
+                            android:textColor="#304258"
+                            android:textColorHint="#B0BAC9"
+                            android:textSize="14dp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textinputcompanyname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autocompletetext_companyname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:backgroundTint="#FFFFFF"
+                            android:ems="10"
+                            android:hint="Company name"
+                            android:padding="15dp"
+                            android:text=""
+                            android:textColor="#304258"
+                            android:textColorHint="#B0BAC9"
+                            android:textSize="14dp"
+                            tools:ignore="LabelFor">
+
+                        </AutoCompleteTextView>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/autocompletetext_cityname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:backgroundTint="#FFF"
+                            android:ems="10"
+                            android:hint="City name"
+                            android:padding="15dp"
+                            android:text=""
+                            android:textColor="#304258"
+                            android:textColorHint="#B0BAC9"
+                            android:textSize="14dp"
+                            tools:ignore="LabelFor">
+
+                        </AutoCompleteTextView>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Spinner
+                        android:id="@+id/state_spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/bg_spinner_blackborder" />
+
+                    <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                        android:id="@+id/continuebtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:background="@drawable/roundedbutton"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="Continue"
+                        android:textAllCaps="true"
+                        android:textColor="#ffffff"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

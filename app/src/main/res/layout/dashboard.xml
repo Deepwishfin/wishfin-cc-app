@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_app_screen_back">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="15dp"
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/ic_logo"
+                android:contentDescription="TODO" />
+
+            <ImageView
+                android:id="@+id/backbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/ic_notification"
+                android:contentDescription="TODO" />
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/linearone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/roundedbanner"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="vertical"
+                        android:paddingTop="10dp">
+
+                        <com.wishfin_credit_card.FontClasses.PoppinsRegular
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:text="CARDS ENABLED"
+                            android:textColor="#0F1A2A"
+                            android:visibility="visible" />
+
+                        <com.wishfin_credit_card.FontClasses.PopinsSemibold
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="10dp"
+                            android:text="Get the best Credit Card for you in just minutes"
+                            android:textColor="#0F1A2A"
+                            android:textSize="14dp"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="96dp"
+                            android:layout_height="68dp"
+                            android:src="@drawable/handcardframe" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                    android:id="@+id/signupone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/roundedbuttonlightgreen"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Find the most suitable card"
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <com.wishfin_credit_card.FontClasses.PopinsSemibold
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/ic_fastandhassel"
+                        android:drawablePadding="10dp"
+                        android:text="Fast &amp; Hassel free"
+                        android:textColor="#0F1A2A"
+                        android:textSize="10dp"
+                        android:visibility="visible" />
+
+                    <com.wishfin_credit_card.FontClasses.PopinsSemibold
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/ic_secured"
+                        android:drawablePadding="10dp"
+                        android:text="100% secured informations"
+                        android:textColor="#0F1A2A"
+                        android:textSize="10dp"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/footerreli"
+                android:layout_below="@+id/linearone"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
+
+                <com.wishfin_credit_card.FontClasses.PopinsSemibold
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Wishfin Cards"
+                    android:textAllCaps="true"
+                    android:textColor="@color/primary"
+                    android:textSize="14dp"
+                    android:visibility="visible" />
+
+                <com.wishfin_credit_card.FontClasses.PopinsSemibold
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Choose card by your choice"
+                    android:textAllCaps="true"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"
+                    android:visibility="visible" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/card_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:scrollbars="none"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+
+            <include layout="@layout/footer" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

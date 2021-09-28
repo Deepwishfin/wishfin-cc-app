@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relit"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="125dp"
+        android:layout_height="75dp"
+        android:contentDescription="TODO"
+        android:scaleType="fitXY" />
+
+    <com.wishfin_credit_card.FontClasses.PoppinsRegular
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_toEndOf="@+id/imageView"
+        android:text=""
+        android:textColor="#0F1A2A"
+        android:textSize="@dimen/subheadingfont" />
+
+    <com.wishfin_credit_card.FontClasses.PoppinsRegular
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:textColor="#8181A1"
+        android:textSize="14dp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <com.wishfin_credit_card.FontClasses.PoppinsRegular
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Joining Fees"
+                android:textColor="#64748B"
+                android:textSize="12dp" />
+
+            <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                android:id="@+id/joiningfees"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="NA"
+                android:textColor="#0F1A2A"
+                android:textSize="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <com.wishfin_credit_card.FontClasses.PoppinsRegular
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Annual Fees"
+                android:textColor="#64748B"
+                android:textSize="12dp" />
+
+            <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                android:id="@+id/annualfees"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="NA"
+                android:textColor="#0F1A2A"
+                android:textSize="10dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                android:id="@+id/viewdetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundedbutton"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="View Details"
+                android:textAllCaps="true"
+                android:textColor="#ffffff"
+                android:textSize="10dp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
