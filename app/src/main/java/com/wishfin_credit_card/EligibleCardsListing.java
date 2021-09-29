@@ -152,6 +152,7 @@ public class EligibleCardsListing extends Activity {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject objectnew2 = jsonArray.getJSONObject(i);
                                 Gettersetterforall pack = new Gettersetterforall();
+                                pack.setBank_code(objectnew2.getString("bank_code"));
                                 pack.setName(objectnew2.getString("name"));
                                 pack.setImage(objectnew2.getString("image_path"));
                                 pack.setId(objectnew2.getString("id"));
@@ -305,13 +306,17 @@ public class EligibleCardsListing extends Activity {
                 public void onClick(View view) {
 
                     Intent intent = new Intent(EligibleCardsListing.this, CardDetailPage.class);
+                    intent.putExtra("lead_id", "" + id);
+                    intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
                     intent.putExtra("id", "" + list_car.get(position).getId());
                     intent.putExtra("cardname", "" + list_car.get(position).getName());
                     intent.putExtra("imagepath", "" + list_car.get(position).getImage());
                     intent.putExtra("features", "" + list_car.get(position).getFeauters());
                     intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
                     intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
+                    intent.putExtra("from", "Eligible");
                     startActivity(intent);
+                    finish();
 
                 }
             });

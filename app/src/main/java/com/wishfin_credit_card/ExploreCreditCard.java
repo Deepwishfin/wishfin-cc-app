@@ -71,13 +71,9 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
                 .setAnimationSpeed(1)
                 .setDimAmount(0.5f);
 
-        getaouth();
-
-        ////////////////////Testing//////////////////
-        SessionManager.save_cibil_score(prefs, "576");
         progressDialog.show();
+        getaouth();
         get_card_list();
-        ///////////////////To Be Removed/////////////
 
         card_list = findViewById(R.id.card_list);
         line1 = findViewById(R.id.line1);
@@ -136,7 +132,7 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
     public void get_card_list() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL) + "/api/v1/credit-card-quotes-by-cibil/" + SessionManager.get_cibil_score(prefs);
+        String url = getString(R.string.BASE_URL) + "/api/v1/credit-card-all-quotes";
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // response
@@ -154,6 +150,7 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject objectnew2 = jsonArray.getJSONObject(i);
                                 Gettersetterforall pack = new Gettersetterforall();
+                                pack.setBank_code(objectnew2.getString("bank_code"));
                                 pack.setName(objectnew2.getString("name"));
                                 pack.setImage(objectnew2.getString("image_path"));
                                 pack.setId(objectnew2.getString("id"));
@@ -307,12 +304,15 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
                 public void onClick(View view) {
 
                     Intent intent = new Intent(ExploreCreditCard.this, CardDetailPage.class);
+                    intent.putExtra("lead_id", "");
+                    intent.putExtra("bank_code", ""+list_car.get(position).getBank_code());
                     intent.putExtra("id", "" + list_car.get(position).getId());
                     intent.putExtra("cardname", "" + list_car.get(position).getName());
                     intent.putExtra("imagepath", "" + list_car.get(position).getImage());
                     intent.putExtra("features", "" + list_car.get(position).getFeauters());
                     intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
                     intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
+                    intent.putExtra("from", "Explore");
                     startActivity(intent);
 
                 }

@@ -80,7 +80,9 @@
                         android:layout_weight="1"
                         android:gravity="start"
                         android:orientation="vertical"
-                        android:padding="10dp">
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="10dp">
 
                         <com.wishfin_credit_card.FontClasses.PoppinsRegular
                             android:layout_width="wrap_content"
@@ -107,7 +109,9 @@
                         android:layout_weight="1"
                         android:gravity="start"
                         android:orientation="vertical"
-                        android:padding="10dp">
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="10dp">
 
                         <com.wishfin_credit_card.FontClasses.PoppinsRegular
                             android:layout_width="wrap_content"

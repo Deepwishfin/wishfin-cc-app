@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.RadioButton;
@@ -34,7 +35,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,6 +97,17 @@ public class PersonalInformationPage extends Activity {
         autocompletetext_companyname.addTextChangedListener(textWatcher1);
         autocompletetext_cityname.addTextChangedListener(textWatcher2);
 
+        autocompletetext_companyname.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) -> {
+
+            str_companyname = parent.getItemAtPosition(position).toString();
+        });
+
+        autocompletetext_cityname.setOnItemClickListener((parent, view, position, id) -> {
+
+            str_cityname = parent.getItemAtPosition(position).toString();
+        });
+
+
         get_city_listing();
         get_company_listing("");
 
@@ -100,13 +115,8 @@ public class PersonalInformationPage extends Activity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(PersonalInformationPage.this, EligibleCardsListing.class);
-                intent.putExtra("id", "2298");
-                startActivity(intent);
-                finish();
-
-//                progressDialog.show();
-//                create_lead();
+                progressDialog.show();
+                create_lead();
 
 
             }
@@ -137,13 +147,20 @@ public class PersonalInformationPage extends Activity {
                 json.put("annualincome", "500000");
             }
 
-            json.put("occupation", "" + SessionManager.get_occupation(prefs));
+//            json.put("occupation", "" + SessionManager.get_occupation(prefs));
+//            json.put("fullname", "" + SessionManager.get_firstname(prefs));
+//            json.put("mobileno", "" + SessionManager.get_mobile(prefs));
+//            json.put("emailid", "" + SessionManager.get_emailid(prefs));
+//            json.put("dob", "" + SessionManager.get_dob(prefs));
+
+            json.put("occupation", "1");
+            json.put("fullname", "Deep Singh");
+            json.put("mobileno", "7906241181");
+            json.put("emailid", "deep.singh@wishfin.com");
+            json.put("dob", "1990-05-19");
+
             json.put("companyname", "" + str_companyname);
             json.put("city", "" + str_cityname);
-            json.put("fullname", "" + SessionManager.get_firstname(prefs));
-            json.put("mobileno", "" + SessionManager.get_mobile(prefs));
-            json.put("emailid", "" + SessionManager.get_emailid(prefs));
-            json.put("dob", "" + SessionManager.get_dob(prefs));
             json.put("cc_holder", "1");
             json.put("creditcardbank", "others");
             json.put("accept", "1");
@@ -164,6 +181,18 @@ public class PersonalInformationPage extends Activity {
                         if (jsonObject.getString("status").equalsIgnoreCase("success")) {
                             JSONObject jsonObject1 = jsonObject.getJSONObject("result");
                             Intent intent = new Intent(PersonalInformationPage.this, EligibleCardsListing.class);
+
+                            try {
+                                @SuppressLint("SimpleDateFormat") SimpleDateFormat dates = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                                Date date1;
+                                date1 = Calendar.getInstance().getTime();
+                                String date = String.valueOf(date1);
+                                SessionManager.save_lastccapplydate(prefs, date);
+                                SessionManager.save_lead_id(prefs, jsonObject1.getString("id"));
+                            } catch (Exception e) {
+
+                            }
+
                             intent.putExtra("id", jsonObject1.getString("id"));
                             startActivity(intent);
                             finish();

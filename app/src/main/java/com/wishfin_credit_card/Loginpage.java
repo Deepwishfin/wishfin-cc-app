@@ -264,9 +264,9 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
 
                                 String mobile = jsonObjectresult.getString("mobile_number");
 
-                                SessionManager.save_firstname(prefs, jsonObjectresult.getString("first_name"));
-                                SessionManager.save_mname(prefs, jsonObjectresult.getString("middle_name"));
-                                SessionManager.save_lastname(prefs, jsonObjectresult.getString("last_name"));
+                                SessionManager.save_firstname(prefs, jsonObjectresult.getString("first_name")+" "+jsonObjectresult.getString("middle_name")+" "+jsonObjectresult.getString("last_name"));
+                                SessionManager.save_occupation(prefs, jsonObjectresult.getString("middle_name"));
+                                SessionManager.save_monthly_income(prefs, jsonObjectresult.getString("last_name"));
                                 SessionManager.save_dob(prefs, jsonObjectresult.getString("date_of_birth"));
                                 SessionManager.save_pan(prefs, jsonObjectresult.getString("pancard"));
                                 SessionManager.save_mobile(prefs, jsonObjectresult.getString("mobile_number"));
@@ -480,9 +480,9 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
 
                             String mobile = jsonObjectresult.getString("mobile_number");
 
-                            SessionManager.save_firstname(prefs, jsonObjectresult.getString("first_name"));
-                            SessionManager.save_mname(prefs, jsonObjectresult.getString("middle_name"));
-                            SessionManager.save_lastname(prefs, jsonObjectresult.getString("last_name"));
+                            SessionManager.save_firstname(prefs, jsonObjectresult.getString("first_name")+" "+jsonObjectresult.getString("middle_name")+" "+jsonObjectresult.getString("last_name"));
+                            SessionManager.save_occupation(prefs, jsonObjectresult.getString("middle_name"));
+                            SessionManager.save_monthly_income(prefs, jsonObjectresult.getString("last_name"));
                             SessionManager.save_dob(prefs, jsonObjectresult.getString("date_of_birth"));
                             SessionManager.save_pan(prefs, jsonObjectresult.getString("pancard"));
                             SessionManager.save_mobile(prefs, jsonObjectresult.getString("mobile_number"));

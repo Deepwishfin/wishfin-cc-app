@@ -19,8 +19,8 @@ public class SessionManager {
     private static String MASTER_USER_ID = "master_user_id";
     private static String MF_USER_ID = "mf_user_id";
     private static String FIRST_NAME = "first_name";
-    private static String MIDDLE_NAME = "middle_name";
-    private static String LAST_NAME = "last_name";
+//    private static String MIDDLE_NAME = "middle_name";
+//    private static String LAST_NAME = "last_name";
     private static String DOB = "dob";
     private static String PAN = "pan";
     private static String MOBILE = "mobile";
@@ -189,13 +189,13 @@ public class SessionManager {
         return prefs.getString(FIRST_NAME, "");
     }
 
-    static void save_lastname(SharedPreferences prefs, String value) {
-        com.wishfin_credit_card.SessionManager.savePreference(prefs, LAST_NAME, value);
-    }
-
-    public static String get_lastname(SharedPreferences prefs) {
-        return prefs.getString(LAST_NAME, "");
-    }
+//    static void save_lastname(SharedPreferences prefs, String value) {
+//        com.wishfin_credit_card.SessionManager.savePreference(prefs, LAST_NAME, value);
+//    }
+//
+//    public static String get_lastname(SharedPreferences prefs) {
+//        return prefs.getString(LAST_NAME, "");
+//    }
 
     static void save_dob(SharedPreferences prefs, String value) {
         com.wishfin_credit_card.SessionManager.savePreference(prefs, DOB, value);
@@ -229,13 +229,13 @@ public class SessionManager {
         return prefs.getString(EMAILID, "");
     }
 
-    static void save_mname(SharedPreferences prefs, String value) {
-        com.wishfin_credit_card.SessionManager.savePreference(prefs, MIDDLE_NAME, value);
-    }
-
-    public static String get_mname(SharedPreferences prefs) {
-        return prefs.getString(MIDDLE_NAME, "");
-    }
+//    static void save_mname(SharedPreferences prefs, String value) {
+//        com.wishfin_credit_card.SessionManager.savePreference(prefs, MIDDLE_NAME, value);
+//    }
+//
+//    public static String get_mname(SharedPreferences prefs) {
+//        return prefs.getString(MIDDLE_NAME, "");
+//    }
 
     static void save_appversion(SharedPreferences prefs, String value) {
         com.wishfin_credit_card.SessionManager.savePreference(prefs, APPVERSION, value);
@@ -285,19 +285,19 @@ public class SessionManager {
         return prefs.getString(LONGITUDE, "");
     }
 
-    static void save_lastsamsdate(SharedPreferences prefs, String value) {
+    static void save_lastccapplydate(SharedPreferences prefs, String value) {
         com.wishfin_credit_card.SessionManager.savePreference(prefs, LASTSMSDATE, value);
     }
 
-    static String get_lastsmsdate(SharedPreferences prefs) {
+    static String get_lastccapplydate(SharedPreferences prefs) {
         return prefs.getString(LASTSMSDATE, "");
     }
 
-    static void save_appinstalldate(SharedPreferences prefs, String value) {
+    static void save_lead_id(SharedPreferences prefs, String value) {
         com.wishfin_credit_card.SessionManager.savePreference(prefs, APPINSTALLDATE, value);
     }
 
-    static String get_appinstaldate(SharedPreferences prefs) {
+    static String get_lead_id(SharedPreferences prefs) {
         return prefs.getString(APPINSTALLDATE, "");
     }
 

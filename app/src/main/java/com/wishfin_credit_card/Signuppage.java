@@ -712,8 +712,6 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
                             intent.putExtra("ipaddress", IPaddress);
                             JSONObject jsonObjectresult = new JSONObject(jsonObject.getJSONObject("result").toString());
                             SessionManager.save_firstname(prefs, fname.getText().toString());
-                            SessionManager.save_mname(prefs, "");
-                            SessionManager.save_lastname(prefs, "");
                             SessionManager.save_dob(prefs, dob.getText().toString());
                             SessionManager.save_pan(prefs, pan.getText().toString());
                             SessionManager.save_monthly_income(prefs, "" + (monthly_income.getText().toString()));

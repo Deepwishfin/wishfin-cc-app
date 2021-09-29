@@ -8,6 +8,16 @@ private String name;
     private String desc;
     private String card_state;
 
+    public String getBank_code() {
+        return bank_code;
+    }
+
+    public void setBank_code(String bank_code) {
+        this.bank_code = bank_code;
+    }
+
+    private String bank_code;
+
     public String getDesc() {
         return desc;
     }

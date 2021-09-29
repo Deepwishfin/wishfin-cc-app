@@ -1,5 +1,6 @@
 package com.wishfin_credit_card;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
@@ -33,7 +35,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +46,7 @@ public class CardDetailPage extends Activity {
 
     ImageView imageView;
     TextView cardname, joiningfees, annualfees, instantapply;
-    String strcardname = "", strannualfees = "", strjoiningfees = "";
+    String strcardname = "", strannualfees = "", strjoiningfees = "", from = "", lead_id = "", bank_code = "";
     String imagepath = "";
     String id = "";
     String features = "";
@@ -84,6 +89,9 @@ public class CardDetailPage extends Activity {
                 features = "";
                 strannualfees = "";
                 strjoiningfees = "";
+                from = "";
+                lead_id = "";
+                bank_code = "";
             } else {
                 strcardname = extras.getString("cardname");
                 imagepath = extras.getString("imagepath");
@@ -91,6 +99,9 @@ public class CardDetailPage extends Activity {
                 features = extras.getString("features");
                 strannualfees = extras.getString("annual");
                 strjoiningfees = extras.getString("joining");
+                from = extras.getString("from");
+                lead_id = extras.getString("lead_id");
+                bank_code = extras.getString("bank_code");
             }
         } else {
             strcardname = (String) savedInstanceState.getSerializable("cardname");
@@ -99,11 +110,37 @@ public class CardDetailPage extends Activity {
             features = (String) savedInstanceState.getSerializable("features");
             strannualfees = (String) savedInstanceState.getSerializable("annual");
             strjoiningfees = (String) savedInstanceState.getSerializable("joining");
+            from = (String) savedInstanceState.getSerializable("from");
+            lead_id = (String) savedInstanceState.getSerializable("lead_id");
+            bank_code = (String) savedInstanceState.getSerializable("bank_code");
+        }
+
+        try {
+            if (from.equalsIgnoreCase("Dashboard")) {
+                instantapply.setVisibility(View.VISIBLE);
+            } else if (from.equalsIgnoreCase("Explore")) {
+                instantapply.setVisibility(View.VISIBLE);
+            } else if (from.equalsIgnoreCase("Eligible")) {
+                instantapply.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            instantapply.setVisibility(View.VISIBLE);
         }
 
         cardname.setText(strcardname);
-        annualfees.setText(strannualfees);
-        joiningfees.setText(strjoiningfees);
+
+        if (strannualfees.equalsIgnoreCase("null")) {
+            annualfees.setText("NA");
+        } else {
+            annualfees.setText(strannualfees);
+        }
+
+        if (strjoiningfees.equalsIgnoreCase("null")) {
+            joiningfees.setText("NA");
+        } else {
+            joiningfees.setText(strjoiningfees);
+
+        }
 
         try {
             JSONArray jsonArr = new JSONArray(features);
@@ -153,30 +190,65 @@ public class CardDetailPage extends Activity {
             @Override
             public void onClick(View view) {
 
-                progressDialog.show();
-                create_lead();
+                if (from.equalsIgnoreCase("Eligible")) {
+                    progressDialog.show();
+                    select_opted_bank();
+                } else {
+                    if (SessionManager.get_lead_id(prefs).equalsIgnoreCase("")) {
+                        Intent intent = new Intent(CardDetailPage.this, PersonalInformationPage.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+
+                        long differenceDates = 0;
+                        try {
+                            @SuppressLint("SimpleDateFormat") SimpleDateFormat dates = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                            Date date1;
+                            Date date2;
+                            date1 = Calendar.getInstance().getTime();
+                            date2 = dates.parse(SessionManager.get_lastccapplydate(prefs));
+                            long difference = Math.abs(date1.getTime() - date2.getTime());
+                            differenceDates = difference / (24 * 60 * 60 * 1000);
+                        } catch (Exception e) {
+
+                        }
+
+                        int remainingdays = (int) (31 - differenceDates);
+                        String message = "Wait " + remainingdays + " Days";
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(CardDetailPage.this, EligibleCardsListing.class);
+                        intent.putExtra("id", SessionManager.get_lead_id(prefs));
+                        startActivity(intent);
+                        finish();
+                    }
+
+
+                }
 
 
             }
         });
     }
 
-    public void create_lead() {
+    public void select_opted_bank() {
 
         final JSONObject json = new JSONObject();
 
         try {
-            json.put("id", "" + id);
+            json.put("bank_code", "" + bank_code);
+            json.put("lead_id", "" + lead_id);
+            json.put("type", "cc");
+            json.put("credit_card_id", "" + id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/v1/lead-credit-card", json,
+                Request.Method.POST, getString(R.string.BASE_URL) + "/select-opted-bank", json,
                 response -> {
                     if (progressDialog != null && progressDialog.isShowing()) {
                         progressDialog.dismiss();
                     }
-                    Intent intent = new Intent(CardDetailPage.this, PersonalInformationPage.class);
+                    Intent intent = new Intent(CardDetailPage.this, Thakyoupage.class);
                     startActivity(intent);
 
                 }, error -> {

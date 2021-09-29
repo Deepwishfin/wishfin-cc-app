@@ -67,6 +67,10 @@
             android:name=".EligibleCardsListing"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Wishfin_Credit_Card.NoActionBar" />
+        <activity
+            android:name=".Thakyoupage"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Wishfin_Credit_Card.NoActionBar" />
     </application>
 
 </manifest>
