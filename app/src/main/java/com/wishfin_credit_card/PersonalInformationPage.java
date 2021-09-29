@@ -14,7 +14,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,9 +40,8 @@ import java.util.Map;
 
 public class PersonalInformationPage extends Activity {
 
-    EditText monthlyincome, annualincome;
     AutoCompleteTextView autocompletetext_companyname, autocompletetext_cityname;
-    TextView continuebtn;
+    TextView continuebtn, pincodehead, companynamehead, citynamehead;
     KProgressHUD progressDialog;
     SharedPreferences prefs;
     RequestQueue queue;
@@ -70,13 +68,14 @@ public class PersonalInformationPage extends Activity {
                 .setAnimationSpeed(1)
                 .setDimAmount(0.5f);
 
-        monthlyincome = findViewById(R.id.monthly_income);
-        annualincome = findViewById(R.id.annualincome);
         autocompletetext_companyname = findViewById(R.id.autocompletetext_companyname);
         autocompletetext_cityname = findViewById(R.id.autocompletetext_cityname);
         continuebtn = findViewById(R.id.continuebtn);
         maleradio = findViewById(R.id.maleradio);
         femaleradio = findViewById(R.id.femaleradio);
+        pincodehead = findViewById(R.id.pincodehead);
+        companynamehead = findViewById(R.id.companynamehead);
+        citynamehead = findViewById(R.id.citynamehead);
 
         maleradio.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -101,8 +100,13 @@ public class PersonalInformationPage extends Activity {
             @Override
             public void onClick(View view) {
 
-                progressDialog.show();
-                create_lead();
+                Intent intent = new Intent(PersonalInformationPage.this, EligibleCardsListing.class);
+                intent.putExtra("id", "2298");
+                startActivity(intent);
+                finish();
+
+//                progressDialog.show();
+//                create_lead();
 
 
             }
@@ -115,18 +119,25 @@ public class PersonalInformationPage extends Activity {
         final JSONObject json = new JSONObject();
         try {
             json.put("master_user_id", "");
-            json.put("resource_pagename", "credit-cards");
-            json.put("resource_source", "");
+            json.put("resource_pagename", "Credit_Card_Wishfin_Android");
+            json.put("resource_source", "Credit_Card_Wishfin_Android");
             json.put("resource_referal", "");
             json.put("resource_ip_address", "");
             json.put("resource_querystring", "");
-            json.put("utm_source", "");
-            json.put("utm_medium", "");
-            json.put("utm_campaign", "");
-            json.put("source", "");
+            json.put("utm_source", "credit_card_android");
+            json.put("utm_medium", "credit_card_android");
+            json.put("utm_campaign", "credit_card_android");
+            json.put("source", "credit_card_android");
             json.put("wish_id", "");
-            json.put("annualincome", "" + annualincome.getText().toString());
-            json.put("occupation", "1");
+            try {
+                int monthincome = Integer.parseInt(SessionManager.get_monthly_income(prefs));
+                int annualincome = monthincome * 12;
+                json.put("annualincome", "" + annualincome);
+            } catch (Exception e) {
+                json.put("annualincome", "500000");
+            }
+
+            json.put("occupation", "" + SessionManager.get_occupation(prefs));
             json.put("companyname", "" + str_companyname);
             json.put("city", "" + str_cityname);
             json.put("fullname", "" + SessionManager.get_firstname(prefs));

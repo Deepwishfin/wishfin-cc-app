@@ -60,9 +60,8 @@ import java.util.Map;
 
 public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    TextView signupone, signupthree, resentotp, lastmobiletext;
+    TextView signupone, signupthree, resentotp, lastmobiletext,mobilenumberhead;
     LinearLayout linearone, linearthree;
-    TextInputLayout input_layout_number;
     ImageView backbutton;
     EditText mobilenumber, otpone, otptwo, otpthree, otpfour;
     KProgressHUD progressDialog;
@@ -92,7 +91,7 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
         linearthree = findViewById(R.id.linearthree);
 
         mobilenumber = findViewById(R.id.mobilenumber);
-        input_layout_number = findViewById(R.id.input_layout_number);
+        mobilenumberhead = findViewById(R.id.mobilenumberhead);
         otpone = findViewById(R.id.otpone);
         otptwo = findViewById(R.id.otptwo);
         otpthree = findViewById(R.id.otpthree);
@@ -613,15 +612,15 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
 
     private boolean validateNumber() {
         if (!mobilenumber.getText().toString().trim().matches("[5-9][0-9]{9}") || mobilenumber.getText().length() != 10) {
-            input_layout_number.setError("Enter 10 Digits Mobile Number");
+            mobilenumberhead.setTextColor(Color.parseColor("#FF0000"));
+            mobilenumberhead.setText("Enter 10 Digits Mobile Number");
+//            Toast.makeText(getApplicationContext(),"Enter 10 Digits Mobile Number",Toast.LENGTH_SHORT).show();
             requestFocus(mobilenumber);
             return false;
-        } else {
-            input_layout_number.setErrorEnabled(false);
-            input_layout_number.setDefaultHintTextColor(ColorStateList.valueOf(Color.parseColor("#788691")));
-
+        }else {
+            mobilenumberhead.setText("Mobile Number");
+            mobilenumberhead.setTextColor(Color.parseColor("#304258"));
         }
-
         return true;
     }
 

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -50,7 +49,6 @@ import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputLayout;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
 import org.json.JSONException;
@@ -68,10 +66,8 @@ import java.util.regex.Pattern;
 
 public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListener {
 
-    TextView signupone, signuptwo, signupthree, resentotp, lastmobiletext, checkbox_text;
+    TextView signupone, signuptwo, signupthree, resentotp, lastmobiletext, checkbox_text, mobilenumberhead, emailidhead, fnamehead, monthly_incomehead, panhead, dobhead;
     LinearLayout linearone, lineartwo, linearthree;
-    TextInputLayout input_layout_number, input_layout_email, input_layout_fname,
-            input_layout_pan, input_layout_dob, input_layout_monthly_income;
     int page = 1;
     ImageView backbutton;
     RequestQueue queue;
@@ -117,9 +113,13 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
         linearthree = findViewById(R.id.linearthree);
 
         mobilenumber = findViewById(R.id.mobilenumber);
-        input_layout_number = findViewById(R.id.input_layout_number);
+        mobilenumberhead = findViewById(R.id.mobilenumberhead);
         emailid = findViewById(R.id.emailid);
-        input_layout_email = findViewById(R.id.input_layout_email);
+        emailidhead = findViewById(R.id.emailidhead);
+        fnamehead = findViewById(R.id.fnamehead);
+        panhead = findViewById(R.id.panhead);
+        monthly_incomehead = findViewById(R.id.monthly_incomehead);
+        dobhead = findViewById(R.id.dobhead);
 
         selfemployedcheck = findViewById(R.id.selfemployedcheck);
         salariedcheck = findViewById(R.id.salariedcheck);
@@ -131,13 +131,9 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
         resentotp = findViewById(R.id.resentotp);
         lastmobiletext = findViewById(R.id.lastmobiletext);
         dob = findViewById(R.id.dob);
-        input_layout_dob = findViewById(R.id.input_layout_dob);
         monthly_income = findViewById(R.id.monthly_income);
-        input_layout_monthly_income = findViewById(R.id.input_layout_monthly_income);
         fname = findViewById(R.id.fname);
-        input_layout_fname = findViewById(R.id.input_layout_fname);
         pan = findViewById(R.id.pan);
-        input_layout_pan = findViewById(R.id.input_layout_pan);
         checkbox = findViewById(R.id.checkbox);
         checkbox_text = findViewById(R.id.checkbox_text);
         pan.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
@@ -443,8 +439,6 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
 
             selecteddate = selectedyear + "-" + month + "-" + selectedday;
             dob.setText(selecteddate);
-            input_layout_dob.setErrorEnabled(false);
-            input_layout_dob.setDefaultHintTextColor(ColorStateList.valueOf(Color.parseColor("#788691")));
 
         }, mYear, mMonth, mDay);
         mDatePicker.setTitle("Select date");
@@ -597,7 +591,7 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
             String otpstring = otpone.getText().toString() + "" + otptwo.getText().toString() + "" + otpthree.getText().toString() + "" + otpfour.getText().toString();
             json.put("email_mobile", "" + mobilenumber.getText().toString());
             json.put("otp", "" + otpstring);
-            json.put("type", "cibil_signup_mobile");
+            json.put("type", "credit_card_signup_mobile");
             json.put("case", "MO");
             if (secret_key.equalsIgnoreCase("")) {
                 json.put("secret_key", "" + SessionManager.get_secret_key(prefs));
@@ -684,18 +678,18 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
             json.put("correspondence_pincode", "400001");
             json.put("correspondence_state", "MH");
             json.put("correspondence_city", "Default");
-            json.put("signup_source", "cibil");
-            json.put("resource_pagename", "Cibil_Wishfin_Android");
-            json.put("resource_source", "Cibil_Wishfin_Android");
+            json.put("signup_source", "credit_card_android");
+            json.put("resource_pagename", "Credit_Card_Wishfin_Android");
+            json.put("resource_source", "Credit_Card_Wishfin_Android");
             json.put("resource_querystring", "");
             json.put("resource_ip_address", IPaddress);
             json.put("source", "Wishfin_Android");
             json.put("utm_source", "" + SessionManager.get_utmsource(prefs));
             json.put("utm_medium", "" + SessionManager.get_utmmedium(prefs));
-            json.put("referrer_address", "Wishfin_Android");
+            json.put("referrer_address", "Creit_card_Wishfin_Android");
             json.put("querystring", "");
             json.put("is_system_generated", "1");
-            json.put("type", "cibil");
+            json.put("type", "credit_card_signup_mobile");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -852,29 +846,30 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
 
     private boolean validateNumber() {
         if (!mobilenumber.getText().toString().trim().matches("[5-9][0-9]{9}") || mobilenumber.getText().length() != 10) {
-            input_layout_number.setError("Enter Valid Mobile Number");
+            mobilenumberhead.setTextColor(Color.parseColor("#FF0000"));
+            mobilenumberhead.setText("Enter 10 Digits Mobile Number");
+//            Toast.makeText(getApplicationContext(),"Enter 10 Digits Mobile Number",Toast.LENGTH_SHORT).show();
             requestFocus(mobilenumber);
             return false;
         } else {
-            input_layout_number.setErrorEnabled(false);
-            input_layout_number.setDefaultHintTextColor(ColorStateList.valueOf(Color.parseColor("#788691")));
+            mobilenumberhead.setText("Mobile Number");
+            mobilenumberhead.setTextColor(Color.parseColor("#304258"));
         }
-
         return true;
     }
 
     private boolean validateName() {
-        Pattern pattern = Pattern.compile("^[a-zA-Z]{2,15}$");
-        Matcher matcher = pattern.matcher(fname.getText().toString().trim());
-        if (fname.getText().toString().trim().isEmpty() || !matcher.matches()) {
-            input_layout_fname.setError("Enter Valid First Name");
+//        Pattern pattern = Pattern.compile("^[a-zA-Z]{2,15}$");
+//        Matcher matcher = pattern.matcher(fname.getText().toString().trim());
+        if (fname.getText().toString().trim().isEmpty() || fname.getText().length() < 2) {
+            fnamehead.setTextColor(Color.parseColor("#FF0000"));
+            fnamehead.setText("Enter Valid Name");
             requestFocus(fname);
             return false;
         } else {
-            input_layout_fname.setErrorEnabled(false);
-            input_layout_fname.setDefaultHintTextColor(ColorStateList.valueOf(Color.parseColor("#788691")));
+            fnamehead.setText("Full Name (As Per Bank Records)");
+            fnamehead.setTextColor(Color.parseColor("#304258"));
         }
-
         return true;
     }
 
@@ -882,7 +877,7 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
     private boolean validateDOB() {
 
         if (dob.getText().toString().equalsIgnoreCase("")) {
-            input_layout_dob.setError("Select DOB");
+            Toast.makeText(getApplicationContext(), "Provide Date Of Birth", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -893,11 +888,12 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
 
         try {
             if (monthly_income.getText().toString().equalsIgnoreCase("") || Integer.parseInt(monthly_income.getText().toString()) < 0) {
-                input_layout_monthly_income.setError("Provide Monthly Income");
+                monthly_incomehead.setTextColor(Color.parseColor("#FF0000"));
+                monthly_incomehead.setText("Provide Monthly Income");
                 return false;
             } else {
-                input_layout_monthly_income.setErrorEnabled(false);
-                input_layout_monthly_income.setDefaultHintTextColor(ColorStateList.valueOf(Color.parseColor("#788691")));
+                monthly_incomehead.setTextColor(Color.parseColor("#304258"));
+                monthly_incomehead.setText("Monthly Income(In INR)");
             }
         } catch (Exception e) {
 
@@ -923,12 +919,13 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
         Pattern pattern = Pattern.compile("[A-Z]{5}[0-9]{4}[A-Z]{1}");
         Matcher matcher = pattern.matcher(pannum);
         if (!matcher.matches() || pan.getText().length() != 10) {
-            input_layout_pan.setError("Enter Valid PAN");
+            panhead.setTextColor(Color.parseColor("#FF0000"));
+            panhead.setText("Enter Valid PAN");
             requestFocus(pan);
             return false;
         } else {
-            input_layout_pan.setErrorEnabled(false);
-            input_layout_pan.setDefaultHintTextColor(ColorStateList.valueOf(Color.parseColor("#788691")));
+            panhead.setTextColor(Color.parseColor("#304258"));
+            panhead.setText("PAN Card Number");
         }
 
         return true;
@@ -938,12 +935,14 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
         String email = emailid.getText().toString().trim();
 
         if (email.isEmpty() || !isValidEmail(email)) {
-            input_layout_email.setError("Enter Valid Email Id");
+            emailidhead.setTextColor(Color.parseColor("#FF0000"));
+            emailidhead.setText("Enter Valid Email ID");
+//            Toast.makeText(getApplicationContext(),"Enter Valid Email ID",Toast.LENGTH_SHORT).show();
             requestFocus(emailid);
             return false;
         } else {
-            input_layout_email.setErrorEnabled(false);
-            input_layout_email.setDefaultHintTextColor(ColorStateList.valueOf(Color.parseColor("#788691")));
+            emailidhead.setText("Email ID");
+            emailidhead.setTextColor(Color.parseColor("#304258"));
         }
 
         return true;
