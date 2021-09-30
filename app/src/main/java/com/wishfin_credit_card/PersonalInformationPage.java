@@ -85,7 +85,7 @@ public class PersonalInformationPage extends Activity {
         pincode = findViewById(R.id.pincode);
         companynamehead = findViewById(R.id.companynamehead);
         citynamehead = findViewById(R.id.citynamehead);
-        backbutton=findViewById(R.id.backbutton);
+        backbutton = findViewById(R.id.backbutton);
 
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,13 +169,20 @@ public class PersonalInformationPage extends Activity {
             } catch (Exception e) {
                 json.put("annualincome", "500000");
             }
-
             json.put("occupation", "" + SessionManager.get_occupation(prefs));
-            json.put("fullname", "" + SessionManager.get_firstname(prefs));
+            json.put("panno", "" + SessionManager.get_pan(prefs));
+
+//            json.put("occupation", "1");
+//            json.put("panno", "AQPPC9876J");
+            String name = SessionManager.get_firstname(prefs).trim();
+            if (name.contains(" ")) {
+                json.put("fullname", "" + name);
+            } else {
+                json.put("fullname", "" + name + " " + name);
+            }
             json.put("mobileno", "" + SessionManager.get_mobile(prefs));
             json.put("emailid", "" + SessionManager.get_emailid(prefs));
             json.put("dob", "" + SessionManager.get_dob(prefs));
-            json.put("panno", "" + SessionManager.get_pan(prefs));
             json.put("gender", "" + strgender);
             json.put("companyname", "" + str_companyname);
             json.put("city", "" + str_cityname);

@@ -39,7 +39,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EligibleCardsListing extends Activity {
@@ -51,6 +53,7 @@ public class EligibleCardsListing extends Activity {
     ArrayList<Gettersetterforall> list1 = new ArrayList<>();
     EligibleCardsListing.Share_Adapter radio_question_list_adapter;
     EditText search_bar;
+    String appliesbanks = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -140,6 +143,25 @@ public class EligibleCardsListing extends Activity {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject objectnew2 = jsonArray.getJSONObject(i);
                                 Gettersetterforall pack = new Gettersetterforall();
+
+                                appliesbanks = "037,076";
+                                try {
+                                    if (!appliesbanks.equalsIgnoreCase("") || appliesbanks.equalsIgnoreCase("null")) {
+                                        List<String> items = Arrays.asList(appliesbanks.split("\\s*,\\s*"));
+
+                                        for (int j = 0; j <= items.size(); j++) {
+                                            if (items.get(j).equalsIgnoreCase(objectnew2.getString("bank_code"))) {
+                                                pack.setAppliedstatus("true");
+                                                break;
+                                            } else {
+                                                pack.setAppliedstatus("false");
+                                            }
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    pack.setAppliedstatus("false");
+                                }
+
                                 pack.setBank_code(objectnew2.getString("bank_code"));
                                 pack.setName(objectnew2.getString("name"));
                                 pack.setImage(objectnew2.getString("image_path"));
@@ -253,7 +275,7 @@ public class EligibleCardsListing extends Activity {
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder {
-            TextView tv1, tv2, joiningfees, annualfees;
+            TextView tv1, tv2, joiningfees, annualfees, viewdetails;
             ImageView reli;
             RelativeLayout relit;
 
@@ -263,6 +285,7 @@ public class EligibleCardsListing extends Activity {
                 tv2 = view.findViewById(R.id.textView2);
                 joiningfees = view.findViewById(R.id.joiningfees);
                 annualfees = view.findViewById(R.id.annualfees);
+                viewdetails = view.findViewById(R.id.viewdetails);
                 reli = view.findViewById(R.id.imageView);
                 relit = view.findViewById(R.id.relit);
 
@@ -285,6 +308,12 @@ public class EligibleCardsListing extends Activity {
             holder.joiningfees.setText(list_car.get(position).getJoiningfees());
             holder.annualfees.setText(list_car.get(position).getAnnualfees());
 
+            if (list_car.get(position).getAppliedstatus().equalsIgnoreCase("true")) {
+                holder.viewdetails.setText("Already Applied");
+            } else {
+                holder.viewdetails.setText("View Details");
+            }
+
             Picasso.get()
                     .load(list_car.get(position).getImage())
                     .into(holder.reli);
@@ -302,6 +331,7 @@ public class EligibleCardsListing extends Activity {
                     intent.putExtra("features", "" + list_car.get(position).getFeauters());
                     intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
                     intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
+                    intent.putExtra("appliedstatus", "" + list_car.get(position).getAppliedstatus());
                     startActivity(intent);
                     finish();
 

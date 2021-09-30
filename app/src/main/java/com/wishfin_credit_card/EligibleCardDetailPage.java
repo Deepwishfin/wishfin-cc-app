@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
@@ -42,7 +43,7 @@ public class EligibleCardDetailPage extends Activity {
 
     ImageView imageView;
     TextView cardname, joiningfees, annualfees, instantapply;
-    String strcardname = "", strannualfees = "", strjoiningfees = "", lead_id = "", bank_code = "";
+    String strcardname = "", strannualfees = "", strjoiningfees = "", lead_id = "", bank_code = "", appliedstatus = "";
     String imagepath = "";
     String id = "";
     String features = "";
@@ -66,7 +67,7 @@ public class EligibleCardDetailPage extends Activity {
         joiningfees = findViewById(R.id.joiningfees);
         card_list = findViewById(R.id.card_list);
 
-        backbutton=findViewById(R.id.backbutton);
+        backbutton = findViewById(R.id.backbutton);
 
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +99,7 @@ public class EligibleCardDetailPage extends Activity {
                 strjoiningfees = "";
                 lead_id = "";
                 bank_code = "";
+                appliedstatus = "";
             } else {
                 strcardname = extras.getString("cardname");
                 imagepath = extras.getString("imagepath");
@@ -107,6 +109,7 @@ public class EligibleCardDetailPage extends Activity {
                 strjoiningfees = extras.getString("joining");
                 lead_id = extras.getString("lead_id");
                 bank_code = extras.getString("bank_code");
+                appliedstatus = extras.getString("appliedstatus");
             }
         } else {
             strcardname = (String) savedInstanceState.getSerializable("cardname");
@@ -117,6 +120,7 @@ public class EligibleCardDetailPage extends Activity {
             strjoiningfees = (String) savedInstanceState.getSerializable("joining");
             lead_id = (String) savedInstanceState.getSerializable("lead_id");
             bank_code = (String) savedInstanceState.getSerializable("bank_code");
+            appliedstatus = (String) savedInstanceState.getSerializable("appliedstatus");
         }
 
         cardname.setText(strcardname);
@@ -132,6 +136,10 @@ public class EligibleCardDetailPage extends Activity {
         } else {
             joiningfees.setText(strjoiningfees);
 
+        }
+
+        if (appliedstatus.equalsIgnoreCase("true")) {
+            instantapply.setText("Already Applied");
         }
 
         try {
@@ -181,9 +189,13 @@ public class EligibleCardDetailPage extends Activity {
         instantapply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (appliedstatus.equalsIgnoreCase("true")) {
+                    Toast.makeText(getApplicationContext(), "Already Applied", Toast.LENGTH_SHORT).show();
+                } else {
 
-                progressDialog.show();
-                select_opted_bank();
+                    progressDialog.show();
+                    select_opted_bank();
+                }
             }
         });
     }
@@ -210,7 +222,7 @@ public class EligibleCardDetailPage extends Activity {
                     intent.putExtra("lead_id", "" + SessionManager.get_lead_id(prefs));
                     intent.putExtra("bank_code", "" + bank_code);
                     intent.putExtra("id", "" + id);
-                    intent.putExtra("cardname", "" +strcardname);
+                    intent.putExtra("cardname", "" + strcardname);
                     intent.putExtra("imagepath", "" + imagepath);
                     intent.putExtra("features", "" + features);
                     intent.putExtra("joining", "" + strjoiningfees);

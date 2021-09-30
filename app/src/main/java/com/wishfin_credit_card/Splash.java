@@ -154,7 +154,7 @@ public class Splash extends Activity {
                 startActivity(intent);
                 finish();
             } else {
-                Intent intent = new Intent(Splash.this, MainActivity.class);
+                Intent intent = new Intent(Splash.this, Dashboard.class);
                 startActivity(intent);
                 finish();
             }

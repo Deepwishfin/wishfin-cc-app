@@ -8,6 +8,16 @@ private String name;
     private String desc;
     private String card_state;
 
+    public String getAppliedstatus() {
+        return appliedstatus;
+    }
+
+    public void setAppliedstatus(String appliedstatus) {
+        this.appliedstatus = appliedstatus;
+    }
+
+    private String appliedstatus;
+
     public String getBank_code() {
         return bank_code;
     }

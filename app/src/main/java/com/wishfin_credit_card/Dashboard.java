@@ -147,8 +147,13 @@ public class Dashboard extends Activity implements View.OnClickListener {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(Dashboard.this, PersonalInformationPage.class);
-                startActivity(intent);
+                if(SessionManager.get_lead_id(prefs).equalsIgnoreCase("")) {
+                    Intent intent = new Intent(Dashboard.this, PersonalInformationPage.class);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(Dashboard.this, EligibleCardsListing.class);
+                    startActivity(intent);
+                }
             }
         });
 
