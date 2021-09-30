@@ -118,6 +118,32 @@
                             android:textSize="16dp" />
                     </RadioGroup>
 
+                    <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                        android:id="@+id/aadhaarhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Aadhar"
+                        android:textColor="#2E384D"
+                        android:textSize="14dp" />
+
+                    <com.wishfin_credit_card.MenuHidingEditText
+                        android:id="@+id/aadhaar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittextback"
+                        android:hint="Enter Aadhar Number"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:longClickable="false"
+                        android:maxLength="12"
+                        android:padding="15dp"
+                        android:singleLine="true"
+                        android:textColor="#304258"
+                        android:textColorHint="#B0BAC9"
+                        android:textSize="14dp" />
+
 
                     <com.wishfin_credit_card.FontClasses.PoppinsMedium
                         android:id="@+id/pincodehead"

@@ -312,7 +312,6 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
                     intent.putExtra("features", "" + list_car.get(position).getFeauters());
                     intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
                     intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
-                    intent.putExtra("from", "Explore");
                     startActivity(intent);
 
                 }

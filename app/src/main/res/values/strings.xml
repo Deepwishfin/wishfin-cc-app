@@ -1,6 +1,9 @@
 <resources>
-    <string name="app_name">Wishfin_Credit_Card</string>
+    <string name="app_name">Wishfin Credit Card</string>
     <string name="dialogtext">Please Wait, Loading…</string>
-    <string name="BASE_URL">https://apistage.wishfin.com</string>
+    <string name="BASE_URL">https://api.wishfin.com</string>
     <string name="resend_otp">Resend OTP</string>
+    <string name="terms_and_condition">Terms and Conditions</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="help">Help</string>
 </resources>

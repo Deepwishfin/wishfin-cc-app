@@ -15,7 +15,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +47,8 @@ import java.util.Map;
 public class PersonalInformationPage extends Activity {
 
     AutoCompleteTextView autocompletetext_companyname, autocompletetext_cityname;
-    TextView continuebtn, pincodehead, companynamehead, citynamehead;
+    EditText pincode, aadhaar;
+    TextView continuebtn, pincodehead, companynamehead, citynamehead, aadhaarhead;
     KProgressHUD progressDialog;
     SharedPreferences prefs;
     RequestQueue queue;
@@ -56,6 +59,7 @@ public class PersonalInformationPage extends Activity {
     ArrayList<String> stringcitylist = new ArrayList<>();
     ArrayAdapter<String> adapter;
     RadioButton maleradio, femaleradio;
+    RelativeLayout backbutton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,9 +81,18 @@ public class PersonalInformationPage extends Activity {
         continuebtn = findViewById(R.id.continuebtn);
         maleradio = findViewById(R.id.maleradio);
         femaleradio = findViewById(R.id.femaleradio);
-        pincodehead = findViewById(R.id.pincodehead);
+        aadhaar = findViewById(R.id.aadhaar);
+        pincode = findViewById(R.id.pincode);
         companynamehead = findViewById(R.id.companynamehead);
         citynamehead = findViewById(R.id.citynamehead);
+        backbutton=findViewById(R.id.backbutton);
+
+        backbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         maleradio.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -115,8 +128,18 @@ public class PersonalInformationPage extends Activity {
             @Override
             public void onClick(View view) {
 
-                progressDialog.show();
-                create_lead();
+                if (aadhaar.getText().toString().trim().length() < 12) {
+                    Toast.makeText(getApplicationContext(), "Enter Valid Aadhar Number", Toast.LENGTH_SHORT).show();
+                } else if (pincode.getText().toString().trim().length() < 6) {
+                    Toast.makeText(getApplicationContext(), "Enter Valid Pincode", Toast.LENGTH_SHORT).show();
+                } else if (str_companyname.equalsIgnoreCase("")) {
+                    Toast.makeText(getApplicationContext(), "Enter Valid Company Name", Toast.LENGTH_SHORT).show();
+                } else if (str_cityname.equalsIgnoreCase("")) {
+                    Toast.makeText(getApplicationContext(), "Enter Valid City Name", Toast.LENGTH_SHORT).show();
+                } else {
+                    progressDialog.show();
+                    create_lead();
+                }
 
 
             }
@@ -147,20 +170,20 @@ public class PersonalInformationPage extends Activity {
                 json.put("annualincome", "500000");
             }
 
-//            json.put("occupation", "" + SessionManager.get_occupation(prefs));
-//            json.put("fullname", "" + SessionManager.get_firstname(prefs));
-//            json.put("mobileno", "" + SessionManager.get_mobile(prefs));
-//            json.put("emailid", "" + SessionManager.get_emailid(prefs));
-//            json.put("dob", "" + SessionManager.get_dob(prefs));
-
-            json.put("occupation", "1");
-            json.put("fullname", "Deep Singh");
-            json.put("mobileno", "7906241181");
-            json.put("emailid", "deep.singh@wishfin.com");
-            json.put("dob", "1990-05-19");
-
+            json.put("occupation", "" + SessionManager.get_occupation(prefs));
+            json.put("fullname", "" + SessionManager.get_firstname(prefs));
+            json.put("mobileno", "" + SessionManager.get_mobile(prefs));
+            json.put("emailid", "" + SessionManager.get_emailid(prefs));
+            json.put("dob", "" + SessionManager.get_dob(prefs));
+            json.put("panno", "" + SessionManager.get_pan(prefs));
+            json.put("gender", "" + strgender);
             json.put("companyname", "" + str_companyname);
             json.put("city", "" + str_cityname);
+            json.put("residenceaddress", "Delhi");
+            json.put("state", "Delhi");
+            json.put("state_code", "011");
+            json.put("residencepincode", "" + pincode.getText().toString());
+            json.put("aadharnumber", "" + aadhaar.getText().toString());
             json.put("cc_holder", "1");
             json.put("creditcardbank", "others");
             json.put("accept", "1");
@@ -180,7 +203,6 @@ public class PersonalInformationPage extends Activity {
 
                         if (jsonObject.getString("status").equalsIgnoreCase("success")) {
                             JSONObject jsonObject1 = jsonObject.getJSONObject("result");
-                            Intent intent = new Intent(PersonalInformationPage.this, EligibleCardsListing.class);
 
                             try {
                                 @SuppressLint("SimpleDateFormat") SimpleDateFormat dates = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -192,8 +214,7 @@ public class PersonalInformationPage extends Activity {
                             } catch (Exception e) {
 
                             }
-
-                            intent.putExtra("id", jsonObject1.getString("id"));
+                            Intent intent = new Intent(PersonalInformationPage.this, EligibleCardsListing.class);
                             startActivity(intent);
                             finish();
                         }

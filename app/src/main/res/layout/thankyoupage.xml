@@ -1,6 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/instantapply"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#F2FCF8"
+                    android:orientation="vertical"
+                    android:paddingTop="50dp"
+                    android:paddingBottom="20dp"
+                    android:weightSum="2">
+
+
+                    <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:text="Thank You"
+                        android:textColor="#000000"
+                        android:textSize="24dp" />
+
+                    <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="You request has been sumbitted successful. We will keep update you"
+                        android:textColor="#27364B"
+                        android:textSize="18dp" />
+
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/edittextback"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="125dp"
+                        android:layout_height="75dp"
+                        android:contentDescription="TODO"
+                        android:scaleType="fitXY" />
+
+                    <com.wishfin_credit_card.FontClasses.PoppinsRegular
+                        android:id="@+id/textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_toEndOf="@+id/imageView"
+                        android:text=""
+                        android:textColor="#0F1A2A"
+                        android:textSize="@dimen/subheadingfont" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/imageView"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <com.wishfin_credit_card.FontClasses.PoppinsRegular
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Applied on"
+                                android:textColor="#64748B"
+                                android:textSize="12dp" />
+
+                            <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                                android:id="@+id/joiningfees"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="NA"
+                                android:textColor="#0F1A2A"
+                                android:textSize="10dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <com.wishfin_credit_card.FontClasses.PoppinsRegular
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Application Number"
+                                android:textColor="#64748B"
+                                android:textSize="12dp" />
+
+                            <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                                android:id="@+id/annualfees"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="NA"
+                                android:textColor="#0F1A2A"
+                                android:textSize="10dp" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/edittextback"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:id="@+id/imageView1"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:contentDescription="TODO"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_offergreen" />
+
+                    <com.wishfin_credit_card.FontClasses.PoppinsRegular
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_toEndOf="@+id/imageView1"
+                        android:text="We are processing your application, usually it takes 2-3 working days"
+                        android:textColor="#0F1A2A"
+                        android:textSize="@dimen/detailheaading" />
+
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                android:id="@+id/instantapply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/roundedbutton"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="Find Most Suitable Cards"
+                android:textAllCaps="true"
+                android:textColor="#ffffff"
+                tools:ignore="MissingConstraints" />
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -51,7 +51,6 @@ public class EligibleCardsListing extends Activity {
     ArrayList<Gettersetterforall> list1 = new ArrayList<>();
     EligibleCardsListing.Share_Adapter radio_question_list_adapter;
     EditText search_bar;
-    String id = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,17 +66,6 @@ public class EligibleCardsListing extends Activity {
                 .setCancellable(false)
                 .setAnimationSpeed(1)
                 .setDimAmount(0.5f);
-
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if (extras == null) {
-                id = "";
-            } else {
-                id = extras.getString("id");
-            }
-        } else {
-            id = (String) savedInstanceState.getSerializable("id");
-        }
 
         getaouth();
 
@@ -134,7 +122,7 @@ public class EligibleCardsListing extends Activity {
     public void get_card_list() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL) + "/credit-card-quotes/" + id;
+        String url = getString(R.string.BASE_URL) + "/credit-card-quotes/" + SessionManager.get_lead_id(prefs);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // response
@@ -305,8 +293,8 @@ public class EligibleCardsListing extends Activity {
                 @Override
                 public void onClick(View view) {
 
-                    Intent intent = new Intent(EligibleCardsListing.this, CardDetailPage.class);
-                    intent.putExtra("lead_id", "" + id);
+                    Intent intent = new Intent(EligibleCardsListing.this, EligibleCardDetailPage.class);
+                    intent.putExtra("lead_id", "" + SessionManager.get_lead_id(prefs));
                     intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
                     intent.putExtra("id", "" + list_car.get(position).getId());
                     intent.putExtra("cardname", "" + list_car.get(position).getName());
@@ -314,7 +302,6 @@ public class EligibleCardsListing extends Activity {
                     intent.putExtra("features", "" + list_car.get(position).getFeauters());
                     intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
                     intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
-                    intent.putExtra("from", "Eligible");
                     startActivity(intent);
                     finish();
 

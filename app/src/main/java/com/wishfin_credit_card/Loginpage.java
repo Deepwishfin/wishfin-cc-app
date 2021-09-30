@@ -324,7 +324,7 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, "https://apistage.wishfin.com/oauth", json,
+                Request.Method.POST, getString(R.string.BASE_URL) + "/oauth", json,
                 response -> {
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());

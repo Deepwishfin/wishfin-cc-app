@@ -1,8 +1,6 @@
 package com.wishfin_credit_card;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,7 +9,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,7 +20,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.RetryPolicy;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.squareup.picasso.Picasso;
@@ -32,12 +34,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-public class CardDetailPage extends Activity {
+public class EligibleCardDetailPage extends Activity {
 
     ImageView imageView;
     TextView cardname, joiningfees, annualfees, instantapply;
@@ -51,13 +52,12 @@ public class CardDetailPage extends Activity {
     RecyclerView card_list;
     ArrayList<Gettersetterforall> list1 = new ArrayList<>();
     Share_Adapter radio_question_list_adapter;
-    Dialog dialog;
     RelativeLayout backbutton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.card_detail_page);
+        setContentView(R.layout.eligible_card_detail_page);
 
         imageView = findViewById(R.id.imageView);
         cardname = findViewById(R.id.cardname);
@@ -76,8 +76,8 @@ public class CardDetailPage extends Activity {
         });
 
 
-        queue = Volley.newRequestQueue(CardDetailPage.this);
-        prefs = PreferenceManager.getDefaultSharedPreferences(CardDetailPage.this);
+        queue = Volley.newRequestQueue(EligibleCardDetailPage.this);
+        prefs = PreferenceManager.getDefaultSharedPreferences(EligibleCardDetailPage.this);
 
         progressDialog = KProgressHUD.create(this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
@@ -86,9 +86,6 @@ public class CardDetailPage extends Activity {
                 .setAnimationSpeed(1)
                 .setDimAmount(0.5f);
 
-        dialog = new Dialog(CardDetailPage.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -148,7 +145,7 @@ public class CardDetailPage extends Activity {
                 list1.add(pack);
             }
 
-            radio_question_list_adapter = new Share_Adapter(CardDetailPage.this, list1);
+            radio_question_list_adapter = new Share_Adapter(EligibleCardDetailPage.this, list1);
             card_list.setAdapter(radio_question_list_adapter);
 
         } catch (JSONException e) {
@@ -160,10 +157,10 @@ public class CardDetailPage extends Activity {
                 .load(imagepath)
                 .into(imageView);
 
-        LinearLayoutManager layoutManager1 = new LinearLayoutManager(CardDetailPage.this) {
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(EligibleCardDetailPage.this) {
             @Override
             public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
-                LinearSmoothScroller smoothScroller = new LinearSmoothScroller(CardDetailPage.this) {
+                LinearSmoothScroller smoothScroller = new LinearSmoothScroller(EligibleCardDetailPage.this) {
                     private static final float SPEED = 4000f;
 
                     @Override
@@ -178,56 +175,73 @@ public class CardDetailPage extends Activity {
         };
 
         layoutManager1.setOrientation(LinearLayoutManager.VERTICAL);
-        card_list.addItemDecoration(new DividerItemDecoration(CardDetailPage.this, DividerItemDecoration.VERTICAL));
+        card_list.addItemDecoration(new DividerItemDecoration(EligibleCardDetailPage.this, DividerItemDecoration.VERTICAL));
         card_list.setLayoutManager(layoutManager1);
 
         instantapply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (SessionManager.get_lead_id(prefs).equalsIgnoreCase("")) {
-                    Intent intent = new Intent(CardDetailPage.this, PersonalInformationPage.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-
-                    Intent intent = new Intent(CardDetailPage.this, EligibleCardsListing.class);
-                    startActivity(intent);
-                    finish();
-
-//                    long differenceDates = 0;
-//                    try {
-//                        @SuppressLint("SimpleDateFormat") SimpleDateFormat dates = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//                        Date date1;
-//                        Date date2;
-//                        date1 = Calendar.getInstance().getTime();
-//                        date2 = dates.parse(SessionManager.get_lastccapplydate(prefs));
-//                        long difference = Math.abs(date1.getTime() - date2.getTime());
-//                        differenceDates = difference / (24 * 60 * 60 * 1000);
-//                    } catch (Exception e) {
-//
-//                    }
-//
-//                    int remainingdays = (int) (31 - differenceDates);
-//                    dialog.setContentView(R.layout.update_message);
-//                    dialog.show();
-//                    TextView submit = dialog.findViewById(R.id.btnsubmit);
-//                    TextView messag = dialog.findViewById(R.id.heading);
-//                    messag.setText("Please wait " + remainingdays + " days.You have already applied with us for Credit Card." +
-//                            "Your application is under process and you will soon hear from our team.");
-//
-//                    submit.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            dialog.dismiss();
-//                            finish();
-//                        }
-//                    });
-
-                }
-
+                progressDialog.show();
+                select_opted_bank();
             }
         });
+    }
+
+    public void select_opted_bank() {
+
+        final JSONObject json = new JSONObject();
+
+        try {
+            json.put("bank_code", "" + bank_code);
+            json.put("lead_id", "" + lead_id);
+            json.put("type", "cc");
+            json.put("credit_card_id", "" + id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.POST, getString(R.string.BASE_URL) + "/select-opted-bank", json,
+                response -> {
+                    if (progressDialog != null && progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                    Intent intent = new Intent(EligibleCardDetailPage.this, Thankyoupage.class);
+                    intent.putExtra("lead_id", "" + SessionManager.get_lead_id(prefs));
+                    intent.putExtra("bank_code", "" + bank_code);
+                    intent.putExtra("id", "" + id);
+                    intent.putExtra("cardname", "" +strcardname);
+                    intent.putExtra("imagepath", "" + imagepath);
+                    intent.putExtra("features", "" + features);
+                    intent.putExtra("joining", "" + strjoiningfees);
+                    intent.putExtra("annual", "" + strannualfees);
+                    startActivity(intent);
+                    finish();
+
+                }, error -> {
+            error.printStackTrace();
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+
+        }
+
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<String, String>();
+                String bearer = "Bearer " + SessionManager.get_access_token(prefs);
+                header.put("Content-Type", "application/json; charset=utf-8");
+                header.put("Accept", "application/json");
+                header.put("Authorization", bearer);
+
+                return header;
+            }
+        };
+        int socketTimeout = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
+        queue.add(jsonObjectRequest);
     }
 
     public class Share_Adapter extends RecyclerView.Adapter<Share_Adapter.MyViewHolder> {

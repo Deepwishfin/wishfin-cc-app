@@ -154,7 +154,7 @@
                 android:background="@drawable/roundedbutton"
                 android:gravity="center"
                 android:padding="15dp"
-                android:text="Find Eligible Cards"
+                android:text="Instant Apply"
                 android:textColor="#ffffff"
                 tools:ignore="MissingConstraints" />
 

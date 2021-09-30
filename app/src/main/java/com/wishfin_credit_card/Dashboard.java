@@ -54,6 +54,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
     ArrayList<Gettersetterforall> list1 = new ArrayList<>();
     Share_Adapter radio_question_list_adapter;
     String logintype = "", IPaddress = "";
+    TextView signupone;
     LinearLayout line1, line2, line3, line5;
     boolean doubleBackToExitPressedOnce = false;
 
@@ -140,6 +141,17 @@ public class Dashboard extends Activity implements View.OnClickListener {
 //        }
 
         card_list = findViewById(R.id.card_list);
+        signupone = findViewById(R.id.signupone);
+
+        signupone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Dashboard.this, PersonalInformationPage.class);
+                startActivity(intent);
+            }
+        });
+
         line1 = findViewById(R.id.line1);
         line2 = findViewById(R.id.line2);
         line3 = findViewById(R.id.line3);
@@ -382,7 +394,6 @@ public class Dashboard extends Activity implements View.OnClickListener {
                     intent.putExtra("features", "" + list_car.get(position).getFeauters());
                     intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
                     intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
-                    intent.putExtra("from", "Dashboard");
                     startActivity(intent);
 
 
