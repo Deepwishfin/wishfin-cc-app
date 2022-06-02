@@ -117,8 +117,8 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
 
         if (type.equalsIgnoreCase("ExploreAll")) {
             heading_cc_list.setText("Explore All Credit Cards");
-            sub_heading_cc_list.setVisibility(View.GONE);
-            heading_relative.setBackgroundColor(Color.parseColor("#FFEFF2"));
+            sub_heading_cc_list.setText("Get the Best Card in one minute");
+            heading_relative.setBackgroundColor(Color.parseColor("#FFFFFF"));
         } else if (type.equalsIgnoreCase("Best")) {
             heading_cc_list.setText("Best Credit Cards");
             sub_heading_cc_list.setText("Make Your Expenses Inexpensive by New Way of Payment");
@@ -145,8 +145,8 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
             heading_relative.setBackgroundColor(Color.parseColor("#FFEFF2"));
         } else {
             heading_cc_list.setText("Explore All Credit Cards");
-            sub_heading_cc_list.setVisibility(View.GONE);
-            heading_relative.setBackgroundColor(Color.parseColor("#FFEFF2"));
+            sub_heading_cc_list.setText("Get the Best Card in one minute");
+            heading_relative.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
 
         search_bar.addTextChangedListener(new TextWatcher() {
@@ -186,7 +186,7 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
         };
 
         layoutManager1.setOrientation(LinearLayoutManager.VERTICAL);
-        card_list.addItemDecoration(new DividerItemDecoration(ExploreCreditCard.this, DividerItemDecoration.VERTICAL));
+//        card_list.addItemDecoration(new DividerItemDecoration(ExploreCreditCard.this, DividerItemDecoration.VERTICAL));
         card_list.setLayoutManager(layoutManager1);
 
     }

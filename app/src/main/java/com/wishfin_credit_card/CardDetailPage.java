@@ -329,7 +329,7 @@ public class CardDetailPage extends Activity {
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, "https://www.deal4loans.com/referfriend/api/v1/index", json,
+                Request.Method.POST, getString(R.string.BASE_URL_Deal4Loans), json,
                 response -> {
                     try {
                         progressDialog.dismiss();
@@ -340,7 +340,7 @@ public class CardDetailPage extends Activity {
 
                             Intent openUrlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                             startActivity(openUrlIntent);
-                        }else {
+                        } else {
                             Toast.makeText(CardDetailPage.this, "" + jsonObject.getString("message"), Toast.LENGTH_LONG).show();
 
                         }

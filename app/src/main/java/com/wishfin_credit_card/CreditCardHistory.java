@@ -113,7 +113,7 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
         };
 
         layoutManager1.setOrientation(LinearLayoutManager.VERTICAL);
-        card_list.addItemDecoration(new DividerItemDecoration(CreditCardHistory.this, DividerItemDecoration.VERTICAL));
+//        card_list.addItemDecoration(new DividerItemDecoration(CreditCardHistory.this, DividerItemDecoration.VERTICAL));
         card_list.setLayoutManager(layoutManager1);
 
     }
@@ -132,7 +132,7 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, "https://www.deal4loans.com/referfriend/api/v1/index", json,
+                Request.Method.POST, getString(R.string.BASE_URL_Deal4Loans), json,
                 response -> {
                     try {
                         progressDialog.dismiss();
