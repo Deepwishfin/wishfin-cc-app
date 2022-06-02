@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.Formatter;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,29 +39,34 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class PersonalInformationPage extends Activity {
 
     AutoCompleteTextView autocompletetext_companyname, autocompletetext_cityname;
-    EditText pincode, aadhaar;
-    TextView continuebtn, pincodehead, companynamehead, citynamehead, aadhaarhead;
+    EditText pincode, aadhaar, monthly_income;
+    TextView continuebtn, companynamehead, citynamehead;
     KProgressHUD progressDialog;
     SharedPreferences prefs;
     RequestQueue queue;
-    String str_companyname = "", str_cityname = "", strgender = "1";
+    String str_companyname = "", str_cityname = "", strgender = "1", str_occupation = "1";
     ArrayList<Gettersetterforall> companylist = new ArrayList<>();
     ArrayList<String> stringcompanylist = new ArrayList<>();
     ArrayList<Gettersetterforall> citylist = new ArrayList<>();
     ArrayList<String> stringcitylist = new ArrayList<>();
     ArrayAdapter<String> adapter;
     RadioButton maleradio, femaleradio;
+    RadioButton salariedcheck, selfemployedcheck;
     RelativeLayout backbutton;
+    String IPaddress = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,6 +93,24 @@ public class PersonalInformationPage extends Activity {
         companynamehead = findViewById(R.id.companynamehead);
         citynamehead = findViewById(R.id.citynamehead);
         backbutton = findViewById(R.id.backbutton);
+        selfemployedcheck = findViewById(R.id.selfemployedcheck);
+        salariedcheck = findViewById(R.id.salariedcheck);
+        monthly_income = findViewById(R.id.monthly_income);
+
+
+        selfemployedcheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                str_occupation = "2";
+
+            }
+        });
+
+        salariedcheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                str_occupation = "1";
+
+            }
+        });
 
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +153,16 @@ public class PersonalInformationPage extends Activity {
             @Override
             public void onClick(View view) {
 
-                if (aadhaar.getText().toString().trim().length() < 12) {
+                int monthlyincome;
+                try {
+                    monthlyincome = Integer.parseInt(monthly_income.getText().toString());
+                } catch (Exception e) {
+                    monthlyincome = 50000;
+                }
+
+                if (monthly_income.getText().toString().equalsIgnoreCase("") || monthlyincome < 1) {
+                    Toast.makeText(getApplicationContext(), "Enter Monthly Income", Toast.LENGTH_SHORT).show();
+                } else if (aadhaar.getText().toString().trim().length() < 12) {
                     Toast.makeText(getApplicationContext(), "Enter Valid Aadhar Number", Toast.LENGTH_SHORT).show();
                 } else if (pincode.getText().toString().trim().length() < 6) {
                     Toast.makeText(getApplicationContext(), "Enter Valid Pincode", Toast.LENGTH_SHORT).show();
@@ -136,12 +170,13 @@ public class PersonalInformationPage extends Activity {
                     Toast.makeText(getApplicationContext(), "Enter Valid Company Name", Toast.LENGTH_SHORT).show();
                 } else if (str_cityname.equalsIgnoreCase("")) {
                     Toast.makeText(getApplicationContext(), "Enter Valid City Name", Toast.LENGTH_SHORT).show();
-                } else {
+                } else if (isThereInternetConnection()) {
                     progressDialog.show();
                     create_lead();
+                } else {
+                    Toast.makeText(PersonalInformationPage.this, "Please check your internet", Toast.LENGTH_LONG).show();
+
                 }
-
-
             }
         });
 
@@ -155,7 +190,7 @@ public class PersonalInformationPage extends Activity {
             json.put("resource_pagename", "Credit_Card_Wishfin_Android");
             json.put("resource_source", "Credit_Card_Wishfin_Android");
             json.put("resource_referal", "");
-            json.put("resource_ip_address", "");
+            json.put("resource_ip_address", "" + IPaddress);
             json.put("resource_querystring", "");
             json.put("utm_source", "credit_card_android");
             json.put("utm_medium", "credit_card_android");
@@ -163,17 +198,14 @@ public class PersonalInformationPage extends Activity {
             json.put("source", "credit_card_android");
             json.put("wish_id", "");
             try {
-                int monthincome = Integer.parseInt(SessionManager.get_monthly_income(prefs));
+                int monthincome = Integer.parseInt(monthly_income.getText().toString());
                 int annualincome = monthincome * 12;
                 json.put("annualincome", "" + annualincome);
             } catch (Exception e) {
                 json.put("annualincome", "500000");
             }
-            json.put("occupation", "" + SessionManager.get_occupation(prefs));
+            json.put("occupation", "" + str_occupation);
             json.put("panno", "" + SessionManager.get_pan(prefs));
-
-//            json.put("occupation", "1");
-//            json.put("panno", "AQPPC9876J");
             String name = SessionManager.get_firstname(prefs).trim();
             if (name.contains(" ")) {
                 json.put("fullname", "" + name);
@@ -210,14 +242,13 @@ public class PersonalInformationPage extends Activity {
 
                         if (jsonObject.getString("status").equalsIgnoreCase("success")) {
                             JSONObject jsonObject1 = jsonObject.getJSONObject("result");
-
+                            SessionManager.save_lead_id(prefs, jsonObject1.getString("id"));
                             try {
-                                @SuppressLint("SimpleDateFormat") SimpleDateFormat dates = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                                @SuppressLint("SimpleDateFormat") SimpleDateFormat dates = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
                                 Date date1;
-                                date1 = Calendar.getInstance().getTime();
-                                String date = String.valueOf(date1);
+                                date1 = new Date();
+                                String date = dates.format(date1);
                                 SessionManager.save_lastccapplydate(prefs, date);
-                                SessionManager.save_lead_id(prefs, jsonObject1.getString("id"));
                             } catch (Exception e) {
 
                             }
@@ -464,5 +495,79 @@ public class PersonalInformationPage extends Activity {
         queue.add(getRequest);
 
     }
+
+    private void NetwordDetect() {
+
+        boolean WIFI = false;
+
+        boolean MOBILE = false;
+
+        ConnectivityManager CM = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo[] networkInfo = new NetworkInfo[0];
+        if (CM != null) {
+            networkInfo = CM.getAllNetworkInfo();
+        }
+
+        for (NetworkInfo netInfo : networkInfo) {
+
+            if (netInfo.getTypeName().equalsIgnoreCase("WIFI"))
+
+                if (netInfo.isConnected())
+
+                    WIFI = true;
+
+            if (netInfo.getTypeName().equalsIgnoreCase("MOBILE"))
+
+                if (netInfo.isConnected())
+
+                    MOBILE = true;
+        }
+
+        if (WIFI) {
+            IPaddress = GetDeviceipWiFiData();
+
+        }
+
+        if (MOBILE) {
+
+            IPaddress = GetDeviceipMobileData();
+
+        }
+
+    }
+
+    public String GetDeviceipMobileData() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        return Formatter.formatIpAddress(inetAddress.hashCode());
+                    }
+                }
+            }
+        } catch (Exception ex) {
+
+        }
+        return null;
+    }
+
+    public String GetDeviceipWiFiData() {
+
+        WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+
+        @SuppressWarnings("deprecation")
+
+        String ip = null;
+        if (wm != null) {
+            ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+        }
+
+        return ip;
+
+    }
+
 
 }

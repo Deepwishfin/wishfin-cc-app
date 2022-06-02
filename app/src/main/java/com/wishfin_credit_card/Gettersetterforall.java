@@ -4,9 +4,18 @@ import org.json.JSONArray;
 
 public class Gettersetterforall {
 private String name;
+
+    public String getInsta_apply_link() {
+        return insta_apply_link;
+    }
+
+    public void setInsta_apply_link(String insta_apply_link) {
+        this.insta_apply_link = insta_apply_link;
+    }
+
     private String id;
     private String desc;
-    private String card_state;
+    private String card_state,insta_apply_link;
 
     public String getAppliedstatus() {
         return appliedstatus;

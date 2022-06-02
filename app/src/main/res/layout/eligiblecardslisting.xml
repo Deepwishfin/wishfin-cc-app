@@ -13,7 +13,8 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:id="@+id/backbutton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:padding="15dp"
@@ -27,7 +28,7 @@
                 android:contentDescription="TODO" />
 
             <ImageView
-                android:id="@+id/backbutton"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -65,7 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="You are eligible for Credit Cards from various banks"
+                    android:text="You are eligible for Credit Cards from top banks"
                     android:textColor="@color/black"
                     android:textSize="14dp"
                     android:visibility="visible" />
@@ -78,7 +79,7 @@
                     android:background="@drawable/ontimepaymentbackground"
                     android:drawableLeft="@drawable/search"
                     android:drawablePadding="10dp"
-                    android:hint="Search by card name or bank name"
+                    android:hint="Search your credit card"
                     android:textSize="14dp"
                     android:visibility="visible" />
 

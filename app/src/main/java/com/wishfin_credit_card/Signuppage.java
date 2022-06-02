@@ -66,19 +66,19 @@ import java.util.regex.Pattern;
 
 public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListener {
 
-    TextView signupone, signuptwo, signupthree, resentotp, lastmobiletext, checkbox_text, mobilenumberhead, emailidhead, fnamehead, monthly_incomehead, panhead, dobhead;
+    TextView signupone, signuptwo, signupthree, resentotp, lastmobiletext, checkbox_text, mobilenumberhead, emailidhead,
+            fnamehead,  dobhead,panhead;
     LinearLayout linearone, lineartwo, linearthree;
     int page = 1;
     ImageView backbutton;
     RequestQueue queue;
     SharedPreferences prefs;
-    EditText mobilenumber, emailid, otpone, otptwo, otpthree, otpfour, fname, pan, dob, monthly_income;
-    RadioButton salariedcheck, selfemployedcheck;
+    EditText mobilenumber, emailid, otpone, otptwo, otpthree, otpfour, fname, pan, dob;
     CheckBox checkbox;
     KProgressHUD progressDialog;
     int mYear, mMonth, mDay;
     private SMSReceiver smsReceiver;
-    String selecteddate = "", mobilenumberstr = "", secret_key = "", str_occupation = "";
+    String selecteddate = "", mobilenumberstr = "", secret_key = "";
     private boolean broadcast = true;
     String IPaddress;
 
@@ -117,12 +117,8 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
         emailid = findViewById(R.id.emailid);
         emailidhead = findViewById(R.id.emailidhead);
         fnamehead = findViewById(R.id.fnamehead);
-        panhead = findViewById(R.id.panhead);
-        monthly_incomehead = findViewById(R.id.monthly_incomehead);
         dobhead = findViewById(R.id.dobhead);
-
-        selfemployedcheck = findViewById(R.id.selfemployedcheck);
-        salariedcheck = findViewById(R.id.salariedcheck);
+        panhead = findViewById(R.id.panhead);
 
         otpone = findViewById(R.id.otpone);
         otptwo = findViewById(R.id.otptwo);
@@ -131,7 +127,6 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
         resentotp = findViewById(R.id.resentotp);
         lastmobiletext = findViewById(R.id.lastmobiletext);
         dob = findViewById(R.id.dob);
-        monthly_income = findViewById(R.id.monthly_income);
         fname = findViewById(R.id.fname);
         pan = findViewById(R.id.pan);
         checkbox = findViewById(R.id.checkbox);
@@ -142,25 +137,11 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
         emailid.addTextChangedListener(new MyTextWatcher(emailid));
         fname.addTextChangedListener(new MyTextWatcher(fname));
         pan.addTextChangedListener(new MyTextWatcher(pan));
-        monthly_income.addTextChangedListener(new MyTextWatcher(monthly_income));
         otpone.addTextChangedListener(new MyTextWatcher(otpone));
         otptwo.addTextChangedListener(new MyTextWatcher(otptwo));
         otpthree.addTextChangedListener(new MyTextWatcher(otpthree));
         otpfour.addTextChangedListener(new MyTextWatcher(otpfour));
 
-        selfemployedcheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                str_occupation = "2";
-
-            }
-        });
-
-        salariedcheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                str_occupation = "1";
-
-            }
-        });
 
         otpone.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -478,10 +459,10 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
 
-                        SessionManager.save_access_token(prefs, String.valueOf(jsonObject.getString("access_token")));
-                        SessionManager.save_expirein(prefs, String.valueOf(jsonObject.getString("expires_in")));
-                        SessionManager.save_token_type(prefs, String.valueOf(jsonObject.getString("token_type")));
-                        SessionManager.save_refresh_token(prefs, String.valueOf(jsonObject.getString("refresh_token")));
+                        SessionManager.save_access_token(prefs, jsonObject.getString("access_token"));
+                        SessionManager.save_expirein(prefs, jsonObject.getString("expires_in"));
+                        SessionManager.save_token_type(prefs, jsonObject.getString("token_type"));
+                        SessionManager.save_refresh_token(prefs, jsonObject.getString("refresh_token"));
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -591,7 +572,7 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
             String otpstring = otpone.getText().toString() + "" + otptwo.getText().toString() + "" + otpthree.getText().toString() + "" + otpfour.getText().toString();
             json.put("email_mobile", "" + mobilenumber.getText().toString());
             json.put("otp", "" + otpstring);
-            json.put("type", "credit_card_signup_mobile");
+            json.put("type", "cibil_signup_mobile");
             json.put("case", "MO");
             if (secret_key.equalsIgnoreCase("")) {
                 json.put("secret_key", "" + SessionManager.get_secret_key(prefs));
@@ -689,7 +670,7 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
             json.put("referrer_address", "Creit_card_Wishfin_Android");
             json.put("querystring", "");
             json.put("is_system_generated", "1");
-            json.put("type", "credit_card_signup_mobile");
+            json.put("type", "cc_signup_mobile");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -714,8 +695,6 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
                             SessionManager.save_firstname(prefs, fname.getText().toString());
                             SessionManager.save_dob(prefs, dob.getText().toString());
                             SessionManager.save_pan(prefs, pan.getText().toString());
-                            SessionManager.save_monthly_income(prefs, "" + (monthly_income.getText().toString()));
-                            SessionManager.save_occupation(prefs, "" + str_occupation);
                             SessionManager.save_mobile(prefs, mobilenumber.getText().toString());
                             SessionManager.save_emailid(prefs, emailid.getText().toString());
                             SessionManager.save_login(prefs, "True");
@@ -800,14 +779,6 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
             return;
         }
 
-        if (!validateIncome()) {
-            return;
-        }
-
-        if (!validateoccupation()) {
-            return;
-        }
-
         if (!checkbox.isChecked()) {
             Toast.makeText(Signuppage.this, "Select Checkbox", Toast.LENGTH_LONG).show();
             return;
@@ -882,34 +853,6 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
         return true;
     }
 
-    private boolean validateIncome() {
-
-        try {
-            if (monthly_income.getText().toString().equalsIgnoreCase("") || Integer.parseInt(monthly_income.getText().toString()) < 0) {
-                monthly_incomehead.setTextColor(Color.parseColor("#FF0000"));
-                monthly_incomehead.setText("Provide Monthly Income");
-                return false;
-            } else {
-                monthly_incomehead.setTextColor(Color.parseColor("#304258"));
-                monthly_incomehead.setText("Monthly Income(In INR)");
-            }
-        } catch (Exception e) {
-
-        }
-
-        return true;
-    }
-
-    private boolean validateoccupation() {
-
-        if (str_occupation.equalsIgnoreCase("")) {
-            Toast.makeText(Signuppage.this, "Select Occupation", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        return true;
-    }
-
 
     private boolean validatePAN() {
 
@@ -977,9 +920,6 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
                     break;
                 case R.id.pan:
                     validatePAN();
-                    break;
-                case R.id.monthly_income:
-                    validateIncome();
                     break;
                 case R.id.otpone:
                     if (otpone.getText().toString().equalsIgnoreCase("")) {

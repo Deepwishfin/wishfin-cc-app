@@ -2,6 +2,7 @@ package com.wishfin_credit_card;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.Window;
+import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -20,12 +23,14 @@ import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Splash extends Activity {
 
     SharedPreferences prefs;
     boolean permission = false;
     int PERMISSION_ALL = 1;
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +42,31 @@ public class Splash extends Activity {
         setContentView(R.layout.splashscreen);
         prefs = PreferenceManager.getDefaultSharedPreferences(Splash.this);
 
+        dialog = new Dialog(Splash.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+
+
         if (isThereInternetConnection()) {
             checkforpermission();
 //            getdevicetoken();
         } else {
-            Toast.makeText(this, "No Internet", Toast.LENGTH_SHORT).show();
-            finish();
 
+            Objects.requireNonNull(dialog.getWindow()).setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+            dialog.setContentView(R.layout.nointernet);
+            dialog.show();
+            TextView submit = dialog.findViewById(R.id.btnsubmit);
+            submit.setOnClickListener(view -> {
+                if (isThereInternetConnection()) {
+                    dialog.dismiss();
+                    checkforpermission();
+
+                } else {
+                    Toast.makeText(Splash.this, "Please check your internet", Toast.LENGTH_LONG).show();
+                }
+            });
         }
+
 
     }
 
@@ -154,7 +176,7 @@ public class Splash extends Activity {
                 startActivity(intent);
                 finish();
             } else {
-                Intent intent = new Intent(Splash.this, Dashboard.class);
+                Intent intent = new Intent(Splash.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             }

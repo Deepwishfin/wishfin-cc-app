@@ -3,6 +3,7 @@ package com.wishfin_credit_card;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -54,6 +55,7 @@ public class EligibleCardsListing extends Activity {
     EligibleCardsListing.Share_Adapter radio_question_list_adapter;
     EditText search_bar;
     String appliesbanks = "";
+    RelativeLayout backbutton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,15 +72,20 @@ public class EligibleCardsListing extends Activity {
                 .setAnimationSpeed(1)
                 .setDimAmount(0.5f);
 
-        getaouth();
-
-
         progressDialog.show();
+        getaouth();
         get_card_list();
 
         card_list = findViewById(R.id.card_list);
-
+        backbutton = findViewById(R.id.backbutton);
         search_bar = findViewById(R.id.search_bar);
+
+        backbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         search_bar.addTextChangedListener(new TextWatcher() {
             @Override
@@ -144,8 +151,8 @@ public class EligibleCardsListing extends Activity {
                                 JSONObject objectnew2 = jsonArray.getJSONObject(i);
                                 Gettersetterforall pack = new Gettersetterforall();
 
-                                appliesbanks = "037,076";
                                 try {
+                                    appliesbanks = SessionManager.get_hardinquiry(prefs);
                                     if (!appliesbanks.equalsIgnoreCase("") || appliesbanks.equalsIgnoreCase("null")) {
                                         List<String> items = Arrays.asList(appliesbanks.split("\\s*,\\s*"));
 
@@ -157,6 +164,8 @@ public class EligibleCardsListing extends Activity {
                                                 pack.setAppliedstatus("false");
                                             }
                                         }
+                                    }else {
+                                        pack.setAppliedstatus("false");
                                     }
                                 } catch (Exception e) {
                                     pack.setAppliedstatus("false");
@@ -310,15 +319,19 @@ public class EligibleCardsListing extends Activity {
 
             if (list_car.get(position).getAppliedstatus().equalsIgnoreCase("true")) {
                 holder.viewdetails.setText("Already Applied");
+                holder.viewdetails.setBackgroundResource(R.drawable.roundedbuttonlightgrey);
+                holder.viewdetails.setTextColor(Color.parseColor("#000000"));
             } else {
                 holder.viewdetails.setText("View Details");
+                holder.viewdetails.setBackgroundResource(R.drawable.roundedbutton);
+                holder.viewdetails.setTextColor(Color.parseColor("#FFFFFF"));
             }
 
             Picasso.get()
                     .load(list_car.get(position).getImage())
                     .into(holder.reli);
 
-            holder.relit.setOnClickListener(new View.OnClickListener() {
+            holder.viewdetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -331,6 +344,7 @@ public class EligibleCardsListing extends Activity {
                     intent.putExtra("features", "" + list_car.get(position).getFeauters());
                     intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
                     intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
+                    intent.putExtra("insta_apply_link", "");
                     intent.putExtra("appliedstatus", "" + list_car.get(position).getAppliedstatus());
                     startActivity(intent);
                     finish();

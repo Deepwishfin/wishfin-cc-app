@@ -13,10 +13,10 @@ import com.squareup.picasso.Picasso;
 
 public class Thankyoupage extends Activity {
 
-    String strcardname = "", strannualfees = "", strjoiningfees = "", lead_id = "", bank_code = "";
-    String imagepath = "";
-    TextView cardname,instantapply,joiningfees,annualfees;
-    ImageView imageView;
+        String strcardname = "", strannualfees = "", strjoiningfees = "", lead_id = "", bank_code = "";
+        String imagepath = "";
+        TextView cardname,instantapply,joiningfees,annualfees;
+        ImageView imageView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -3,8 +3,8 @@ package com.wishfin_credit_card;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -53,8 +53,12 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
     ArrayList<Gettersetterforall> list1 = new ArrayList<>();
     Share_Adapter radio_question_list_adapter;
     LinearLayout line1, line2, line3, line5;
-    boolean doubleBackToExitPressedOnce = false;
+    //    boolean doubleBackToExitPressedOnce = false;
     EditText search_bar;
+    RelativeLayout heading_relative;
+    ImageView backbutton;
+    TextView heading_cc_list, sub_heading_cc_list;
+    String type = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +75,18 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
                 .setAnimationSpeed(1)
                 .setDimAmount(0.5f);
 
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras == null) {
+                type = "";
+            } else {
+                type = extras.getString("type");
+            }
+        } else {
+            type = (String) savedInstanceState.getSerializable("type");
+        }
+
+
         progressDialog.show();
         getaouth();
         get_card_list();
@@ -86,6 +102,52 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
         line3.setOnClickListener(this);
         line5.setOnClickListener(this);
         search_bar = findViewById(R.id.search_bar);
+
+        heading_relative = findViewById(R.id.heading_relative);
+        heading_cc_list = findViewById(R.id.heading_cc_list);
+        sub_heading_cc_list = findViewById(R.id.sub_heading_cc_list);
+        backbutton = findViewById(R.id.backbutton);
+
+        backbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        if (type.equalsIgnoreCase("ExploreAll")) {
+            heading_cc_list.setText("Explore All Credit Cards");
+            sub_heading_cc_list.setVisibility(View.GONE);
+            heading_relative.setBackgroundColor(Color.parseColor("#FFEFF2"));
+        } else if (type.equalsIgnoreCase("Best")) {
+            heading_cc_list.setText("Best Credit Cards");
+            sub_heading_cc_list.setText("Make Your Expenses Inexpensive by New Way of Payment");
+            heading_relative.setBackgroundColor(Color.parseColor("#FFEFF2"));
+        } else if (type.equalsIgnoreCase("Rewards")) {
+            heading_cc_list.setText("Best Reward Credit Cards");
+            sub_heading_cc_list.setText("Get Rewarded for Spending and Let Rewards do the Payments");
+            heading_relative.setBackgroundColor(Color.parseColor("#FFF5D9"));
+        } else if (type.equalsIgnoreCase("Lifetime")) {
+            heading_cc_list.setText("Life Time Free Credit Cards");
+            sub_heading_cc_list.setText("The Best Things in Life are Free!");
+            heading_relative.setBackgroundColor(Color.parseColor("#E8FBE5"));
+        } else if (type.equalsIgnoreCase("Travel")) {
+            heading_cc_list.setText("Best Travel Credit Cards");
+            sub_heading_cc_list.setText("Always Fly! Never Compromise with Your Dreams");
+            heading_relative.setBackgroundColor(Color.parseColor("#DFF9FF"));
+        } else if (type.equalsIgnoreCase("Fuel")) {
+            heading_cc_list.setText("Best Fuel Credit Cards");
+            sub_heading_cc_list.setText("You can’t Save Drops but You Can Save Expenses on it");
+            heading_relative.setBackgroundColor(Color.parseColor("#F9F9FC"));
+        } else if (type.equalsIgnoreCase("Cashback")) {
+            heading_cc_list.setText("Best Cashback Credit Cards");
+            sub_heading_cc_list.setText("Spend More, Earn More! Make Spending Your Habit");
+            heading_relative.setBackgroundColor(Color.parseColor("#FFEFF2"));
+        } else {
+            heading_cc_list.setText("Explore All Credit Cards");
+            sub_heading_cc_list.setVisibility(View.GONE);
+            heading_relative.setBackgroundColor(Color.parseColor("#FFEFF2"));
+        }
 
         search_bar.addTextChangedListener(new TextWatcher() {
             @Override
@@ -132,7 +194,7 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
     public void get_card_list() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL) + "/api/v1/credit-card-all-quotes";
+        String url = getString(R.string.BASE_URL) + "/v1/credit-card-all-quotes";
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // response
@@ -154,7 +216,10 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
                                 pack.setName(objectnew2.getString("name"));
                                 pack.setImage(objectnew2.getString("image_path"));
                                 pack.setId(objectnew2.getString("id"));
+                                pack.setInsta_apply_link((objectnew2.getString("insta_apply_link")));
+
                                 pack.setFeauters((objectnew2.getJSONArray("feature")));
+
                                 try {
                                     JSONArray feesjaonarray = objectnew2.getJSONArray("fee");
                                     for (int j = 0; j < feesjaonarray.length(); j++) {
@@ -178,7 +243,11 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
                                     pack.setAnnualfees("NA");
                                     pack.setJoiningfees("NA");
                                 }
-                                list1.add(pack);
+                                if (type.equalsIgnoreCase("ExploreAll")) {
+                                    list1.add(pack);
+                                } else if (objectnew2.getString("category").equalsIgnoreCase(type)) {
+                                    list1.add(pack);
+                                }
                             }
 
                             if (list1.size() > 0) {
@@ -263,7 +332,7 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder {
-            TextView tv1, tv2, joiningfees, annualfees;
+            TextView tv1, tv2, joiningfees, annualfees, viewdetails;
             ImageView reli;
             RelativeLayout relit;
 
@@ -273,6 +342,7 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
                 tv2 = view.findViewById(R.id.textView2);
                 joiningfees = view.findViewById(R.id.joiningfees);
                 annualfees = view.findViewById(R.id.annualfees);
+                viewdetails = view.findViewById(R.id.viewdetails);
                 reli = view.findViewById(R.id.imageView);
                 relit = view.findViewById(R.id.relit);
 
@@ -299,19 +369,20 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
                     .load(list_car.get(position).getImage())
                     .into(holder.reli);
 
-            holder.relit.setOnClickListener(new View.OnClickListener() {
+            holder.viewdetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                     Intent intent = new Intent(ExploreCreditCard.this, CardDetailPage.class);
                     intent.putExtra("lead_id", "");
-                    intent.putExtra("bank_code", ""+list_car.get(position).getBank_code());
+                    intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
                     intent.putExtra("id", "" + list_car.get(position).getId());
                     intent.putExtra("cardname", "" + list_car.get(position).getName());
                     intent.putExtra("imagepath", "" + list_car.get(position).getImage());
                     intent.putExtra("features", "" + list_car.get(position).getFeauters());
                     intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
                     intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
+                    intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
                     startActivity(intent);
 
                 }
@@ -380,8 +451,6 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
             // list to our adapter class.
             radio_question_list_adapter.filterList(filteredlist);
         }
-
-
     }
 
     @Override
@@ -394,11 +463,16 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
                 startActivity(intent2);
                 finish();
                 break;
-            case R.id.line3:
-                Intent intent3 = new Intent(ExploreCreditCard.this, OfferlistingPge.class);
+            case R.id.line2:
+                Intent intent3 = new Intent(ExploreCreditCard.this, CreditCardHistory.class);
                 startActivity(intent3);
                 finish();
                 break;
+//            case R.id.line3:
+//                Intent intent3 = new Intent(ExploreCreditCard.this, OfferlistingPge.class);
+//                startActivity(intent3);
+//                finish();
+//                break;
             case R.id.line5:
                 Intent intent4 = new Intent(ExploreCreditCard.this, Profilepage.class);
                 startActivity(intent4);
@@ -407,24 +481,24 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
-        }
-
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
-            }
-        }, 2000);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (doubleBackToExitPressedOnce) {
+//            super.onBackPressed();
+//            return;
+//        }
+//
+//        this.doubleBackToExitPressedOnce = true;
+//        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+//
+//        new Handler().postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                doubleBackToExitPressedOnce = false;
+//            }
+//        }, 2000);
+//    }
 
 
 }

@@ -43,7 +43,7 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@+id/backbutton"
-                android:text=""
+                android:text="History"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 android:visibility="visible" />
@@ -51,14 +51,14 @@
             <com.wishfin_credit_card.FontClasses.PoppinsMedium
                 android:id="@+id/sub_heading_cc_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="18dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_below="@+id/backbutton"
                 android:text=""
                 android:textColor="@color/black"
                 android:textSize="12dp"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
 
         </RelativeLayout>
@@ -92,7 +92,7 @@
                     android:drawablePadding="10dp"
                     android:hint="Search by card name or bank name"
                     android:textSize="14dp"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/card_list"
@@ -104,7 +104,7 @@
 
             </LinearLayout>
 
-            <include layout="@layout/footerexplorecreditcards" />
+            <include layout="@layout/footerexplorecredithistory" />
 
         </RelativeLayout>
 

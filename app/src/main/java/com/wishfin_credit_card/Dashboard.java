@@ -40,9 +40,9 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Dashboard extends Activity implements View.OnClickListener {
@@ -54,9 +54,10 @@ public class Dashboard extends Activity implements View.OnClickListener {
     ArrayList<Gettersetterforall> list1 = new ArrayList<>();
     Share_Adapter radio_question_list_adapter;
     String logintype = "", IPaddress = "";
-    TextView signupone;
+    TextView signupone, exploremore;
     LinearLayout line1, line2, line3, line5;
     boolean doubleBackToExitPressedOnce = false;
+    LinearLayout bestChoice, bestreward, lifetimefree, besttravel, bestfuel, bestcashback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,23 +78,26 @@ public class Dashboard extends Activity implements View.OnClickListener {
                 .setAnimationSpeed(1)
                 .setDimAmount(0.5f);
 
-        progressDialog.show();
+//        progressDialog.show();
         getaouth();
-        get_card_list();
+//        get_card_list();
 
         if (SessionManager.get_lastccapplydate(prefs).equalsIgnoreCase("")) {
-            SessionManager.save_lastccapplydate(prefs, "2020-01-01 01:01:01");
+            SessionManager.save_lastccapplydate(prefs, "01-01-2000");
         }
         long differenceDates = 0;
         try {
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat dates = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            Date date1;
-            Date date2;
-            date1 = Calendar.getInstance().getTime();
-            date2 = dates.parse(SessionManager.get_lastccapplydate(prefs));
-            long difference = Math.abs(date1.getTime() - date2.getTime());
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat dates = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+            Date date1, date2;
+            Date date3;
+            date1 = new Date();
+            String todaydate = dates.format(date1);
+            date2 = dates.parse(todaydate);
+            date3 = dates.parse(SessionManager.get_lastccapplydate(prefs));
+            long difference = Math.abs(date2.getTime() - date3.getTime());
             differenceDates = difference / (24 * 60 * 60 * 1000);
         } catch (Exception e) {
+            System.out.println("" + e);
 
         }
         if (differenceDates > 30) {
@@ -142,18 +146,34 @@ public class Dashboard extends Activity implements View.OnClickListener {
 
         card_list = findViewById(R.id.card_list);
         signupone = findViewById(R.id.signupone);
+        exploremore = findViewById(R.id.exploremore);
+        bestChoice = findViewById(R.id.bestChoice);
+        bestreward = findViewById(R.id.bestreward);
+        lifetimefree = findViewById(R.id.lifetimefree);
+        besttravel = findViewById(R.id.besttravel);
+        bestfuel = findViewById(R.id.bestfuel);
+        bestcashback = findViewById(R.id.bestcashback);
+
+        exploremore.setOnClickListener(this);
+        bestChoice.setOnClickListener(this);
+        bestreward.setOnClickListener(this);
+        lifetimefree.setOnClickListener(this);
+        besttravel.setOnClickListener(this);
+        bestfuel.setOnClickListener(this);
+        bestcashback.setOnClickListener(this);
 
         signupone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(SessionManager.get_lead_id(prefs).equalsIgnoreCase("")) {
-                    Intent intent = new Intent(Dashboard.this, PersonalInformationPage.class);
-                    startActivity(intent);
-                }else{
-                    Intent intent = new Intent(Dashboard.this, EligibleCardsListing.class);
-                    startActivity(intent);
-                }
+//                if (SessionManager.get_lead_id(prefs).equalsIgnoreCase("")) {
+//                    Intent intent = new Intent(Dashboard.this, PersonalInformationPage.class);
+//                    startActivity(intent);
+//                } else {
+                Intent intent = new Intent(Dashboard.this, ExploreCreditCard.class);
+                intent.putExtra("type", "ExploreAll");
+                startActivity(intent);
+//                }
             }
         });
 
@@ -194,7 +214,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
     public void get_card_list() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL) + "/api/v1/credit-card-all-quotes";
+        String url = getString(R.string.BASE_URL) + "/v1/credit-card-all-quotes";
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // response
@@ -244,7 +264,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
                             }
 
                             if (list1.size() > 0) {
-                                card_list.setVisibility(View.VISIBLE);
+                                card_list.setVisibility(View.GONE);
 
                                 radio_question_list_adapter = new Share_Adapter(Dashboard.this, list1);
                                 card_list.setAdapter(radio_question_list_adapter);
@@ -310,18 +330,53 @@ public class Dashboard extends Activity implements View.OnClickListener {
         switch (view.getId()) {
 
             case R.id.line2:
+            case R.id.exploremore:
+                Intent intent0 = new Intent(Dashboard.this, CreditCardHistory.class);
+                startActivity(intent0);
+
+                break;
+            case R.id.bestChoice:
                 Intent intent2 = new Intent(Dashboard.this, ExploreCreditCard.class);
+                intent2.putExtra("type", "Best");
                 startActivity(intent2);
-                finish();
+
+                break;
+            case R.id.bestreward:
+                Intent intent3 = new Intent(Dashboard.this, ExploreCreditCard.class);
+                intent3.putExtra("type", "Rewards");
+                startActivity(intent3);
+                break;
+            case R.id.lifetimefree:
+                Intent intent4 = new Intent(Dashboard.this, ExploreCreditCard.class);
+                intent4.putExtra("type", "Lifetime");
+                startActivity(intent4);
+
+                break;
+            case R.id.besttravel:
+                Intent intent5 = new Intent(Dashboard.this, ExploreCreditCard.class);
+                intent5.putExtra("type", "Travel");
+                startActivity(intent5);
+                break;
+            case R.id.bestfuel:
+                Intent intent6 = new Intent(Dashboard.this, ExploreCreditCard.class);
+                intent6.putExtra("type", "Fuel");
+                startActivity(intent6);
+
+                break;
+            case R.id.bestcashback:
+                Intent intent7 = new Intent(Dashboard.this, ExploreCreditCard.class);
+                intent7.putExtra("type", "Cashback");
+                startActivity(intent7);
+
                 break;
             case R.id.line3:
-                Intent intent3 = new Intent(Dashboard.this, OfferlistingPge.class);
-                startActivity(intent3);
+                Intent intent8 = new Intent(Dashboard.this, OfferlistingPge.class);
+                startActivity(intent8);
                 finish();
                 break;
             case R.id.line5:
-                Intent intent4 = new Intent(Dashboard.this, Profilepage.class);
-                startActivity(intent4);
+                Intent intent9 = new Intent(Dashboard.this, Profilepage.class);
+                startActivity(intent9);
                 finish();
                 break;
 
@@ -350,7 +405,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder {
-            TextView tv1, tv2, joiningfees, annualfees;
+            TextView tv1, tv2, joiningfees, annualfees, viewdetails;
             ImageView reli;
             RelativeLayout relit;
 
@@ -360,6 +415,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
                 tv2 = view.findViewById(R.id.textView2);
                 joiningfees = view.findViewById(R.id.joiningfees);
                 annualfees = view.findViewById(R.id.annualfees);
+                viewdetails = view.findViewById(R.id.viewdetails);
                 reli = view.findViewById(R.id.imageView);
                 relit = view.findViewById(R.id.relit);
 
@@ -386,7 +442,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
                     .load(list_car.get(position).getImage())
                     .into(holder.reli);
 
-            holder.relit.setOnClickListener(new View.OnClickListener() {
+            holder.viewdetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 

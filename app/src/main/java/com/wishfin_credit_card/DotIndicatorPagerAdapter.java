@@ -25,17 +25,17 @@ public class DotIndicatorPagerAdapter extends PagerAdapter {
         TextView subheading = item.findViewById(R.id.subheading);
         if (position == 0) {
             img.setBackgroundResource(R.drawable.ic_dashboardone);
-            heading.setText("Credit card for all your needs apply just in minutes");
-            subheading.setText("Lorem Ipsum is simply dummy text of the printing and typesetting industry.");
+            heading.setText("One App for all your Credit Card Needs");
+            subheading.setText("Discover-Explore-Enable Best Credit Card Options");
         } else if (position == 1) {
             img.setBackgroundResource(R.drawable.ic_dashboardtwo);
-            heading.setText("Many Exciting offers & rewards on applying credit card");
-            subheading.setText("Lorem Ipsum is simply dummy text of the printing and typesetting industry.");
+            heading.setText("Discover which Credit Card you're Eligible for in one place");
+            subheading.setText("Explore & Compare Credit Cards by features,reward & bank");
         }
         if (position == 2) {
             img.setBackgroundResource(R.drawable.ic_dashboardthree);
-            heading.setText("Get most suitable credit card from top banks");
-            subheading.setText("Lorem Ipsum is simply dummy text of the printing and typesetting industry.");
+            heading.setText("Enable a Credit Cards that's right for you");
+            subheading.setText("Apply for a Credit Card of your choice in minutes");
         }
         container.addView(item);
         return item;

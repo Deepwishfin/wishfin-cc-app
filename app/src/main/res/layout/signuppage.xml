@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="Create an account"
+                android:text="Need just a few details..."
                 android:textColor="#2E384D"
                 android:textSize="@dimen/headingfont" />
 
@@ -73,7 +73,7 @@
                 android:layout_marginBottom="32dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="Two steps to brighter financial future"
+                android:text="This will help us bring you the most relevant Credit Card options"
                 android:textColor="#8181A1"
                 android:textSize="@dimen/subheadingfont" />
 
@@ -179,7 +179,7 @@
                 android:gravity="left"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="Please provide more details"
+                android:text="Need just a few details..."
                 android:textColor="#0F2F4D"
                 android:textSize="@dimen/headingfont" />
 
@@ -190,7 +190,7 @@
                 android:layout_marginBottom="20dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="Lorem Ipsum is simply dummy text of the printing"
+                android:text="This will help us bring you the most relevant Credit Card options"
                 android:textColor="#8181A1"
                 android:textSize="@dimen/subheadingfont" />
 
@@ -236,66 +236,6 @@
                             android:textColor="#304258"
                             android:textColorHint="#B0BAC9"
                             android:textSize="14dp" />
-
-                        <com.wishfin_credit_card.FontClasses.PoppinsMedium
-                            android:id="@+id/monthly_incomehead"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="10dp"
-                            android:text="Monthly Income(In INR)"
-                            android:textColor="#2E384D"
-                            android:textSize="14dp" />
-
-                        <com.wishfin_credit_card.MenuHidingEditText
-                            android:id="@+id/monthly_income"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/edittextback"
-                            android:hint="Enter Monthly income"
-                            android:imeOptions="actionNext"
-                            android:inputType="number"
-                            android:longClickable="false"
-                            android:maxLength="10"
-                            android:padding="15dp"
-                            android:singleLine="true"
-                            android:textColor="#304258"
-                            android:textColorHint="#B0BAC9"
-                            android:textSize="14dp" />
-
-                        <com.wishfin_credit_card.FontClasses.PoppinsRegular
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
-                            android:text="Occupation"
-                            android:textColor="#0F2F4D"
-                            android:textSize="16dp" />
-
-                        <RadioGroup
-                            android:id="@+id/rg"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:orientation="horizontal">
-
-                            <RadioButton
-                                android:id="@+id/salariedcheck"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:buttonTint="@color/primary"
-                                android:text="Salaried"
-                                android:textColor="#001738" />
-
-                            <RadioButton
-                                android:id="@+id/selfemployedcheck"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:buttonTint="@color/primary"
-                                android:text="Self-employed"
-                                android:textColor="#001738" />
-                        </RadioGroup>
 
                         <com.wishfin_credit_card.FontClasses.PoppinsMedium
                             android:id="@+id/panhead"

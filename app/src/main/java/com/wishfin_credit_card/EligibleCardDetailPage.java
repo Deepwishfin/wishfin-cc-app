@@ -1,8 +1,12 @@
 package com.wishfin_credit_card;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
@@ -140,6 +144,8 @@ public class EligibleCardDetailPage extends Activity {
 
         if (appliedstatus.equalsIgnoreCase("true")) {
             instantapply.setText("Already Applied");
+            instantapply.setBackgroundResource(R.drawable.roundedbuttonlightgrey);
+            instantapply.setTextColor(Color.parseColor("#000000"));
         }
 
         try {
@@ -191,10 +197,12 @@ public class EligibleCardDetailPage extends Activity {
             public void onClick(View view) {
                 if (appliedstatus.equalsIgnoreCase("true")) {
                     Toast.makeText(getApplicationContext(), "Already Applied", Toast.LENGTH_SHORT).show();
-                } else {
-
+                } else if (isThereInternetConnection()) {
                     progressDialog.show();
                     select_opted_bank();
+                } else {
+                    Toast.makeText(EligibleCardDetailPage.this, "Please check your internet", Toast.LENGTH_LONG).show();
+
                 }
             }
         });
@@ -217,6 +225,14 @@ public class EligibleCardDetailPage extends Activity {
                 response -> {
                     if (progressDialog != null && progressDialog.isShowing()) {
                         progressDialog.dismiss();
+                    }
+
+                    if (SessionManager.get_hardinquiry(prefs).equalsIgnoreCase("")) {
+                        SessionManager.save_hardinquiry(prefs, bank_code);
+                    } else {
+                        String data = SessionManager.get_hardinquiry(prefs);
+                        SessionManager.save_hardinquiry(prefs, data + "," + bank_code);
+
                     }
                     Intent intent = new Intent(EligibleCardDetailPage.this, Thankyoupage.class);
                     intent.putExtra("lead_id", "" + SessionManager.get_lead_id(prefs));
@@ -307,6 +323,19 @@ public class EligibleCardDetailPage extends Activity {
             return list_car.size();
         }
 
+    }
+
+    protected boolean isThereInternetConnection() {
+        boolean isConnected;
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = null;
+        if (connectivityManager != null) {
+            networkInfo = connectivityManager.getActiveNetworkInfo();
+        }
+        isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
+
+        return isConnected;
     }
 
 }

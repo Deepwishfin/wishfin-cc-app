@@ -1,10 +1,13 @@
 package com.wishfin_credit_card;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
@@ -15,6 +18,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
@@ -23,7 +27,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.RetryPolicy;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.squareup.picasso.Picasso;
@@ -32,16 +40,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class CardDetailPage extends Activity {
 
     ImageView imageView;
     TextView cardname, joiningfees, annualfees, instantapply;
-    String strcardname = "", strannualfees = "", strjoiningfees = "", lead_id = "", bank_code = "";
+    String strcardname = "", strannualfees = "", strjoiningfees = "", lead_id = "", bank_code = "", insta_apply_link = "";
     String imagepath = "";
     String id = "";
     String features = "";
@@ -66,7 +71,7 @@ public class CardDetailPage extends Activity {
         joiningfees = findViewById(R.id.joiningfees);
         card_list = findViewById(R.id.card_list);
 
-        backbutton=findViewById(R.id.backbutton);
+        backbutton = findViewById(R.id.backbutton);
 
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +106,7 @@ public class CardDetailPage extends Activity {
                 strjoiningfees = "";
                 lead_id = "";
                 bank_code = "";
+                insta_apply_link = "";
             } else {
                 strcardname = extras.getString("cardname");
                 imagepath = extras.getString("imagepath");
@@ -110,6 +116,7 @@ public class CardDetailPage extends Activity {
                 strjoiningfees = extras.getString("joining");
                 lead_id = extras.getString("lead_id");
                 bank_code = extras.getString("bank_code");
+                insta_apply_link = extras.getString("insta_apply_link");
             }
         } else {
             strcardname = (String) savedInstanceState.getSerializable("cardname");
@@ -120,6 +127,7 @@ public class CardDetailPage extends Activity {
             strjoiningfees = (String) savedInstanceState.getSerializable("joining");
             lead_id = (String) savedInstanceState.getSerializable("lead_id");
             bank_code = (String) savedInstanceState.getSerializable("bank_code");
+            insta_apply_link = (String) savedInstanceState.getSerializable("insta_apply_link");
         }
 
         cardname.setText(strcardname);
@@ -185,15 +193,26 @@ public class CardDetailPage extends Activity {
             @Override
             public void onClick(View view) {
 
-                if (SessionManager.get_lead_id(prefs).equalsIgnoreCase("")) {
-                    Intent intent = new Intent(CardDetailPage.this, PersonalInformationPage.class);
-                    startActivity(intent);
-                    finish();
-                } else {
+                String url = insta_apply_link;
 
-                    Intent intent = new Intent(CardDetailPage.this, EligibleCardsListing.class);
-                    startActivity(intent);
-                    finish();
+//                if (SessionManager.get_lead_id(prefs).equalsIgnoreCase("")) {
+//                    Intent intent = new Intent(CardDetailPage.this, PersonalInformationPage.class);
+//                    startActivity(intent);
+//                    finish();
+//                } else
+                if (isThereInternetConnection()) {
+
+                    progressDialog.show();
+                    get_encrypted_link();
+
+//                    Intent intent = new Intent(CardDetailPage.this, EligibleCardsListing.class);
+//                    startActivity(intent);
+//                    finish();
+                } else {
+                    Toast.makeText(CardDetailPage.this, "Please check your internet", Toast.LENGTH_LONG).show();
+
+                }
+
 
 //                    long differenceDates = 0;
 //                    try {
@@ -224,7 +243,6 @@ public class CardDetailPage extends Activity {
 //                        }
 //                    });
 
-                }
 
             }
         });
@@ -282,5 +300,60 @@ public class CardDetailPage extends Activity {
         }
 
     }
+
+
+    protected boolean isThereInternetConnection() {
+        boolean isConnected;
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = null;
+        if (connectivityManager != null) {
+            networkInfo = connectivityManager.getActiveNetworkInfo();
+        }
+        isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
+
+        return isConnected;
+    }
+
+    public void get_encrypted_link() {
+
+        final JSONObject json = new JSONObject();
+        try {
+            json.put("auth_key", BuildConfig.oAuthdeal4loans);
+            json.put("method", "EncodeString");
+            json.put("text", "product=CC&bank_code=" + bank_code + "&device_type=android&cid=" +
+                    SessionManager.get_cibil_id(prefs) + "&mobile=" + SessionManager.get_mobile(prefs) +
+                    "&card_image=" + imagepath + "&card_name=" + strcardname);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.POST, "https://www.deal4loans.com/referfriend/api/v1/index", json,
+                response -> {
+                    try {
+                        progressDialog.dismiss();
+                        JSONObject jsonObject = new JSONObject(response.toString());
+                        if (jsonObject.getString("message").equalsIgnoreCase("Success")) {
+                            JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                            String url = "https://www.deal4loans.com/wfapppage.php?" + jsonObject1.getString("encoded_text");
+
+                            Intent openUrlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            startActivity(openUrlIntent);
+                        }else {
+                            Toast.makeText(CardDetailPage.this, "" + jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }, Throwable::printStackTrace);
+        int socketTimeout = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
+        queue.add(jsonObjectRequest);
+    }
+
 
 }

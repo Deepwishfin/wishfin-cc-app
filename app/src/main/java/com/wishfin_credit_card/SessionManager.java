@@ -19,8 +19,6 @@ public class SessionManager {
     private static String MASTER_USER_ID = "master_user_id";
     private static String MF_USER_ID = "mf_user_id";
     private static String FIRST_NAME = "first_name";
-//    private static String MIDDLE_NAME = "middle_name";
-//    private static String LAST_NAME = "last_name";
     private static String DOB = "dob";
     private static String PAN = "pan";
     private static String MOBILE = "mobile";
@@ -51,8 +49,6 @@ public class SessionManager {
     private static String HEALTH_TOKEN = "health_token";
     private static String HEALTH_SALTKEY= "health_saltkey";
     private static String HEALTH_GENDER= "health_gender";
-    private static String MONTHLY_INCOME= "monthly_income";
-    private static String OCCUPATION= "occupation";
 
     private static String UTMSOURCE= "utmsource";
     private static String UTMMEDIUM= "utmmedium";
@@ -417,22 +413,6 @@ public class SessionManager {
 
     public static String get_health_gedner(SharedPreferences prefs) {
         return prefs.getString(HEALTH_GENDER, "");
-    }
-
-    public static void save_monthly_income(SharedPreferences prefs, String value) {
-        com.wishfin_credit_card.SessionManager.savePreference(prefs, MONTHLY_INCOME, value);
-    }
-
-    public static String get_monthly_income(SharedPreferences prefs) {
-        return prefs.getString(MONTHLY_INCOME, "");
-    }
-
-    public static void save_occupation(SharedPreferences prefs, String value) {
-        com.wishfin_credit_card.SessionManager.savePreference(prefs, OCCUPATION, value);
-    }
-
-    public static String get_occupation(SharedPreferences prefs) {
-        return prefs.getString(OCCUPATION, "");
     }
 
     public static void save_utmsource(SharedPreferences prefs, String value) {

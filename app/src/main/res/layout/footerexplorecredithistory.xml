@@ -89,7 +89,7 @@
                     android:layout_height="20dp"
                     android:layout_marginTop="5dp"
                     android:contentDescription="TODO"
-                    android:src="@drawable/ic_exploregrey" />
+                    android:src="@drawable/ic_exploregreen" />
 
                 <com.wishfin_credit_card.FontClasses.PoppinsRegular
                     android:id="@+id/text2"
@@ -97,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="History"
-                    android:textColor="@color/enabletext"
+                    android:textColor="@color/primary"
                     android:textSize="10dp" />
             </LinearLayout>
 

@@ -230,9 +230,8 @@ public class Profilepage extends Activity implements View.OnClickListener {
                 finish();
                 break;
             case R.id.line2:
-                Intent intent3 = new Intent(Profilepage.this, ExploreCreditCard.class);
+                Intent intent3 = new Intent(Profilepage.this, CreditCardHistory.class);
                 startActivity(intent3);
-                finish();
                 break;
             case R.id.line3:
                 Intent intent4 = new Intent(Profilepage.this, OfferlistingPge.class);
