@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,8 +55,8 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
     //    boolean doubleBackToExitPressedOnce = false;
     EditText search_bar;
     RelativeLayout heading_relative;
-    ImageView backbutton;
-    TextView heading_cc_list, sub_heading_cc_list;
+    RelativeLayout backreli;
+    TextView heading_cc_list, sub_heading_cc_list,bar5;
     String type = "";
 
     @Override
@@ -101,14 +100,15 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
         line2.setOnClickListener(this);
         line3.setOnClickListener(this);
         line5.setOnClickListener(this);
+        bar5 = findViewById(R.id.bar5);
         search_bar = findViewById(R.id.search_bar);
 
         heading_relative = findViewById(R.id.heading_relative);
         heading_cc_list = findViewById(R.id.heading_cc_list);
         sub_heading_cc_list = findViewById(R.id.sub_heading_cc_list);
-        backbutton = findViewById(R.id.backbutton);
+        backreli = findViewById(R.id.backreli);
 
-        backbutton.setOnClickListener(new View.OnClickListener() {
+        backreli.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -124,15 +124,15 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
             sub_heading_cc_list.setText("Make Your Expenses Inexpensive by New Way of Payment");
             heading_relative.setBackgroundColor(Color.parseColor("#FFEFF2"));
         } else if (type.equalsIgnoreCase("Rewards")) {
-            heading_cc_list.setText("Best Reward Credit Cards");
+            heading_cc_list.setText("Rewards Credit Cards");
             sub_heading_cc_list.setText("Get Rewarded for Spending and Let Rewards do the Payments");
             heading_relative.setBackgroundColor(Color.parseColor("#FFF5D9"));
-        } else if (type.equalsIgnoreCase("Lifetime")) {
+        } else if (type.equalsIgnoreCase("Lifetime Free")) {
             heading_cc_list.setText("Life Time Free Credit Cards");
             sub_heading_cc_list.setText("The Best Things in Life are Free!");
             heading_relative.setBackgroundColor(Color.parseColor("#E8FBE5"));
         } else if (type.equalsIgnoreCase("Travel")) {
-            heading_cc_list.setText("Best Travel Credit Cards");
+            heading_cc_list.setText("Travel Credit Cards");
             sub_heading_cc_list.setText("Always Fly! Never Compromise with Your Dreams");
             heading_relative.setBackgroundColor(Color.parseColor("#DFF9FF"));
         } else if (type.equalsIgnoreCase("Fuel")) {
@@ -198,7 +198,6 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // response
-
                     try {
                         progressDialog.dismiss();
                         JSONObject jsonObject = new JSONObject(response);
@@ -245,7 +244,7 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
                                 }
                                 if (type.equalsIgnoreCase("ExploreAll")) {
                                     list1.add(pack);
-                                } else if (objectnew2.getString("category").equalsIgnoreCase(type)) {
+                                } else if (objectnew2.getString("category").contains(type)) {
                                     list1.add(pack);
                                 }
                             }
@@ -258,6 +257,7 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
 
                             } else {
                                 card_list.setVisibility(View.GONE);
+                                Toast.makeText(getApplicationContext(), "No Card Found", Toast.LENGTH_SHORT).show();
 
                             }
 
@@ -374,15 +374,50 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
                 public void onClick(View view) {
 
                     Intent intent = new Intent(ExploreCreditCard.this, CardDetailPage.class);
-                    intent.putExtra("lead_id", "");
                     intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
-                    intent.putExtra("id", "" + list_car.get(position).getId());
+                    intent.putExtra("status", "Apply Now");
                     intent.putExtra("cardname", "" + list_car.get(position).getName());
-                    intent.putExtra("imagepath", "" + list_car.get(position).getImage());
-                    intent.putExtra("features", "" + list_car.get(position).getFeauters());
-                    intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
-                    intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
-                    intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
+//                    intent.putExtra("imagepath", "" + list_car.get(position).getImage());
+//                    intent.putExtra("features", "" + list_car.get(position).getFeauters());
+//                    intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
+//                    intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
+//                    intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
+                    startActivity(intent);
+
+                }
+            });
+
+            holder.tv1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(ExploreCreditCard.this, CardDetailPage.class);
+                    intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
+                    intent.putExtra("status", "Apply Now");
+                    intent.putExtra("cardname", "" + list_car.get(position).getName());
+//                    intent.putExtra("imagepath", "" + list_car.get(position).getImage());
+//                    intent.putExtra("features", "" + list_car.get(position).getFeauters());
+//                    intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
+//                    intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
+//                    intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
+                    startActivity(intent);
+
+                }
+            });
+
+            holder.reli.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(ExploreCreditCard.this, CardDetailPage.class);
+                    intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
+                    intent.putExtra("status", "Apply Now");
+                    intent.putExtra("cardname", "" + list_car.get(position).getName());
+//                    intent.putExtra("imagepath", "" + list_car.get(position).getImage());
+//                    intent.putExtra("features", "" + list_car.get(position).getFeauters());
+//                    intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
+//                    intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
+//                    intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
                     startActivity(intent);
 
                 }
@@ -466,7 +501,7 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
             case R.id.line2:
                 Intent intent3 = new Intent(ExploreCreditCard.this, CreditCardHistory.class);
                 startActivity(intent3);
-                finish();
+
                 break;
 //            case R.id.line3:
 //                Intent intent3 = new Intent(ExploreCreditCard.this, OfferlistingPge.class);
@@ -481,7 +516,13 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
         }
     }
 
-//    @Override
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    //    @Override
 //    public void onBackPressed() {
 //        if (doubleBackToExitPressedOnce) {
 //            super.onBackPressed();
@@ -499,6 +540,68 @@ public class ExploreCreditCard extends Activity implements View.OnClickListener 
 //            }
 //        }, 2000);
 //    }
+
+    public void get_cibil_history() {
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = getString(R.string.BASE_URL) + "/historic-score?mobile=" + SessionManager.get_mobile(prefs);
+        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
+                response -> {
+                    // response
+
+                    if (progressDialog != null && progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        {
+                            if (!jsonObject.getString("status").equalsIgnoreCase("failed")) {
+
+                                SessionManager.save_cibil_checked_status(prefs, "true");
+
+                            } else {
+                                SessionManager.save_cibil_checked_status(prefs, "false");
+                                bar5.setVisibility(View.VISIBLE);
+
+                                if (progressDialog != null && progressDialog.isShowing()) {
+                                    progressDialog.dismiss();
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    // TODO Auto-generated method stub
+                    if (progressDialog != null && progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                String bearer = "Bearer " + SessionManager.get_access_token(prefs);
+                params.put("Content-Type", "application/json; charset=utf-8");
+                params.put("Accept", "application/json");
+                params.put("Authorization", bearer);
+
+                return params;
+            }
+        };
+        queue.add(getRequest);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        get_cibil_history();
+    }
 
 
 }

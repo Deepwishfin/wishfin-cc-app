@@ -30,7 +30,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,15 +65,15 @@ import java.util.regex.Pattern;
 
 public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListener {
 
-    TextView signupone, signuptwo, signupthree, resentotp, lastmobiletext, checkbox_text, mobilenumberhead, emailidhead,
-            fnamehead,  dobhead,panhead;
+    TextView signupone, signuptwo, signupthree, resentotp, lastmobiletext, checkbox_text, checkbox_text1, mobilenumberhead, emailidhead,
+            fnamehead, dobhead, panhead;
     LinearLayout linearone, lineartwo, linearthree;
     int page = 1;
     ImageView backbutton;
     RequestQueue queue;
     SharedPreferences prefs;
-    EditText mobilenumber, emailid, otpone, otptwo, otpthree, otpfour, fname, pan, dob;
-    CheckBox checkbox;
+    EditText mobilenumber, emailid, otpone, otptwo, otpthree, otpfour, fname, mname, lname, pan, dob;
+    CheckBox checkbox, checkbox1;
     KProgressHUD progressDialog;
     int mYear, mMonth, mDay;
     private SMSReceiver smsReceiver;
@@ -128,14 +127,20 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
         lastmobiletext = findViewById(R.id.lastmobiletext);
         dob = findViewById(R.id.dob);
         fname = findViewById(R.id.fname);
+        mname = findViewById(R.id.mname);
+        lname = findViewById(R.id.lname);
         pan = findViewById(R.id.pan);
         checkbox = findViewById(R.id.checkbox);
         checkbox_text = findViewById(R.id.checkbox_text);
+        checkbox1 = findViewById(R.id.checkbox1);
+        checkbox_text1 = findViewById(R.id.checkbox_text1);
         pan.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
 
         mobilenumber.addTextChangedListener(new MyTextWatcher(mobilenumber));
         emailid.addTextChangedListener(new MyTextWatcher(emailid));
         fname.addTextChangedListener(new MyTextWatcher(fname));
+        mname.addTextChangedListener(new MyTextWatcher(mname));
+        lname.addTextChangedListener(new MyTextWatcher(lname));
         pan.addTextChangedListener(new MyTextWatcher(pan));
         otpone.addTextChangedListener(new MyTextWatcher(otpone));
         otptwo.addTextChangedListener(new MyTextWatcher(otptwo));
@@ -226,6 +231,10 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
                 "<a href='com.mywish.wishfin.view.Dynamicdisplaypage://Kode'>TERMS AND CONDITIONS</a>"));
         checkbox_text.setClickable(true);
         checkbox_text.setMovementMethod(LinkMovementMethod.getInstance());
+
+        checkbox_text1.setText(Html.fromHtml("I give my Consent to check my Cibil Score"));
+        checkbox_text1.setClickable(true);
+        checkbox_text1.setMovementMethod(LinkMovementMethod.getInstance());
 
         dob.setOnClickListener(v -> DatePicdob());
 
@@ -646,15 +655,15 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
 
         try {
             json.put("first_name", "" + fname.getText().toString());
-            json.put("middle_name", "");
-            json.put("last_name", "");
+            json.put("middle_name", "" + mname.getText().toString());
+            json.put("last_name", "" + lname.getText().toString());
             json.put("date_of_birth", "" + dob.getText().toString());
             json.put("pancard", "" + pan.getText().toString());
             json.put("email_id", "" + emailid.getText().toString());
             json.put("mobile_number", "" + mobilenumber.getText().toString());
             json.put("gender", "1");
             json.put("is_pancard_kyc", "0");
-            json.put("pancard_holder_name", "" + fname.getText().toString());
+            json.put("pancard_holder_name", "" + fname.getText().toString() + " " + lname.getText().toString());
             json.put("correspondence_address", "Default");
             json.put("correspondence_pincode", "400001");
             json.put("correspondence_state", "MH");
@@ -667,7 +676,7 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
             json.put("source", "Wishfin_Android");
             json.put("utm_source", "" + SessionManager.get_utmsource(prefs));
             json.put("utm_medium", "" + SessionManager.get_utmmedium(prefs));
-            json.put("referrer_address", "Creit_card_Wishfin_Android");
+            json.put("referrer_address", "Credit_Card_Wishfin_Android");
             json.put("querystring", "");
             json.put("is_system_generated", "1");
             json.put("type", "cc_signup_mobile");
@@ -693,11 +702,14 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
                             intent.putExtra("ipaddress", IPaddress);
                             JSONObject jsonObjectresult = new JSONObject(jsonObject.getJSONObject("result").toString());
                             SessionManager.save_firstname(prefs, fname.getText().toString());
+                            SessionManager.save_mname(prefs, mname.getText().toString());
+                            SessionManager.save_lastname(prefs, lname.getText().toString());
                             SessionManager.save_dob(prefs, dob.getText().toString());
                             SessionManager.save_pan(prefs, pan.getText().toString());
                             SessionManager.save_mobile(prefs, mobilenumber.getText().toString());
                             SessionManager.save_emailid(prefs, emailid.getText().toString());
                             SessionManager.save_login(prefs, "True");
+                            SessionManager.save_logintype(prefs, "Signup");
                             Constants.cardresponse = "";
                             Constants.loanresponse = "";
                             SessionManager.save_masteruserid(prefs, jsonObjectresult.getString("master_user_id"));
@@ -771,6 +783,10 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
             return;
         }
 
+        if (!validatelastName()) {
+            return;
+        }
+
         if (!validatePAN()) {
             return;
         }
@@ -780,6 +796,11 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
         }
 
         if (!checkbox.isChecked()) {
+            Toast.makeText(Signuppage.this, "Accept Terms and Condition", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (!checkbox1.isChecked()) {
             Toast.makeText(Signuppage.this, "Select Checkbox", Toast.LENGTH_LONG).show();
             return;
         }
@@ -837,6 +858,21 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
             return false;
         } else {
             fnamehead.setText("Full Name (As Per Bank Records)");
+            fnamehead.setTextColor(Color.parseColor("#304258"));
+        }
+        return true;
+    }
+
+    private boolean validatelastName() {
+//        Pattern pattern = Pattern.compile("^[a-zA-Z]{2,15}$");
+//        Matcher matcher = pattern.matcher(fname.getText().toString().trim());
+        if (fname.getText().toString().trim().isEmpty() || fname.getText().length() < 2) {
+            fnamehead.setTextColor(Color.parseColor("#FF0000"));
+            fnamehead.setText("Enter Valid Last Name");
+            requestFocus(fname);
+            return false;
+        } else {
+            fnamehead.setText("Last Name (As Per Bank Records)");
             fnamehead.setTextColor(Color.parseColor("#304258"));
         }
         return true;
@@ -917,6 +953,9 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
                     break;
                 case R.id.fname:
                     validateName();
+                    break;
+                case R.id.lname:
+                    validatelastName();
                     break;
                 case R.id.pan:
                     validatePAN();

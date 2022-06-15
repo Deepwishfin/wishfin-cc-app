@@ -64,7 +64,7 @@
                 android:paddingRight="15dp"
                 android:text="Need just a few details..."
                 android:textColor="#2E384D"
-                android:textSize="@dimen/headingfont" />
+                android:textSize="@dimen/subheadingfont" />
 
             <com.wishfin_credit_card.FontClasses.PoppinsRegular
                 android:layout_width="match_parent"
@@ -75,7 +75,7 @@
                 android:paddingRight="15dp"
                 android:text="This will help us bring you the most relevant Credit Card options"
                 android:textColor="#8181A1"
-                android:textSize="@dimen/subheadingfont" />
+                android:textSize="@dimen/banknamefont" />
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -159,6 +159,7 @@
 
 
                     </LinearLayout>
+
                 </androidx.cardview.widget.CardView>
             </ScrollView>
 
@@ -179,9 +180,9 @@
                 android:gravity="left"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="Need just a few details..."
+                android:text="Fill in your details and Get Credit Card within Minutes"
                 android:textColor="#0F2F4D"
-                android:textSize="@dimen/headingfont" />
+                android:textSize="@dimen/subheadingfont" />
 
             <com.wishfin_credit_card.FontClasses.PoppinsRegular
                 android:layout_width="match_parent"
@@ -190,9 +191,9 @@
                 android:layout_marginBottom="20dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="This will help us bring you the most relevant Credit Card options"
+                android:text="We will give you the best credit card fulfilling your expectations"
                 android:textColor="#8181A1"
-                android:textSize="@dimen/subheadingfont" />
+                android:textSize="@dimen/banknamefont" />
 
 
             <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -219,7 +220,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
-                            android:text="Full Name (As Per Bank Records)"
+                            android:text="First Name (As Per Bank Records)"
                             android:textColor="#2E384D"
                             android:textSize="14dp" />
 
@@ -228,7 +229,55 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/edittextback"
-                            android:hint="Enter Full Name"
+                            android:hint="Enter First Name"
+                            android:imeOptions="actionNext"
+                            android:longClickable="false"
+                            android:padding="15dp"
+                            android:singleLine="true"
+                            android:textColor="#304258"
+                            android:textColorHint="#B0BAC9"
+                            android:textSize="14dp" />
+
+                        <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                            android:id="@+id/mnamehead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="20dp"
+                            android:text="Middle Name"
+                            android:textColor="#2E384D"
+                            android:textSize="14dp" />
+
+                        <com.wishfin_credit_card.MenuHidingEditText
+                            android:id="@+id/mname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittextback"
+                            android:hint="Enter Middle Name"
+                            android:imeOptions="actionNext"
+                            android:longClickable="false"
+                            android:padding="15dp"
+                            android:singleLine="true"
+                            android:textColor="#304258"
+                            android:textColorHint="#B0BAC9"
+                            android:textSize="14dp" />
+
+                        <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                            android:id="@+id/lnamehead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="20dp"
+                            android:text="Last Name"
+                            android:textColor="#2E384D"
+                            android:textSize="14dp" />
+
+                        <com.wishfin_credit_card.MenuHidingEditText
+                            android:id="@+id/lname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edittextback"
+                            android:hint="Enter Last Name"
                             android:imeOptions="actionNext"
                             android:longClickable="false"
                             android:padding="15dp"
@@ -257,6 +306,7 @@
                             android:maxLength="10"
                             android:padding="15dp"
                             android:singleLine="true"
+                            android:textAllCaps="true"
                             android:textColor="#304258"
                             android:textColorHint="#B0BAC9"
                             android:textSize="14dp" />
@@ -267,7 +317,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="10dp"
-                            android:text="Date OF Birth(Min Age 18 Years)"
+                            android:text="Date Of Birth(Min Age 18 Years)"
                             android:textColor="#2E384D"
                             android:textSize="14dp" />
 
@@ -315,6 +365,33 @@
 
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="15dp"
+                            android:visibility="visible"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/checkbox1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:textColor="#304258"
+                                android:textSize="12dp" />
+
+                            <com.wishfin_credit_card.FontClasses.PoppinsRegular
+                                android:id="@+id/checkbox_text1"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:text=""
+                                android:textColor="#8181A1"
+                                android:textSize="12dp" />
+
+
+                        </LinearLayout>
+
 
                         <com.wishfin_credit_card.FontClasses.PoppinsMedium
                             android:id="@+id/signuptwo"
@@ -352,7 +429,7 @@
                 android:paddingRight="15dp"
                 android:text="Enter OTP"
                 android:textColor="#2E384D"
-                android:textSize="@dimen/headingfont" />
+                android:textSize="@dimen/subheadingfont" />
 
             <com.wishfin_credit_card.FontClasses.PoppinsRegular
                 android:id="@+id/lastmobiletext"
@@ -364,7 +441,7 @@
                 android:paddingRight="15dp"
                 android:text=""
                 android:textColor="#8181A1"
-                android:textSize="@dimen/subheadingfont" />
+                android:textSize="@dimen/banknamefont" />
 
             <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"

@@ -14,7 +14,50 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#fff"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:id="@+id/proimg"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:src="@drawable/profilepic"
+                tools:ignore="ContentDescription" />
+
+            <com.wishfin_credit_card.FontClasses.PopinsSemibold
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/proimg"
+                android:text=""
+                android:textColor="#2E384D"
+                android:textSize="14dp" />
+
+            <com.wishfin_credit_card.FontClasses.PoppinsRegular
+                android:id="@+id/goodmorning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/name"
+                android:layout_alignStart="@+id/name"
+                android:text=""
+                android:visibility="gone"
+                android:textColor="#8181A1"
+                android:textSize="11dp" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/white"
+            android:visibility="gone"
             android:padding="15dp"
             tools:ignore="MissingConstraints">
 
@@ -459,9 +502,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginTop="15dp"
-                        android:weightSum="3">
+                        android:orientation="horizontal"
+                        android:weightSum="4">
 
 
                         <LinearLayout
@@ -514,17 +557,6 @@
 
                         </LinearLayout>
 
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginBottom="50dp"
-                        android:weightSum="3">
-
-
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="50dp"
@@ -541,6 +573,17 @@
 
 
                         </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="50dp"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
 
                         <LinearLayout
                             android:layout_width="0dp"

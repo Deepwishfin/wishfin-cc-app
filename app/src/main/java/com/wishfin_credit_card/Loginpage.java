@@ -8,15 +8,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.Formatter;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -49,18 +50,20 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputLayout;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    TextView signupone, signupthree, resentotp, lastmobiletext,mobilenumberhead;
+    TextView signupone, signupthree, resentotp, lastmobiletext, mobilenumberhead;
     LinearLayout linearone, linearthree;
     ImageView backbutton;
     EditText mobilenumber, otpone, otptwo, otpthree, otpfour;
@@ -73,6 +76,8 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
     private boolean broadcast = true;
     private int RESOLVE_HINT = 2;
     GoogleApiClient mGoogleApiClient;
+    String IPaddress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +126,9 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
                 .setCancellable(false)
                 .setAnimationSpeed(1)
                 .setDimAmount(0.5f);
+
+        NetwordDetect();
+
         otpone.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -264,7 +272,9 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
 
                                 String mobile = jsonObjectresult.getString("mobile_number");
 
-                                SessionManager.save_firstname(prefs, jsonObjectresult.getString("first_name")+" "+jsonObjectresult.getString("middle_name")+" "+jsonObjectresult.getString("last_name"));
+                                SessionManager.save_firstname(prefs, jsonObjectresult.getString("first_name"));
+                                SessionManager.save_mname(prefs, jsonObjectresult.getString("middle_name"));
+                                SessionManager.save_lastname(prefs, jsonObjectresult.getString("last_name"));
                                 SessionManager.save_dob(prefs, jsonObjectresult.getString("date_of_birth"));
                                 SessionManager.save_pan(prefs, jsonObjectresult.getString("pancard"));
                                 SessionManager.save_mobile(prefs, jsonObjectresult.getString("mobile_number"));
@@ -272,12 +282,14 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
                                 SessionManager.save_masteruserid(prefs, jsonObjectresult.getString("master_user_id"));
                                 SessionManager.save_mfuserid(prefs, jsonObjectresult.getString("mf_user_id"));
                                 SessionManager.save_login(prefs, "True");
+                                SessionManager.save_logintype(prefs, "Login");
 
                                 if (progressDialog != null && progressDialog.isShowing()) {
                                     progressDialog.dismiss();
                                 }
                                 Intent intent = new Intent(Loginpage.this, Dashboard.class);
                                 intent.putExtra("source", "login");
+                                intent.putExtra("ipaddress", IPaddress);
                                 startActivity(intent);
                                 finish();
                                 Toast.makeText(Loginpage.this, "Welcome Back " + SessionManager.get_firstname(prefs), Toast.LENGTH_LONG).show();
@@ -478,7 +490,9 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
 
                             String mobile = jsonObjectresult.getString("mobile_number");
 
-                            SessionManager.save_firstname(prefs, jsonObjectresult.getString("first_name")+" "+jsonObjectresult.getString("middle_name")+" "+jsonObjectresult.getString("last_name"));
+                            SessionManager.save_firstname(prefs, jsonObjectresult.getString("first_name"));
+                            SessionManager.save_mname(prefs, jsonObjectresult.getString("middle_name"));
+                            SessionManager.save_lastname(prefs, jsonObjectresult.getString("last_name"));
                             SessionManager.save_dob(prefs, jsonObjectresult.getString("date_of_birth"));
                             SessionManager.save_pan(prefs, jsonObjectresult.getString("pancard"));
                             SessionManager.save_mobile(prefs, jsonObjectresult.getString("mobile_number"));
@@ -486,12 +500,14 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
                             SessionManager.save_masteruserid(prefs, jsonObjectresult.getString("master_user_id"));
                             SessionManager.save_mfuserid(prefs, jsonObjectresult.getString("mf_user_id"));
                             SessionManager.save_login(prefs, "True");
+                            SessionManager.save_logintype(prefs, "Login");
 
                             if (progressDialog != null && progressDialog.isShowing()) {
                                 progressDialog.dismiss();
                             }
                             Intent intent = new Intent(Loginpage.this, Dashboard.class);
                             intent.putExtra("source", "login");
+                            intent.putExtra("ipaddress", IPaddress);
                             startActivity(intent);
                             finish();
                             if (smsReceiver != null) {
@@ -613,7 +629,7 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
 //            Toast.makeText(getApplicationContext(),"Enter 10 Digits Mobile Number",Toast.LENGTH_SHORT).show();
             requestFocus(mobilenumber);
             return false;
-        }else {
+        } else {
             mobilenumberhead.setText("Mobile Number");
             mobilenumberhead.setTextColor(Color.parseColor("#304258"));
         }
@@ -847,4 +863,78 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
+    private void NetwordDetect() {
+
+        boolean WIFI = false;
+
+        boolean MOBILE = false;
+
+        ConnectivityManager CM = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo[] networkInfo = new NetworkInfo[0];
+        if (CM != null) {
+            networkInfo = CM.getAllNetworkInfo();
+        }
+
+        for (NetworkInfo netInfo : networkInfo) {
+
+            if (netInfo.getTypeName().equalsIgnoreCase("WIFI"))
+
+                if (netInfo.isConnected())
+
+                    WIFI = true;
+
+            if (netInfo.getTypeName().equalsIgnoreCase("MOBILE"))
+
+                if (netInfo.isConnected())
+
+                    MOBILE = true;
+        }
+
+        if (WIFI) {
+            IPaddress = GetDeviceipWiFiData();
+
+        }
+
+        if (MOBILE) {
+
+            IPaddress = GetDeviceipMobileData();
+
+        }
+
+    }
+
+    public String GetDeviceipMobileData() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        return Formatter.formatIpAddress(inetAddress.hashCode());
+                    }
+                }
+            }
+        } catch (Exception ex) {
+
+        }
+        return null;
+    }
+
+    public String GetDeviceipWiFiData() {
+
+        WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+
+        @SuppressWarnings("deprecation")
+
+        String ip = null;
+        if (wm != null) {
+            ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+        }
+
+        return ip;
+
+    }
+
 }

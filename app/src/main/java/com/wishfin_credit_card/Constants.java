@@ -32,9 +32,9 @@ public class Constants {
     static String updateavailable = "";
     static long apihittime = 0;
     static ArrayList<String> xValsa1;
-//    static ArrayList<Entry> yValsa1;
-//    static ArrayList<CibilQuestionanswergetset> multipleinput_question_list;
-//    static HashMap<String, ArrayList<CibilQuestionanswergetset>> radio_option_list;
+    //    static ArrayList<Entry> yValsa1;
+    static ArrayList<CibilQuestionanswergetset> multipleinput_question_list;
+    static HashMap<String, ArrayList<CibilQuestionanswergetset>> radio_option_list;
     static List<String> radio_question_list;
 
 

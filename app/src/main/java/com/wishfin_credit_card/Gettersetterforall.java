@@ -3,7 +3,7 @@ package com.wishfin_credit_card;
 import org.json.JSONArray;
 
 public class Gettersetterforall {
-private String name;
+    private String name;
 
     public String getInsta_apply_link() {
         return insta_apply_link;
@@ -15,7 +15,7 @@ private String name;
 
     private String id;
     private String desc;
-    private String card_state,insta_apply_link;
+    private String card_state, insta_apply_link;
 
     public String getAppliedstatus() {
         return appliedstatus;
@@ -105,5 +105,5 @@ private String name;
         this.joiningfees = joiningfees;
     }
 
-    private String annualfees,joiningfees;
+    private String annualfees, joiningfees;
 }

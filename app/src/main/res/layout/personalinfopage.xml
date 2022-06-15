@@ -143,8 +143,6 @@
                     </RadioGroup>
 
 
-
-
                     <com.wishfin_credit_card.FontClasses.PoppinsMedium
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

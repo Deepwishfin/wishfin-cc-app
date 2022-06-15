@@ -14,6 +14,7 @@ public class SessionManager {
     private static String SECRET_KEY = "secret_key";
     private static String CIBIL_ID = "cibil_id";
     private static String CIBIL_SCORE = "cibil_score";
+    private static String CIBIL_SCORE_CHECKED_OR_NOT = "cibil_score_checked_or_not";
     private static String CIBIL_FETCH_DATE = "cibil_date";
     private static String LOGIN = "login";
     private static String MASTER_USER_ID = "master_user_id";
@@ -25,6 +26,10 @@ public class SessionManager {
     private static String EMAILID = "emailid";
     private static String APPVERSION = "app_version";
     private static String LASTSMSDATE = "last_sms_date";
+    private static String LOGINTYPE = "login_type";
+    private static String MIDDLE_NAME = "middle_name";
+    private static String LAST_NAME = "last_name";
+
 
     private static String APPINSTALLDATE = "app_install_date";
     private static String APPUPDATEDATE = "app_update_date";
@@ -47,11 +52,11 @@ public class SessionManager {
     private static String GOLD_SALT = "gold_salt";
     private static String HEALTH_USER_ID = "health_user_id";
     private static String HEALTH_TOKEN = "health_token";
-    private static String HEALTH_SALTKEY= "health_saltkey";
-    private static String HEALTH_GENDER= "health_gender";
+    private static String HEALTH_SALTKEY = "health_saltkey";
+    private static String HEALTH_GENDER = "health_gender";
 
-    private static String UTMSOURCE= "utmsource";
-    private static String UTMMEDIUM= "utmmedium";
+    private static String UTMSOURCE = "utmsource";
+    private static String UTMMEDIUM = "utmmedium";
 
 
     static void savePreference(SharedPreferences prefs, String key, Boolean value) {
@@ -429,6 +434,38 @@ public class SessionManager {
 
     public static String get_utmmedium(SharedPreferences prefs) {
         return prefs.getString(UTMMEDIUM, "");
+    }
+
+    public static void save_logintype(SharedPreferences prefs, String value) {
+        com.wishfin_credit_card.SessionManager.savePreference(prefs, LOGINTYPE, value);
+    }
+
+    public static String get_logintype(SharedPreferences prefs) {
+        return prefs.getString(LOGINTYPE, "");
+    }
+
+    static void save_mname(SharedPreferences prefs, String value) {
+        SessionManager.savePreference(prefs, MIDDLE_NAME, value);
+    }
+
+    public static String get_mname(SharedPreferences prefs) {
+        return prefs.getString(MIDDLE_NAME, "");
+    }
+
+    static void save_lastname(SharedPreferences prefs, String value) {
+        SessionManager.savePreference(prefs, LAST_NAME, value);
+    }
+
+    public static String get_lastname(SharedPreferences prefs) {
+        return prefs.getString(LAST_NAME, "");
+    }
+
+    static void save_cibil_checked_status(SharedPreferences prefs, String value) {
+        SessionManager.savePreference(prefs, CIBIL_SCORE_CHECKED_OR_NOT, value);
+    }
+
+    public static String get_cibil_checked_status(SharedPreferences prefs) {
+        return prefs.getString(CIBIL_SCORE_CHECKED_OR_NOT, "");
     }
 
 

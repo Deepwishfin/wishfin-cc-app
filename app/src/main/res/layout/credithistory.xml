@@ -29,15 +29,22 @@
                 android:contentDescription="TODO"
                 android:visibility="gone" />
 
-            <ImageView
-                android:id="@+id/backbutton"
+            <RelativeLayout
+                android:id="@+id/backreli"
                 android:layout_width="wrap_content"
-                android:layout_height="18dp"
-                android:layout_margin="2dp"
-                android:layout_alignParentStart="true"
-                android:background="@drawable/backarrowblack"
-                android:contentDescription="TODO"
-                android:visibility="visible" />
+                android:padding="10dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/backbutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_margin="2dp"
+                    android:layout_alignParentStart="true"
+                    android:background="@drawable/backarrowblack"
+                    android:contentDescription="TODO"
+                    android:visibility="visible" />
+            </RelativeLayout>
 
             <com.wishfin_credit_card.FontClasses.PopinsSemibold
                 android:id="@+id/heading_cc_list"
@@ -45,8 +52,8 @@
                 android:layout_height="24dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
-                android:layout_below="@+id/backbutton"
-                android:text="Applied History For Credit Card "
+                android:layout_below="@+id/backreli"
+                android:text="Last Viewed History For Credit Card "
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 android:visibility="visible" />
@@ -57,7 +64,7 @@
                 android:layout_height="18dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
-                android:layout_below="@+id/backbutton"
+                android:layout_below="@+id/backreli"
                 android:text=""
                 android:textColor="@color/black"
                 android:textSize="12dp"

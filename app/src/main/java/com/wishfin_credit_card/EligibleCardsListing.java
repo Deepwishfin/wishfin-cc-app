@@ -164,7 +164,7 @@ public class EligibleCardsListing extends Activity {
                                                 pack.setAppliedstatus("false");
                                             }
                                         }
-                                    }else {
+                                    } else {
                                         pack.setAppliedstatus("false");
                                     }
                                 } catch (Exception e) {

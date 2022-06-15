@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/footerreli"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/transparent">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="5dp"
         android:background="@color/white"
         android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
         android:visibility="visible">
 
         <LinearLayout
-            tools:ignore="MissingConstraints"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#00000000"
             android:baselineAligned="false"
             android:gravity="center"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:weightSum="3"
+            tools:ignore="MissingConstraints">
 
             <LinearLayout
                 android:id="@+id/line1"
@@ -43,8 +43,8 @@
                     android:layout_height="2dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:visibility="gone"
-                    android:background="#00BDAA" />
+                    android:background="#00BDAA"
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/page1"
@@ -89,7 +89,7 @@
                     android:layout_height="20dp"
                     android:layout_marginTop="5dp"
                     android:contentDescription="TODO"
-                    android:src="@drawable/ic_exploregreen" />
+                    android:src="@drawable/ic_history_green" />
 
                 <com.wishfin_credit_card.FontClasses.PoppinsRegular
                     android:id="@+id/text2"
@@ -105,11 +105,11 @@
                 android:id="@+id/line3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:visibility="gone"
                 android:layout_weight="1"
                 android:background="#fff"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/bar3"
@@ -142,29 +142,34 @@
                 android:id="@+id/line5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-
                 android:layout_weight="1"
                 android:background="#fff"
                 android:gravity="center"
                 android:orientation="vertical">
 
-
-                <TextView
-                    android:id="@+id/bar5"
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="#00BDAA"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/page5"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:layout_marginTop="5dp"
-                    android:contentDescription="TODO"
-                    android:src="@drawable/ic_profilegrey" />
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/bar5"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="-5dp"
+                        android:layout_toRightOf="@id/page5"
+                        android:background="@drawable/redbadge"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/page5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+
+                        android:contentDescription="TODO"
+                        android:src="@drawable/ic_profilegrey" />
+                </RelativeLayout>
 
                 <com.wishfin_credit_card.FontClasses.PoppinsRegular
                     android:id="@+id/text5"

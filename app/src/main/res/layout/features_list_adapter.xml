@@ -8,11 +8,11 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:contentDescription="TODO"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_offergreen" />
+        android:src="@drawable/ic_grren_tick" />
 
     <com.wishfin_credit_card.FontClasses.PoppinsRegular
         android:id="@+id/textView"

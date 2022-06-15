@@ -16,16 +16,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.squareup.picasso.Picasso;
@@ -35,6 +36,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreditCardHistory extends Activity implements View.OnClickListener {
 
@@ -47,9 +50,9 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
     LinearLayout line1, line2, line3, line5;
     //    boolean doubleBackToExitPressedOnce = false;
     RelativeLayout heading_relative;
-    ImageView backbutton;
-    TextView heading_cc_list, sub_heading_cc_list;
-    String type = "";
+    RelativeLayout backreli;
+    TextView heading_cc_list, sub_heading_cc_list,bar5;
+    String bank_code = "";
 
 
     @Override
@@ -67,9 +70,6 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                 .setAnimationSpeed(1)
                 .setDimAmount(0.5f);
 
-        progressDialog.show();
-//        getaouth();
-        get_card_list();
 
         card_list = findViewById(R.id.card_list);
         line1 = findViewById(R.id.line1);
@@ -85,9 +85,10 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
         heading_relative = findViewById(R.id.heading_relative);
         heading_cc_list = findViewById(R.id.heading_cc_list);
         sub_heading_cc_list = findViewById(R.id.sub_heading_cc_list);
-        backbutton = findViewById(R.id.backbutton);
+        bar5 = findViewById(R.id.bar5);
+        backreli = findViewById(R.id.backreli);
 
-        backbutton.setOnClickListener(new View.OnClickListener() {
+        backreli.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -209,7 +210,7 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder {
-            TextView tv1, tv2, joiningfees, annualfees, viewdetails;
+            TextView tv1, tv2, joiningfees, annualfees, viewdetails, applied;
             ImageView reli;
             RelativeLayout relit;
 
@@ -220,6 +221,7 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                 joiningfees = view.findViewById(R.id.joiningfees);
                 annualfees = view.findViewById(R.id.annualfees);
                 viewdetails = view.findViewById(R.id.viewdetails);
+                applied = view.findViewById(R.id.applied);
                 reli = view.findViewById(R.id.imageView);
                 relit = view.findViewById(R.id.relit);
 
@@ -241,14 +243,69 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
             holder.tv2.setText(list_car.get(position).getId());
             holder.joiningfees.setText(list_car.get(position).getJoiningfees() + " times");
             holder.annualfees.setText(list_car.get(position).getAnnualfees());
-            holder.viewdetails.setText(list_car.get(position).getCard_state());
+//            holder.viewdetails.setText(list_car.get(position).getCard_state());
 
             Picasso.get()
                     .load(list_car.get(position).getImage())
                     .into(holder.reli);
 
+            if (list_car.get(position).getCard_state().equalsIgnoreCase("Applied")) {
+                holder.viewdetails.setVisibility(View.GONE);
+                holder.applied.setVisibility(View.VISIBLE);
+                holder.applied.setText("Applied");
+            } else if (list_car.get(position).getCard_state().equalsIgnoreCase("Pending")) {
+                holder.viewdetails.setVisibility(View.GONE);
+                holder.applied.setVisibility(View.VISIBLE);
+                holder.applied.setText("Pending");
+            } else {
+                holder.viewdetails.setVisibility(View.VISIBLE);
+                holder.applied.setVisibility(View.GONE);
+            }
+            holder.viewdetails.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    progressDialog.show();
+                    bank_code = list_car.get(position).getBank_code();
+                    get_encrypted_link(list_car.get(position).getBank_code(), list_car.get(position).getImage(), list_car.get(position).getName());
+                }
+            });
+
+            holder.reli.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(CreditCardHistory.this, CardDetailPage.class);
+                    intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
+                    intent.putExtra("status", "" + list_car.get(position).getCard_state());
+                    intent.putExtra("cardname", "" + list_car.get(position).getName());
+//                            intent.putExtra("imagepath", "" + list_car.get(position).getImage());
+//                            intent.putExtra("features", "" + list_car.get(position).getFeauters());
+//                            intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
+//                            intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
+//                            intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
+                    startActivity(intent);
+                }
+            });
+
+            holder.tv1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(CreditCardHistory.this, CardDetailPage.class);
+                    intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
+                    intent.putExtra("status", "" + list_car.get(position).getCard_state());
+                    intent.putExtra("cardname", "" + list_car.get(position).getName());
+//                            intent.putExtra("imagepath", "" + list_car.get(position).getImage());
+//                            intent.putExtra("features", "" + list_car.get(position).getFeauters());
+//                            intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
+//                            intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
+//                            intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
+                    startActivity(intent);
+                }
+            });
+
 
         }
+
 
         @Override
         public int getItemCount() {
@@ -278,6 +335,120 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                 finish();
                 break;
         }
+    }
+
+    public void get_encrypted_link(String bank_code, String imagepath, String strcardname) {
+
+        final JSONObject json = new JSONObject();
+        try {
+            json.put("auth_key", BuildConfig.oAuthdeal4loans);
+            json.put("method", "EncodeString");
+            json.put("text", "product=CC&bank_code=" + bank_code + "&device_type=android&cid=" +
+                    SessionManager.get_cibil_id(prefs) + "&mobile=" + SessionManager.get_mobile(prefs) +
+                    "&card_image=" + imagepath + "&card_name=" + strcardname);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.POST, getString(R.string.BASE_URL_Deal4Loans), json,
+                response -> {
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(response.toString());
+                        if (jsonObject.getString("message").equalsIgnoreCase("Success")) {
+                            JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+                            String url = "https://www.deal4loans.com/wfapppage.php?" + jsonObject1.getString("encoded_text");
+
+                            Intent intent = new Intent(CreditCardHistory.this, WebviewActivity.class);
+                            intent.putExtra("url", url);
+                            intent.putExtra("bank_code", bank_code);
+                            intent.putExtra("imagepath", imagepath);
+                            intent.putExtra("strcardname", strcardname);
+                            startActivity(intent);
+
+//                            Intent openUrlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                            startActivity(openUrlIntent);
+                            progressDialog.dismiss();
+                        } else {
+                            Toast.makeText(CreditCardHistory.this, "" + jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }, Throwable::printStackTrace);
+        int socketTimeout = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
+        queue.add(jsonObjectRequest);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        progressDialog.show();
+//        getaouth();
+        get_card_list();
+        get_cibil_history();
+
+    }
+
+    public void get_cibil_history() {
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = getString(R.string.BASE_URL) + "/historic-score?mobile=" + SessionManager.get_mobile(prefs);
+        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
+                response -> {
+                    // response
+
+                    if (progressDialog != null && progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        {
+                            if (!jsonObject.getString("status").equalsIgnoreCase("failed")) {
+
+                                SessionManager.save_cibil_checked_status(prefs, "true");
+
+                            } else {
+                                SessionManager.save_cibil_checked_status(prefs, "false");
+                                bar5.setVisibility(View.VISIBLE);
+
+                                if (progressDialog != null && progressDialog.isShowing()) {
+                                    progressDialog.dismiss();
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    // TODO Auto-generated method stub
+                    if (progressDialog != null && progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                String bearer = "Bearer " + SessionManager.get_access_token(prefs);
+                params.put("Content-Type", "application/json; charset=utf-8");
+                params.put("Accept", "application/json");
+                params.put("Authorization", bearer);
+
+                return params;
+            }
+        };
+        queue.add(getRequest);
+
     }
 
 

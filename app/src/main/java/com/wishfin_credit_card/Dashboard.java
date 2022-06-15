@@ -40,6 +40,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -54,7 +55,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
     ArrayList<Gettersetterforall> list1 = new ArrayList<>();
     Share_Adapter radio_question_list_adapter;
     String logintype = "", IPaddress = "";
-    TextView signupone, exploremore;
+    TextView signupone, exploremore, name, goodmorning,bar5;
     LinearLayout line1, line2, line3, line5;
     boolean doubleBackToExitPressedOnce = false;
     LinearLayout bestChoice, bestreward, lifetimefree, besttravel, bestfuel, bestcashback;
@@ -153,6 +154,25 @@ public class Dashboard extends Activity implements View.OnClickListener {
         besttravel = findViewById(R.id.besttravel);
         bestfuel = findViewById(R.id.bestfuel);
         bestcashback = findViewById(R.id.bestcashback);
+        name = findViewById(R.id.name);
+        goodmorning = findViewById(R.id.goodmorning);
+        bar5 = findViewById(R.id.bar5);
+
+        Calendar c = Calendar.getInstance();
+        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+
+        String hellotext = SessionManager.get_firstname(prefs);
+
+        if (timeOfDay < 12) {
+            name.setText("Good Morning " + hellotext);
+//            goodmorning.setText(getString(R.string.good_morning));
+        } else if (timeOfDay < 16) {
+            name.setText("Good Afternoon " + hellotext);
+//            goodmorning.setText(getString(R.string.good_morning));
+        } else {
+            name.setText("Good Evening " + hellotext);
+//            goodmorning.setText(getString(R.string.good_morning));
+        }
 
         exploremore.setOnClickListener(this);
         bestChoice.setOnClickListener(this);
@@ -211,118 +231,118 @@ public class Dashboard extends Activity implements View.OnClickListener {
 
     }
 
-    public void get_card_list() {
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL) + "/v1/credit-card-all-quotes";
-        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
-                response -> {
-                    // response
-
-                    try {
-                        progressDialog.dismiss();
-                        JSONObject jsonObject = new JSONObject(response);
-                        list1 = new ArrayList<>();
-                        list1.clear();
-
-                        if (jsonObject.getString("status").equalsIgnoreCase("Success")) {
-
-                            JSONObject jsonObject1 = jsonObject.getJSONObject("result");
-                            JSONArray jsonArray = (jsonObject1.getJSONArray("bank-quote"));
-                            for (int i = 0; i < 4; i++) {
-                                JSONObject objectnew2 = jsonArray.getJSONObject(i);
-                                Gettersetterforall pack = new Gettersetterforall();
-                                pack.setBank_code(objectnew2.getString("bank_code"));
-                                pack.setName(objectnew2.getString("name"));
-                                pack.setImage(objectnew2.getString("image_path"));
-                                pack.setId(objectnew2.getString("id"));
-                                pack.setFeauters((objectnew2.getJSONArray("feature")));
-                                try {
-                                    JSONArray feesjaonarray = objectnew2.getJSONArray("fee");
-                                    for (int j = 0; j < feesjaonarray.length(); j++) {
-                                        JSONObject object = feesjaonarray.getJSONObject(j);
-                                        try {
-                                            if (object.getString("title").contains("Annual")) {
-                                                pack.setAnnualfees(object.getString("value"));
-                                            }
-                                        } catch (Exception e) {
-                                            pack.setAnnualfees("NA");
-                                        }
-                                        try {
-                                            if (object.getString("title").contains("Joining")) {
-                                                pack.setJoiningfees(object.getString("value"));
-                                            }
-                                        } catch (Exception e) {
-                                            pack.setJoiningfees("NA");
-                                        }
-                                    }
-                                } catch (Exception e) {
-                                    pack.setAnnualfees("NA");
-                                    pack.setJoiningfees("NA");
-                                }
-                                list1.add(pack);
-                            }
-
-                            if (list1.size() > 0) {
-                                card_list.setVisibility(View.GONE);
-
-                                radio_question_list_adapter = new Share_Adapter(Dashboard.this, list1);
-                                card_list.setAdapter(radio_question_list_adapter);
-
-                            } else {
-                                card_list.setVisibility(View.GONE);
-
-                            }
-
-
-                        } else if (jsonObject.getString("status").equalsIgnoreCase("failed")) {
-                            if (progressDialog != null && progressDialog.isShowing()) {
-                                progressDialog.dismiss();
-                            }
-                            Toast.makeText(Dashboard.this, "" + jsonObject.getString("message"), Toast.LENGTH_LONG).show();
-
-                        }
-
-                    } catch (Exception e) {
-                        if (progressDialog != null && progressDialog.isShowing()) {
-                            progressDialog.dismiss();
-                        }
-                        e.printStackTrace();
-                    }
-
-
-                },
-                error -> {
-
-                    try {
-                        int statusCode = error.networkResponse.statusCode;
-                        if (statusCode == 421) {
-                            getaouth();
-                        }
-                        error.printStackTrace();
-                        if (progressDialog != null && progressDialog.isShowing()) {
-                            progressDialog.dismiss();
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-        ) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> header = new HashMap<String, String>();
-                String bearer = "Bearer " + SessionManager.get_access_token(prefs);
-                header.put("Content-Type", "application/json; charset=utf-8");
-                header.put("Accept", "application/json");
-                header.put("Authorization", bearer);
-
-                return header;
-            }
-        };
-        queue.add(getRequest);
-
-    }
+//    public void get_card_list() {
+//
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        String url = getString(R.string.BASE_URL) + "/v1/credit-card-all-quotes";
+//        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
+//                response -> {
+//                    // response
+//
+//                    try {
+//                        progressDialog.dismiss();
+//                        JSONObject jsonObject = new JSONObject(response);
+//                        list1 = new ArrayList<>();
+//                        list1.clear();
+//
+//                        if (jsonObject.getString("status").equalsIgnoreCase("Success")) {
+//
+//                            JSONObject jsonObject1 = jsonObject.getJSONObject("result");
+//                            JSONArray jsonArray = (jsonObject1.getJSONArray("bank-quote"));
+//                            for (int i = 0; i < 4; i++) {
+//                                JSONObject objectnew2 = jsonArray.getJSONObject(i);
+//                                Gettersetterforall pack = new Gettersetterforall();
+//                                pack.setBank_code(objectnew2.getString("bank_code"));
+//                                pack.setName(objectnew2.getString("name"));
+//                                pack.setImage(objectnew2.getString("image_path"));
+//                                pack.setId(objectnew2.getString("id"));
+//                                pack.setFeauters((objectnew2.getJSONArray("feature")));
+//                                try {
+//                                    JSONArray feesjaonarray = objectnew2.getJSONArray("fee");
+//                                    for (int j = 0; j < feesjaonarray.length(); j++) {
+//                                        JSONObject object = feesjaonarray.getJSONObject(j);
+//                                        try {
+//                                            if (object.getString("title").contains("Annual")) {
+//                                                pack.setAnnualfees(object.getString("value"));
+//                                            }
+//                                        } catch (Exception e) {
+//                                            pack.setAnnualfees("NA");
+//                                        }
+//                                        try {
+//                                            if (object.getString("title").contains("Joining")) {
+//                                                pack.setJoiningfees(object.getString("value"));
+//                                            }
+//                                        } catch (Exception e) {
+//                                            pack.setJoiningfees("NA");
+//                                        }
+//                                    }
+//                                } catch (Exception e) {
+//                                    pack.setAnnualfees("NA");
+//                                    pack.setJoiningfees("NA");
+//                                }
+//                                list1.add(pack);
+//                            }
+//
+//                            if (list1.size() > 0) {
+//                                card_list.setVisibility(View.GONE);
+//
+//                                radio_question_list_adapter = new Share_Adapter(Dashboard.this, list1);
+//                                card_list.setAdapter(radio_question_list_adapter);
+//
+//                            } else {
+//                                card_list.setVisibility(View.GONE);
+//
+//                            }
+//
+//
+//                        } else if (jsonObject.getString("status").equalsIgnoreCase("failed")) {
+//                            if (progressDialog != null && progressDialog.isShowing()) {
+//                                progressDialog.dismiss();
+//                            }
+//                            Toast.makeText(Dashboard.this, "" + jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+//
+//                        }
+//
+//                    } catch (Exception e) {
+//                        if (progressDialog != null && progressDialog.isShowing()) {
+//                            progressDialog.dismiss();
+//                        }
+//                        e.printStackTrace();
+//                    }
+//
+//
+//                },
+//                error -> {
+//
+//                    try {
+//                        int statusCode = error.networkResponse.statusCode;
+//                        if (statusCode == 421) {
+//                            getaouth();
+//                        }
+//                        error.printStackTrace();
+//                        if (progressDialog != null && progressDialog.isShowing()) {
+//                            progressDialog.dismiss();
+//                        }
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//        ) {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> header = new HashMap<String, String>();
+//                String bearer = "Bearer " + SessionManager.get_access_token(prefs);
+//                header.put("Content-Type", "application/json; charset=utf-8");
+//                header.put("Accept", "application/json");
+//                header.put("Authorization", bearer);
+//
+//                return header;
+//            }
+//        };
+//        queue.add(getRequest);
+//
+//    }
 
     @Override
     public void onClick(View view) {
@@ -331,8 +351,8 @@ public class Dashboard extends Activity implements View.OnClickListener {
 
             case R.id.line2:
             case R.id.exploremore:
-                Intent intent0 = new Intent(Dashboard.this, CreditCardHistory.class);
-                startActivity(intent0);
+                Intent intent1 = new Intent(Dashboard.this, CreditCardHistory.class);
+                startActivity(intent1);
 
                 break;
             case R.id.bestChoice:
@@ -348,7 +368,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
                 break;
             case R.id.lifetimefree:
                 Intent intent4 = new Intent(Dashboard.this, ExploreCreditCard.class);
-                intent4.putExtra("type", "Lifetime");
+                intent4.putExtra("type", "Lifetime Free");
                 startActivity(intent4);
 
                 break;
@@ -356,6 +376,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
                 Intent intent5 = new Intent(Dashboard.this, ExploreCreditCard.class);
                 intent5.putExtra("type", "Travel");
                 startActivity(intent5);
+
                 break;
             case R.id.bestfuel:
                 Intent intent6 = new Intent(Dashboard.this, ExploreCreditCard.class);
@@ -447,14 +468,13 @@ public class Dashboard extends Activity implements View.OnClickListener {
                 public void onClick(View view) {
 
                     Intent intent = new Intent(Dashboard.this, CardDetailPage.class);
-                    intent.putExtra("lead_id", "");
                     intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
-                    intent.putExtra("id", "" + list_car.get(position).getId());
+                    intent.putExtra("status", "Apply Now");
                     intent.putExtra("cardname", "" + list_car.get(position).getName());
-                    intent.putExtra("imagepath", "" + list_car.get(position).getImage());
-                    intent.putExtra("features", "" + list_car.get(position).getFeauters());
-                    intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
-                    intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
+//                    intent.putExtra("imagepath", "" + list_car.get(position).getImage());
+//                    intent.putExtra("features", "" + list_car.get(position).getFeauters());
+//                    intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
+//                    intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
                     startActivity(intent);
 
 
@@ -522,7 +542,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
     }
 
 
-//    public void get_cibil_credit_factors() {
+    //    public void get_cibil_credit_factors() {
 //
 //        RequestQueue queue = Volley.newRequestQueue(this);
 //
@@ -983,4 +1003,66 @@ public class Dashboard extends Activity implements View.OnClickListener {
 //        queue.add(jsonObjectRequest);
 //    }
 
+    public void get_cibil_history() {
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = getString(R.string.BASE_URL) + "/historic-score?mobile=" + SessionManager.get_mobile(prefs);
+        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
+                response -> {
+                    // response
+
+                    if (progressDialog != null && progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        {
+                            if (!jsonObject.getString("status").equalsIgnoreCase("failed")) {
+
+                                SessionManager.save_cibil_checked_status(prefs, "true");
+
+
+                            } else {
+                                SessionManager.save_cibil_checked_status(prefs, "false");
+                                bar5.setVisibility(View.VISIBLE);
+                                SessionManager.save_logintype(prefs,"Signup");
+                                if (progressDialog != null && progressDialog.isShowing()) {
+                                    progressDialog.dismiss();
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    // TODO Auto-generated method stub
+                    if (progressDialog != null && progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                String bearer = "Bearer " + SessionManager.get_access_token(prefs);
+                params.put("Content-Type", "application/json; charset=utf-8");
+                params.put("Accept", "application/json");
+                params.put("Authorization", bearer);
+
+                return params;
+            }
+        };
+        queue.add(getRequest);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        get_cibil_history();
+    }
 }

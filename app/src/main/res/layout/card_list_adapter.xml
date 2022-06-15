@@ -72,6 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="NA"
+                    android:maxLines="2"
                     android:textColor="#0F1A2A"
                     android:textSize="10dp" />
 
@@ -97,6 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="NA"
+                    android:maxLines="2"
                     android:textColor="#0F1A2A"
                     android:textSize="10dp" />
 
@@ -115,12 +117,11 @@
                     android:id="@+id/viewdetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/roundedbutton"
+                    android:background="@drawable/roundedbuttonapplynow"
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="View Details"
-                    android:textAllCaps="true"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/primary"
                     android:textSize="10dp" />
             </LinearLayout>
 

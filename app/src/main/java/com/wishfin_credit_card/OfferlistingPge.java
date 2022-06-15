@@ -44,7 +44,7 @@ public class OfferlistingPge extends Activity implements View.OnClickListener {
                 break;
             case R.id.line2:
                 Intent intent3 = new Intent(OfferlistingPge.this, ExploreCreditCard.class);
-                intent3.putExtra("type","ExploreAll");
+                intent3.putExtra("type", "ExploreAll");
                 startActivity(intent3);
                 break;
             case R.id.line5:

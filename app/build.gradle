@@ -10,8 +10,8 @@ android {
         applicationId "com.wishfin_credit_card"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 2
-        versionName "1.2"
+        versionCode 5
+        versionName "1.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -19,26 +19,26 @@ android {
     buildTypes {
         debug {
 
-//            buildConfigField "String", "oAuthdeal4loans", '"Cq6dTSr4n5btSKS3JRyC"'
-//            buildConfigField "String", "oAuthUserName", '"wfexpenseapp"'
-//            buildConfigField "String", "oAuthPassword", '"8aNKX7vDu758R6Vu"'
-//            buildConfigField "String", "oAuthClientId", '"wfexpenseapp"'
-//            buildConfigField "String", "oAuthGrantType", '"password"'
-//            buildConfigField "String", "MTUZO_CLIENT_KEY", '"43839730215012758965"'
-//            buildConfigField "String", "MTUZO_CLIENT_PASS", '"44360934289618915328"'
-//            buildConfigField "String", "MTUZO_API_KEY", '"tNTD3HeREVn4mLKqG8QVZMz8Byh9RwYljRYmzced8Bhvn1V4aLZ9yzi97ziY"'
-//            buildConfigField "String", "PLACES_API_KEY", '"FD6E9A42AD0C9147B42489D29FF9496335F97EE509F54097B4EC9AFC907B2CB3A3F26FAD5AE77092579E4C935AF45810"'
-
-
             buildConfigField "String", "oAuthdeal4loans", '"Cq6dTSr4n5btSKS3JRyC"'
-            buildConfigField "String", "oAuthUserName", '"wishfin"'
-            buildConfigField "String", "oAuthPassword", '"wfStageApiSTG"'
-            buildConfigField "String", "oAuthClientId", '"wishfin"'
+            buildConfigField "String", "oAuthUserName", '"wfexpenseapp"'
+            buildConfigField "String", "oAuthPassword", '"8aNKX7vDu758R6Vu"'
+            buildConfigField "String", "oAuthClientId", '"wfexpenseapp"'
             buildConfigField "String", "oAuthGrantType", '"password"'
             buildConfigField "String", "MTUZO_CLIENT_KEY", '"43839730215012758965"'
             buildConfigField "String", "MTUZO_CLIENT_PASS", '"44360934289618915328"'
             buildConfigField "String", "MTUZO_API_KEY", '"tNTD3HeREVn4mLKqG8QVZMz8Byh9RwYljRYmzced8Bhvn1V4aLZ9yzi97ziY"'
             buildConfigField "String", "PLACES_API_KEY", '"FD6E9A42AD0C9147B42489D29FF9496335F97EE509F54097B4EC9AFC907B2CB3A3F26FAD5AE77092579E4C935AF45810"'
+
+
+//            buildConfigField "String", "oAuthdeal4loans", '"Cq6dTSr4n5btSKS3JRyC"'
+//            buildConfigField "String", "oAuthUserName", '"wishfin"'
+//            buildConfigField "String", "oAuthPassword", '"wfStageApiSTG"'
+//            buildConfigField "String", "oAuthClientId", '"wishfin"'
+//            buildConfigField "String", "oAuthGrantType", '"password"'
+//            buildConfigField "String", "MTUZO_CLIENT_KEY", '"43839730215012758965"'
+//            buildConfigField "String", "MTUZO_CLIENT_PASS", '"44360934289618915328"'
+//            buildConfigField "String", "MTUZO_API_KEY", '"tNTD3HeREVn4mLKqG8QVZMz8Byh9RwYljRYmzced8Bhvn1V4aLZ9yzi97ziY"'
+//            buildConfigField "String", "PLACES_API_KEY", '"FD6E9A42AD0C9147B42489D29FF9496335F97EE509F54097B4EC9AFC907B2CB3A3F26FAD5AE77092579E4C935AF45810"'
 
             debuggable true
             minifyEnabled true

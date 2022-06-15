@@ -116,8 +116,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:paddingTop="20dp"
-                            android:visibility="gone"
-                            android:paddingBottom="20dp">
+                            android:paddingBottom="20dp"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/imageView1"
@@ -139,11 +139,99 @@
 
                         </LinearLayout>
 
+
+                        <LinearLayout
+                            android:id="@+id/cibilrelative"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/roundedlightgreen"
+                            android:gravity="center"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="20dp"
+                            android:visibility="visible"
+                            android:weightSum="2">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.5"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="TODO"
+                                    android:src="@drawable/ic_cibil" />
+
+                                <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                                    android:id="@+id/checkcibil"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="12dp"
+                                    android:layout_toRightOf="@+id/imageView2"
+                                    android:gravity="center|left"
+                                    android:text="Check Cibil"
+                                    android:textColor="#304258"
+                                    android:textSize="12dp"
+                                    android:visibility="gone" />
+
+                                <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                                    android:id="@+id/cibildisplay"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="12dp"
+                                    android:layout_toRightOf="@+id/imageView2"
+                                    android:gravity="center|left"
+                                    android:text="Your Cibil Score"
+                                    android:textColor="#304258"
+                                    android:textSize="12dp"
+                                    android:visibility="gone" />
+
+
+                                <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                                    android:id="@+id/refreshscore"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="12dp"
+                                    android:layout_toRightOf="@+id/imageView2"
+                                    android:gravity="center|left"
+                                    android:text="Refresh Score"
+                                    android:textColor="#304258"
+                                    android:textSize="12dp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:orientation="horizontal">
+
+
+                                <com.wishfin_credit_card.FontClasses.PopinsSemibold
+                                    android:id="@+id/cibilscore"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="12dp"
+                                    android:layout_weight="1"
+                                    android:gravity="center|right"
+                                    android:text=""
+                                    android:textColor="#000000"
+                                    android:textSize="20dp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="0.5dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/md_grey_300"></View>
+                            android:background="@color/md_grey_300" />
+
 
                         <LinearLayout
                             android:id="@+id/termsandconditionrelative"
@@ -159,7 +247,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:contentDescription="TODO"
-                                android:src="@drawable/term" />
+                                android:src="@drawable/ic_term" />
 
                             <com.wishfin_credit_card.FontClasses.PoppinsMedium
                                 android:id="@+id/textView1"
@@ -211,22 +299,21 @@
 
                         </LinearLayout>
 
-<!--                        <View-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="0.5dp"-->
-<!--                            android:layout_marginTop="5dp"-->
-<!--                            android:background="@color/md_grey_300"></View>-->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/md_grey_300" />
 
                         <LinearLayout
                             android:id="@+id/helpsupportrelative"
                             android:layout_width="match_parent"
-                            android:visibility="gone"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
                             android:layout_marginTop="5dp"
                             android:gravity="center"
                             android:paddingTop="20dp"
-                            android:paddingBottom="20dp">
+                            android:paddingBottom="20dp"
+                            android:visibility="visible">
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -238,10 +325,47 @@
                                 android:id="@+id/helpandsupport"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginLeft="10dp"
+                                android:layout_marginLeft="12dp"
                                 android:layout_toRightOf="@+id/imageView2"
                                 android:gravity="center|left"
-                                android:text="Help &amp; Support"
+                                android:text="Rate us"
+                                android:textColor="#304258"
+                                android:textSize="12dp" />
+
+
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/md_grey_300" />
+
+                        <LinearLayout
+                            android:id="@+id/logoutrelative"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="20dp"
+                            android:visibility="visible">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="TODO"
+                                android:src="@drawable/ic_logout" />
+
+                            <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                                android:id="@+id/logout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="12dp"
+                                android:layout_toRightOf="@+id/imageView2"
+                                android:gravity="center|left"
+                                android:text="Logout"
                                 android:textColor="#304258"
                                 android:textSize="12dp" />
 
@@ -251,17 +375,6 @@
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
-
-                <com.wishfin_credit_card.FontClasses.PopinsSemibold
-                    android:id="@+id/logout"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:text="Logout"
-                    android:textColor="#FF922D"
-                    android:textSize="14dp" />
-
 
             </LinearLayout>
 

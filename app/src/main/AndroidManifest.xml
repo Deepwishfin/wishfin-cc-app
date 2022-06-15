@@ -80,6 +80,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Wishfin_Credit_Card.NoActionBar" />
         <activity
+            android:name=".WebviewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Wishfin_Credit_Card.NoActionBar" />
+        <activity
             android:name=".CreditCardHistory"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Wishfin_Credit_Card.NoActionBar" />

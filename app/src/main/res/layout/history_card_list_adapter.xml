@@ -27,8 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginEnd="5dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_toEndOf="@+id/imageView"
             android:text=""
             android:textColor="#0F1A2A"
@@ -62,15 +62,16 @@
                 <com.wishfin_credit_card.FontClasses.PoppinsRegular
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Count"
+                    android:text="Viewed Count"
                     android:textColor="#64748B"
-                    android:textSize="12dp" />
+                    android:textSize="10dp" />
 
                 <com.wishfin_credit_card.FontClasses.PoppinsMedium
                     android:id="@+id/joiningfees"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="01-10-2021"
+                    android:text=""
+                    android:maxLines="2"
                     android:textColor="#0F1A2A"
                     android:textSize="10dp" />
 
@@ -87,15 +88,16 @@
                 <com.wishfin_credit_card.FontClasses.PoppinsRegular
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Applied On"
+                    android:text="Last viewed"
                     android:textColor="#64748B"
-                    android:textSize="12dp" />
+                    android:textSize="10dp" />
 
                 <com.wishfin_credit_card.FontClasses.PoppinsMedium
                     android:id="@+id/annualfees"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="3 Times"
+                    android:text=""
+                    android:maxLines="2"
                     android:textColor="#0F1A2A"
                     android:textSize="10dp" />
 
@@ -114,17 +116,32 @@
                     android:id="@+id/viewdetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/roundedbutton"
+                    android:background="@drawable/roundedbuttonapplynow"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Approved"
-                    android:textAllCaps="true"
-                    android:textColor="#ffffff"
-                    android:textSize="10dp" />
+                    android:text="Apply Now"
+                    android:textColor="@color/primary"
+                    android:textSize="10dp"
+                    android:visibility="gone" />
+
+                <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                    android:id="@+id/applied"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/roundedbuttonapplied"
+                    android:drawableStart="@drawable/ic_orange_tick"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Applied"
+                    android:textColor="#E2A300"
+                    android:textSize="10dp"
+                    android:visibility="gone" />
             </LinearLayout>
 
 
         </LinearLayout>
 
     </RelativeLayout>
+
 </androidx.cardview.widget.CardView>

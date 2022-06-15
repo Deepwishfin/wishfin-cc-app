@@ -14,13 +14,14 @@
             android:id="@+id/backbutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
             android:background="@color/white"
-            android:padding="15dp"
             tools:ignore="MissingConstraints">
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="18dp"
                 android:layout_alignParentStart="true"
                 android:background="@drawable/backarrowblack"
                 android:contentDescription="TODO" />
@@ -62,63 +63,58 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:background="#F6F8FC"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:weightSum="2">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
-                        android:gravity="start"
-                        android:orientation="vertical"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="10dp"
-                        android:paddingRight="10dp">
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
 
                         <com.wishfin_credit_card.FontClasses.PoppinsRegular
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Joining Fees"
+                            android:text="Joining Fees: "
                             android:textColor="#64748B"
-                            android:textSize="12dp" />
+                            android:textSize="10dp" />
 
                         <com.wishfin_credit_card.FontClasses.PoppinsMedium
                             android:id="@+id/joiningfees"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
                             android:text=""
-                            android:textColor="#0F1A2A"
+                            android:textColor="@color/black"
                             android:textSize="10dp" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
-                        android:gravity="start"
-                        android:orientation="vertical"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:paddingBottom="10dp">
+                        android:orientation="horizontal"
+                        android:padding="10dp">
 
                         <com.wishfin_credit_card.FontClasses.PoppinsRegular
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Annual Fees"
+                            android:text="Annual Fees: "
                             android:textColor="#64748B"
-                            android:textSize="12dp" />
+                            android:textSize="10dp" />
 
                         <com.wishfin_credit_card.FontClasses.PoppinsMedium
                             android:id="@+id/annualfees"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
                             android:text=""
-                            android:textColor="#0F1A2A"
+                            android:textColor="@color/black"
                             android:textSize="10dp" />
 
                     </LinearLayout>
@@ -131,8 +127,9 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
                     android:text="Card Features"
-                    android:textColor="#000000"
-                    android:textSize="16dp" />
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/card_list"

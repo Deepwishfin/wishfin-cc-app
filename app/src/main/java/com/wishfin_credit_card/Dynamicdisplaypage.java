@@ -12,12 +12,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.RetryPolicy;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -95,11 +99,12 @@ public class Dynamicdisplaypage extends Activity {
 
         back.setOnClickListener(v -> finish());
 
-        get_cibil_credit_factors();
+        getaouth(detailid);
+
 
     }
 
-    public void get_cibil_credit_factors() {
+    public void get_cibil_credit_factors(String detailid) {
         progressDialog.show();
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -157,5 +162,38 @@ public class Dynamicdisplaypage extends Activity {
         };
         queue.add(getRequest);
 
+    }
+
+    public void getaouth(String detailid) {
+        final JSONObject json = new JSONObject();
+        try {
+            json.put("username", BuildConfig.oAuthUserName);
+            json.put("password", BuildConfig.oAuthPassword);
+            json.put("client_id", BuildConfig.oAuthClientId);
+            json.put("grant_type", BuildConfig.oAuthGrantType);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.POST, getString(R.string.BASE_URL) + "/oauth", json,
+                response -> {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.toString());
+
+                        SessionManager.save_access_token(prefs, jsonObject.getString("access_token"));
+                        SessionManager.save_expirein(prefs, jsonObject.getString("expires_in"));
+                        SessionManager.save_token_type(prefs, jsonObject.getString("token_type"));
+                        SessionManager.save_refresh_token(prefs, jsonObject.getString("refresh_token"));
+                        get_cibil_credit_factors(detailid);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }, Throwable::printStackTrace);
+        int socketTimeout = 30000;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
+        queue.add(jsonObjectRequest);
     }
 }
