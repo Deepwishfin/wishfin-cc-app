@@ -148,11 +148,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="10dp"
-                android:background="@drawable/roundedbutton"
+                android:background="@drawable/roundedbuttonapplynow"
                 android:gravity="center"
                 android:padding="15dp"
                 android:text="Instant Apply"
-                android:textColor="#ffffff"
+                android:textColor="@color/primary"
                 tools:ignore="MissingConstraints" />
 
 

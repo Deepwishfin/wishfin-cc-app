@@ -65,8 +65,8 @@ import java.util.regex.Pattern;
 
 public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListener {
 
-    TextView signupone, signuptwo, signupthree, resentotp, lastmobiletext, checkbox_text, checkbox_text1, mobilenumberhead, emailidhead,
-            fnamehead, dobhead, panhead;
+    TextView signupone, signuptwo, signupthree, resentotp, lastmobiletext, checkbox_text, checkbox_text1,
+            mobilenumberhead, emailidhead, fnamehead, dobhead, panhead;
     LinearLayout linearone, lineartwo, linearthree;
     int page = 1;
     ImageView backbutton;
@@ -710,6 +710,8 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
                             SessionManager.save_emailid(prefs, emailid.getText().toString());
                             SessionManager.save_login(prefs, "True");
                             SessionManager.save_logintype(prefs, "Signup");
+                            SessionManager.save_app_time(prefs, "0");
+
                             Constants.cardresponse = "";
                             Constants.loanresponse = "";
                             SessionManager.save_masteruserid(prefs, jsonObjectresult.getString("master_user_id"));

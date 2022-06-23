@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +32,14 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.squareup.picasso.Picasso;
+import com.vorlonsoft.android.rate.AppRate;
+import com.vorlonsoft.android.rate.OnClickButtonListener;
+import com.vorlonsoft.android.rate.StoreType;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,8 +60,8 @@ public class Dashboard extends Activity implements View.OnClickListener {
     ArrayList<Gettersetterforall> list1 = new ArrayList<>();
     Share_Adapter radio_question_list_adapter;
     String logintype = "", IPaddress = "";
-    TextView signupone, exploremore, name, goodmorning,bar5;
-    LinearLayout line1, line2, line3, line5;
+    TextView signupone, exploremore, name, goodmorning, bar5;
+    LinearLayout line1, line2, line3, line5, personalised;
     boolean doubleBackToExitPressedOnce = false;
     LinearLayout bestChoice, bestreward, lifetimefree, besttravel, bestfuel, bestcashback;
 
@@ -71,6 +76,40 @@ public class Dashboard extends Activity implements View.OnClickListener {
 
         queue = Volley.newRequestQueue(Dashboard.this);
         prefs = PreferenceManager.getDefaultSharedPreferences(Dashboard.this);
+
+        AppRate.with(this)
+                .setStoreType(StoreType.GOOGLEPLAY) //default is GOOGLEPLAY (Google Play), other options are
+                //           AMAZON (Amazon Appstore) and
+                //           SAMSUNG (Samsung Galaxy Apps)
+                .setInstallDays((byte) 0) // default 10, 0 means install day
+                .setLaunchTimes((byte) 3) // default 10
+                .setRemindInterval((byte) 2) // default 1
+                .setRemindLaunchTimes((byte) 2) // default 1 (each launch)
+                .setShowLaterButton(true) // default true
+                .setDebug(false)
+                .setTextRateNow("Rate Us")
+                .setTitle("Hello "+SessionManager.get_firstname(prefs))
+                .setMessage(getString(R.string.rateuspopup))// default false
+                //Java 8+: .setOnClickButtonListener(which -> Log.d(MainActivity.class.getName(), Byte.toString(which)))
+                .setOnClickButtonListener(new OnClickButtonListener() { // callback listener.
+                    @Override
+                    public void onClickButton(byte which) {
+                        Log.d(MainActivity.class.getName(), Byte.toString(which));
+                    }
+                })
+                .monitor();
+
+        if (AppRate.with(this).getStoreType() == StoreType.GOOGLEPLAY) {
+            //Check that Google Play is available
+            if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) != ConnectionResult.SERVICE_MISSING) {
+                // Show a dialog if meets conditions
+                AppRate.showRateDialogIfMeetsConditions(this);
+            }
+        } else {
+            // Show a dialog if meets conditions
+            AppRate.showRateDialogIfMeetsConditions(this);
+
+        }
 
         progressDialog = KProgressHUD.create(this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
@@ -156,7 +195,17 @@ public class Dashboard extends Activity implements View.OnClickListener {
         bestcashback = findViewById(R.id.bestcashback);
         name = findViewById(R.id.name);
         goodmorning = findViewById(R.id.goodmorning);
+        personalised = findViewById(R.id.personalised);
         bar5 = findViewById(R.id.bar5);
+
+        personalised.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Dashboard.this, PersonalisedCards.class);
+                intent.putExtra("type", "ExploreAll");
+                startActivity(intent);
+            }
+        });
 
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
@@ -1025,7 +1074,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
                             } else {
                                 SessionManager.save_cibil_checked_status(prefs, "false");
                                 bar5.setVisibility(View.VISIBLE);
-                                SessionManager.save_logintype(prefs,"Signup");
+                                SessionManager.save_logintype(prefs, "Signup");
                                 if (progressDialog != null && progressDialog.isShowing()) {
                                     progressDialog.dismiss();
                                 }

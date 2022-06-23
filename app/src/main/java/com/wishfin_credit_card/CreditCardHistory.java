@@ -51,7 +51,7 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
     //    boolean doubleBackToExitPressedOnce = false;
     RelativeLayout heading_relative;
     RelativeLayout backreli;
-    TextView heading_cc_list, sub_heading_cc_list,bar5;
+    TextView heading_cc_list, sub_heading_cc_list, bar5;
     String bank_code = "";
 
 
@@ -136,7 +136,9 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                 Request.Method.POST, getString(R.string.BASE_URL_Deal4Loans), json,
                 response -> {
                     try {
-                        progressDialog.dismiss();
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
                         JSONObject jsonObject = new JSONObject(String.valueOf(response));
                         list1 = new ArrayList<>();
                         list1.clear();
@@ -177,6 +179,7 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                             Toast.makeText(CreditCardHistory.this, "" + jsonObject.getString("message"), Toast.LENGTH_LONG).show();
 
                         }
+                        get_cibil_history();
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -210,7 +213,7 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder {
-            TextView tv1, tv2, joiningfees, annualfees, viewdetails, applied;
+            TextView tv1, tv2, joiningfees, annualfees, applynow, approved, pending;
             ImageView reli;
             RelativeLayout relit;
 
@@ -220,8 +223,9 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                 tv2 = view.findViewById(R.id.textView2);
                 joiningfees = view.findViewById(R.id.joiningfees);
                 annualfees = view.findViewById(R.id.annualfees);
-                viewdetails = view.findViewById(R.id.viewdetails);
-                applied = view.findViewById(R.id.applied);
+                applynow = view.findViewById(R.id.applynow);
+                approved = view.findViewById(R.id.approved);
+                pending = view.findViewById(R.id.pending);
                 reli = view.findViewById(R.id.imageView);
                 relit = view.findViewById(R.id.relit);
 
@@ -249,19 +253,23 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                     .load(list_car.get(position).getImage())
                     .into(holder.reli);
 
-            if (list_car.get(position).getCard_state().equalsIgnoreCase("Applied")) {
-                holder.viewdetails.setVisibility(View.GONE);
-                holder.applied.setVisibility(View.VISIBLE);
-                holder.applied.setText("Applied");
-            } else if (list_car.get(position).getCard_state().equalsIgnoreCase("Pending")) {
-                holder.viewdetails.setVisibility(View.GONE);
-                holder.applied.setVisibility(View.VISIBLE);
-                holder.applied.setText("Pending");
+            if (list_car.get(position).getCard_state().equalsIgnoreCase("Pending") || list_car.get(position).getCard_state().equalsIgnoreCase("Applied")) {
+                holder.applynow.setVisibility(View.GONE);
+                holder.pending.setVisibility(View.VISIBLE);
+                holder.pending.setText(list_car.get(position).getCard_state());
+                holder.approved.setVisibility(View.GONE);
+            } else if (list_car.get(position).getCard_state().equalsIgnoreCase("Approved")) {
+                holder.applynow.setVisibility(View.GONE);
+                holder.pending.setVisibility(View.GONE);
+                holder.approved.setVisibility(View.VISIBLE);
+                holder.approved.setText(list_car.get(position).getCard_state());
             } else {
-                holder.viewdetails.setVisibility(View.VISIBLE);
-                holder.applied.setVisibility(View.GONE);
+                holder.applynow.setVisibility(View.VISIBLE);
+                holder.pending.setVisibility(View.GONE);
+                holder.applynow.setText("Apply Now");
+                holder.approved.setVisibility(View.GONE);
             }
-            holder.viewdetails.setOnClickListener(new View.OnClickListener() {
+            holder.applynow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -388,10 +396,10 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
     @Override
     protected void onResume() {
         super.onResume();
+
         progressDialog.show();
-//        getaouth();
         get_card_list();
-        get_cibil_history();
+
 
     }
 

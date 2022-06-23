@@ -283,6 +283,7 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
                                 SessionManager.save_mfuserid(prefs, jsonObjectresult.getString("mf_user_id"));
                                 SessionManager.save_login(prefs, "True");
                                 SessionManager.save_logintype(prefs, "Login");
+                                SessionManager.save_app_time(prefs, "0");
 
                                 if (progressDialog != null && progressDialog.isShowing()) {
                                     progressDialog.dismiss();
@@ -501,6 +502,8 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
                             SessionManager.save_mfuserid(prefs, jsonObjectresult.getString("mf_user_id"));
                             SessionManager.save_login(prefs, "True");
                             SessionManager.save_logintype(prefs, "Login");
+                            SessionManager.save_app_time(prefs, "0");
+
 
                             if (progressDialog != null && progressDialog.isShowing()) {
                                 progressDialog.dismiss();

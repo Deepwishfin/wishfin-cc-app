@@ -38,6 +38,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
 import org.json.JSONArray;
@@ -56,7 +57,8 @@ public class Profilepage extends Activity implements View.OnClickListener {
 
     LinearLayout line1, line2, line3, line5;
     ImageView back;
-    LinearLayout referfriendrelative, termsandconditionrelative, privacypolicyrelative, helpsupportrelative, logoutrelative;
+    LinearLayout referfriendrelative, termsandconditionrelative, privacypolicyrelative,
+            helpsupportrelative,contactusrelative, logoutrelative;
     Dialog dialog;
     SharedPreferences prefs;
     TextView heading, desc, checkcibil, refreshscore, cibilscore, cibildisplay;
@@ -92,6 +94,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
         refreshscore = findViewById(R.id.refreshscore);
         cibilscore = findViewById(R.id.cibilscore);
         cibildisplay = findViewById(R.id.cibildisplay);
+        contactusrelative = findViewById(R.id.contactusrelative);
 
         queue = Volley.newRequestQueue(Profilepage.this);
         prefs = PreferenceManager.getDefaultSharedPreferences(Profilepage.this);
@@ -125,6 +128,63 @@ public class Profilepage extends Activity implements View.OnClickListener {
             checkcibil.setVisibility(View.GONE);
             refreshscore.setVisibility(View.GONE);
         }
+
+        contactusrelative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Objects.requireNonNull(dialog.getWindow()).setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+                dialog.setContentView(R.layout.contactus);
+                dialog.show();
+                TextView cancle = dialog.findViewById(R.id.call);
+                TextView ok = dialog.findViewById(R.id.email);
+
+                cancle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse("tel:+918882935454" ));
+                        startActivity(intent);
+                        dialog.dismiss();
+                    }
+                });
+
+                ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        String emailsend = "appsupport@wishfin.com";
+                        String emailsubject = "Wishfin Credit Card App Issue";
+                        String emailbody = "Hi Support";
+
+                        // define Intent object
+                        // with action attribute as ACTION_SEND
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+
+                        // add three fiels to intent using putExtra function
+                        intent.putExtra(Intent.EXTRA_EMAIL,
+                                new String[]{emailsend});
+                        intent.putExtra(Intent.EXTRA_SUBJECT, emailsubject);
+                        intent.putExtra(Intent.EXTRA_TEXT, emailbody);
+
+                        // set type of intent
+                        intent.setType("message/rfc822");
+
+                        // startActivity with intent with chooser
+                        // as Email client using createChooser function
+                        startActivity(
+                                Intent
+                                        .createChooser(intent,
+                                                "Choose an Email client :"));
+                        dialog.dismiss();
+
+                    }
+                });
+
+            }
+        });
 
         checkcibil.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -241,13 +301,15 @@ public class Profilepage extends Activity implements View.OnClickListener {
 
         helpsupportrelative.setOnClickListener(v -> {
 
-            Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
-            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-            try {
-                startActivity(goToMarket);
-            } catch (ActivityNotFoundException e) {
-                Toast.makeText(getApplicationContext(), "Couldn't launch the market", Toast.LENGTH_LONG).show();
-            }
+            showRateAppFallbackDialog();
+
+//            Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
+//            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+//            try {
+//                startActivity(goToMarket);
+//            } catch (ActivityNotFoundException e) {
+//                Toast.makeText(getApplicationContext(), "Couldn't launch the market", Toast.LENGTH_LONG).show();
+//            }
 
         });
 
@@ -2492,5 +2554,26 @@ public class Profilepage extends Activity implements View.OnClickListener {
         jsonObjectRequest.setRetryPolicy(policy);
         queue.add(jsonObjectRequest);
     }
+
+    private void showRateAppFallbackDialog() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Hello "+SessionManager.get_firstname(prefs))
+                .setMessage(getString(R.string.rateuspopup))
+                .setPositiveButton("Rate Us", (dialog, which) -> redirectToPlayStore())
+                .setNegativeButton("Not Now",
+                        (dialog, which) -> {
+                        })
+                .show();
+    }
+
+    public void redirectToPlayStore() {
+        final String appPackageName = getPackageName();
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (ActivityNotFoundException exception) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
+    }
+
 
 }

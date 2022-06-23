@@ -11,6 +11,8 @@
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
 
     <application
         android:allowBackup="true"
@@ -45,6 +47,10 @@
             android:theme="@style/Theme.Wishfin_Credit_Card.NoActionBar" />
         <activity
             android:name=".PersonalInformationPage"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Wishfin_Credit_Card.NoActionBar" />
+        <activity
+            android:name=".PersonalisedCards"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Wishfin_Credit_Card.NoActionBar" />
         <activity

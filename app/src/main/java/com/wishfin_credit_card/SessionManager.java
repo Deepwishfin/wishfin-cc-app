@@ -54,6 +54,7 @@ public class SessionManager {
     private static String HEALTH_TOKEN = "health_token";
     private static String HEALTH_SALTKEY = "health_saltkey";
     private static String HEALTH_GENDER = "health_gender";
+    private static String APP_TIME = "app_time";
 
     private static String UTMSOURCE = "utmsource";
     private static String UTMMEDIUM = "utmmedium";
@@ -466,6 +467,13 @@ public class SessionManager {
 
     public static String get_cibil_checked_status(SharedPreferences prefs) {
         return prefs.getString(CIBIL_SCORE_CHECKED_OR_NOT, "");
+    }
+    static void save_app_time(SharedPreferences prefs, String value) {
+        SessionManager.savePreference(prefs, APP_TIME, value);
+    }
+
+    public static String get_app_time(SharedPreferences prefs) {
+        return prefs.getString(APP_TIME, "");
     }
 
 

@@ -113,11 +113,13 @@
                 android:padding="5dp">
 
                 <com.wishfin_credit_card.FontClasses.PoppinsMedium
-                    android:id="@+id/viewdetails"
+                    android:id="@+id/applynow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/roundedbuttonapplynow"
                     android:gravity="center"
+                    android:drawablePadding="5dp"
+                    android:drawableEnd="@drawable/ic_greenarrow"
                     android:padding="10dp"
                     android:text="Apply Now"
                     android:textColor="@color/primary"
@@ -125,18 +127,33 @@
                     android:visibility="gone" />
 
                 <com.wishfin_credit_card.FontClasses.PoppinsMedium
-                    android:id="@+id/applied"
+                    android:id="@+id/approved"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/roundedbuttonapplied"
-                    android:drawableStart="@drawable/ic_orange_tick"
+                    android:background="@drawable/roundedbuttonapproved"
+                    android:drawableEnd="@drawable/ic_orange_tick"
                     android:drawablePadding="5dp"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Applied"
+                    android:text="Approved"
                     android:textColor="#E2A300"
                     android:textSize="10dp"
                     android:visibility="gone" />
+
+                <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                    android:id="@+id/pending"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/roundedbuttonpending"
+                    android:drawablePadding="5dp"
+                    android:drawableEnd="@drawable/ic_clock"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Pending"
+                    android:textColor="#6563FF"
+                    android:textSize="10dp"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
 

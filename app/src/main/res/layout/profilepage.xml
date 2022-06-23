@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:text="Profile"
                 android:textColor="#2E384D"
                 android:textSize="20dp" />
@@ -130,8 +130,8 @@
                                 android:id="@+id/textView"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginLeft="12dp"
-                                android:layout_toRightOf="@+id/imageView1"
+                                android:layout_marginStart="12dp"
+                                android:layout_toEndOf="@+id/imageView1"
                                 android:gravity="center|left"
                                 android:text="Share this App"
                                 android:textColor="#304258"
@@ -169,8 +169,8 @@
                                     android:id="@+id/checkcibil"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:layout_marginLeft="12dp"
-                                    android:layout_toRightOf="@+id/imageView2"
+                                    android:layout_marginStart="12dp"
+                                    android:layout_toEndOf="@+id/imageView2"
                                     android:gravity="center|left"
                                     android:text="Check Cibil"
                                     android:textColor="#304258"
@@ -181,8 +181,8 @@
                                     android:id="@+id/cibildisplay"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:layout_marginLeft="12dp"
-                                    android:layout_toRightOf="@+id/imageView2"
+                                    android:layout_marginStart="12dp"
+                                    android:layout_toEndOf="@+id/imageView2"
                                     android:gravity="center|left"
                                     android:text="Your Cibil Score"
                                     android:textColor="#304258"
@@ -194,8 +194,8 @@
                                     android:id="@+id/refreshscore"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:layout_marginLeft="12dp"
-                                    android:layout_toRightOf="@+id/imageView2"
+                                    android:layout_marginStart="12dp"
+                                    android:layout_toEndOf="@+id/imageView2"
                                     android:gravity="center|left"
                                     android:text="Refresh Score"
                                     android:textColor="#304258"
@@ -253,8 +253,8 @@
                                 android:id="@+id/textView1"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginLeft="12dp"
-                                android:layout_toRightOf="@+id/imageView11"
+                                android:layout_marginStart="12dp"
+                                android:layout_toEndOf="@+id/imageView11"
                                 android:gravity="center|left"
                                 android:text="Term &amp; Conditions"
                                 android:textColor="#304258"
@@ -289,8 +289,8 @@
                                 android:id="@+id/textView2"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginLeft="12dp"
-                                android:layout_toRightOf="@+id/imageView2"
+                                android:layout_marginStart="12dp"
+                                android:layout_toEndOf="@+id/imageView2"
                                 android:gravity="center|left"
                                 android:text="Privacy Policy"
                                 android:textColor="#304258"
@@ -325,10 +325,46 @@
                                 android:id="@+id/helpandsupport"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginLeft="12dp"
-                                android:layout_toRightOf="@+id/imageView2"
+                                android:layout_marginStart="12dp"
+                                android:layout_toEndOf="@+id/imageView2"
                                 android:gravity="center|left"
                                 android:text="Rate us"
+                                android:textColor="#304258"
+                                android:textSize="12dp" />
+
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/md_grey_300" />
+
+                        <LinearLayout
+                            android:id="@+id/contactusrelative"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="20dp"
+                            android:visibility="visible">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="TODO"
+                                android:src="@drawable/ic_contact" />
+
+                            <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                                android:id="@+id/contactus"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="12dp"
+                                android:layout_toEndOf="@+id/imageView2"
+                                android:gravity="center|left"
+                                android:text="Contact us"
                                 android:textColor="#304258"
                                 android:textSize="12dp" />
 
@@ -362,8 +398,8 @@
                                 android:id="@+id/logout"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginLeft="12dp"
-                                android:layout_toRightOf="@+id/imageView2"
+                                android:layout_marginStart="12dp"
+                                android:layout_toEndOf="@+id/imageView2"
                                 android:gravity="center|left"
                                 android:text="Logout"
                                 android:textColor="#304258"

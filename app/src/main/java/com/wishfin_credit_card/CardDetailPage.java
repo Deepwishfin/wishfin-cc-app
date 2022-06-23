@@ -164,10 +164,6 @@ public class CardDetailPage extends Activity {
             public void onClick(View view) {
 
                 if (isThereInternetConnection()) {
-
-//                    Intent intent1 = new Intent(CardDetailPage.this, PersonalInformationPage.class);
-//                    startActivity(intent1);
-//                    finish();
                     progressDialog.show();
                     get_encrypted_link();
                 } else {
@@ -178,15 +174,15 @@ public class CardDetailPage extends Activity {
             }
         });
 
-        if (status.equalsIgnoreCase("Applied")) {
-            instantapply.setText("Applied");
-            instantapply.setBackgroundResource(R.drawable.roundedbuttonapplied);
-            instantapply.setTextColor(Color.parseColor("#E2A300"));
+        if (status.equalsIgnoreCase("Pending") || status.equalsIgnoreCase("Applied")) {
+            instantapply.setText(status);
+            instantapply.setBackgroundResource(R.drawable.roundedbuttonpending);
+            instantapply.setTextColor(Color.parseColor("#6563FF"));
             instantapply.setClickable(false);
-        } else if (status.equalsIgnoreCase("Pending")) {
-            instantapply.setText("Pending");
-            instantapply.setBackgroundResource(R.drawable.roundedbuttonlightgrey);
-            instantapply.setTextColor(Color.parseColor("#000000"));
+        } else if (status.equalsIgnoreCase("Approved")) {
+            instantapply.setText(status);
+            instantapply.setBackgroundResource(R.drawable.roundedbuttonapproved);
+            instantapply.setTextColor(Color.parseColor("#E2A300"));
             instantapply.setClickable(false);
         }
     }
@@ -301,7 +297,7 @@ public class CardDetailPage extends Activity {
                 }
         ) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 Map<String, String> header = new HashMap<String, String>();
                 String bearer = "Bearer " + SessionManager.get_access_token(prefs);
                 header.put("Content-Type", "application/json; charset=utf-8");
@@ -358,7 +354,6 @@ public class CardDetailPage extends Activity {
 
 //            holder.tv1.setText((list_car.get(position).getName()));
             holder.tv1.setText(HtmlCompat.fromHtml(list_car.get(position).getName(), HtmlCompat.FROM_HTML_MODE_LEGACY));
-
 
         }
 
