@@ -121,20 +121,13 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
 
     public void get_card_list() {
 
-        final JSONObject json = new JSONObject();
-        try {
-            json.put("auth_key", BuildConfig.oAuthdeal4loans);
-            json.put("method", "GetWFAppLeadStatusAPI");
-            json.put("mobile", SessionManager.get_mobile(prefs));
-            json.put("source", "wf_android");
-            json.put("api_type", "PROD");
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = getString(R.string.BASE_URL)+"/track-card-details?mobile_number="+SessionManager.get_mobile(prefs);
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL_Deal4Loans), json,
+        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
+                    // response
+
                     try {
                         if (progressDialog != null && progressDialog.isShowing()) {
                             progressDialog.dismiss();
@@ -143,9 +136,9 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                         list1 = new ArrayList<>();
                         list1.clear();
 
-                        if (jsonObject.getString("message").equalsIgnoreCase("Success")) {
+                        if (jsonObject.getString("status").equalsIgnoreCase("Success")) {
 
-                            JSONArray jsonArray = (jsonObject.getJSONArray("data"));
+                            JSONArray jsonArray = (jsonObject.getJSONArray("result"));
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject objectnew2 = jsonArray.getJSONObject(i);
                                 Gettersetterforall pack = new Gettersetterforall();
@@ -154,7 +147,6 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                                 pack.setImage(objectnew2.getString("card_image"));
                                 pack.setAnnualfees(objectnew2.getString("latest_date_created"));
                                 pack.setJoiningfees(objectnew2.getString("total_clicked"));
-                                pack.setCard_state(objectnew2.getString("status"));
 
                                 list1.add(pack);
 
@@ -182,13 +174,28 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                         get_cibil_history();
 
                     } catch (Exception e) {
+//                        progressDialog.dismiss();
+
                         e.printStackTrace();
                     }
-                }, Throwable::printStackTrace);
-        int socketTimeout = 30000;
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        jsonObjectRequest.setRetryPolicy(policy);
-        queue.add(jsonObjectRequest);
+                },
+                error -> {
+                    // TODO Auto-generated method stub
+//                    progressDialog.dismiss();
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                String bearer = "Bearer " + SessionManager.get_access_token(prefs);
+                params.put("Content-Type", "application/json; charset=utf-8");
+                params.put("Accept", "application/json");
+                params.put("Authorization", bearer);
+
+                return params;
+            }
+        };
+        queue.add(getRequest);
     }
 
 
@@ -253,29 +260,43 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                     .load(list_car.get(position).getImage())
                     .into(holder.reli);
 
-            if (list_car.get(position).getCard_state().equalsIgnoreCase("Pending") || list_car.get(position).getCard_state().equalsIgnoreCase("Applied")) {
-                holder.applynow.setVisibility(View.GONE);
-                holder.pending.setVisibility(View.VISIBLE);
-                holder.pending.setText(list_car.get(position).getCard_state());
-                holder.approved.setVisibility(View.GONE);
-            } else if (list_car.get(position).getCard_state().equalsIgnoreCase("Approved")) {
-                holder.applynow.setVisibility(View.GONE);
-                holder.pending.setVisibility(View.GONE);
-                holder.approved.setVisibility(View.VISIBLE);
-                holder.approved.setText(list_car.get(position).getCard_state());
-            } else {
-                holder.applynow.setVisibility(View.VISIBLE);
-                holder.pending.setVisibility(View.GONE);
-                holder.applynow.setText("Apply Now");
-                holder.approved.setVisibility(View.GONE);
-            }
+            holder.applynow.setVisibility(View.VISIBLE);
+            holder.applynow.setText("Current Status");
+
+//            if (list_car.get(position).getCard_state().equalsIgnoreCase("Pending") || list_car.get(position).getCard_state().equalsIgnoreCase("Applied")) {
+//                holder.applynow.setVisibility(View.GONE);
+//                holder.pending.setVisibility(View.VISIBLE);
+//                holder.pending.setText(list_car.get(position).getCard_state());
+//                holder.approved.setVisibility(View.GONE);
+//            } else if (list_car.get(position).getCard_state().equalsIgnoreCase("Approved")) {
+//                holder.applynow.setVisibility(View.GONE);
+//                holder.pending.setVisibility(View.GONE);
+//                holder.approved.setVisibility(View.VISIBLE);
+//                holder.approved.setText(list_car.get(position).getCard_state());
+//            } else {
+//                holder.applynow.setVisibility(View.VISIBLE);
+//                holder.pending.setVisibility(View.GONE);
+//                holder.applynow.setText("Apply Now");
+//                holder.approved.setVisibility(View.GONE);
+//            }
             holder.applynow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    progressDialog.show();
-                    bank_code = list_car.get(position).getBank_code();
-                    get_encrypted_link(list_car.get(position).getBank_code(), list_car.get(position).getImage(), list_car.get(position).getName());
+                    Intent intent = new Intent(CreditCardHistory.this, CardDetailPage.class);
+                    intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
+                    intent.putExtra("status", "NA");
+                    intent.putExtra("cardname", "" + list_car.get(position).getName());
+//                            intent.putExtra("imagepath", "" + list_car.get(position).getImage());
+//                            intent.putExtra("features", "" + list_car.get(position).getFeauters());
+//                            intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
+//                            intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
+                    intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
+                    startActivity(intent);
+
+//                    progressDialog.show();
+//                    bank_code = list_car.get(position).getBank_code();
+//                    get_encrypted_link(list_car.get(position).getBank_code(), list_car.get(position).getImage(), list_car.get(position).getName());
                 }
             });
 
@@ -284,13 +305,13 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                 public void onClick(View view) {
                     Intent intent = new Intent(CreditCardHistory.this, CardDetailPage.class);
                     intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
-                    intent.putExtra("status", "" + list_car.get(position).getCard_state());
+                    intent.putExtra("status", "NA");
                     intent.putExtra("cardname", "" + list_car.get(position).getName());
 //                            intent.putExtra("imagepath", "" + list_car.get(position).getImage());
 //                            intent.putExtra("features", "" + list_car.get(position).getFeauters());
 //                            intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
 //                            intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
-//                            intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
+                            intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
                     startActivity(intent);
                 }
             });
@@ -300,13 +321,13 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                 public void onClick(View view) {
                     Intent intent = new Intent(CreditCardHistory.this, CardDetailPage.class);
                     intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
-                    intent.putExtra("status", "" + list_car.get(position).getCard_state());
+                    intent.putExtra("status", "NA");
                     intent.putExtra("cardname", "" + list_car.get(position).getName());
 //                            intent.putExtra("imagepath", "" + list_car.get(position).getImage());
 //                            intent.putExtra("features", "" + list_car.get(position).getFeauters());
 //                            intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
 //                            intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
-//                            intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
+                            intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
                     startActivity(intent);
                 }
             });
@@ -343,54 +364,6 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                 finish();
                 break;
         }
-    }
-
-    public void get_encrypted_link(String bank_code, String imagepath, String strcardname) {
-
-        final JSONObject json = new JSONObject();
-        try {
-            json.put("auth_key", BuildConfig.oAuthdeal4loans);
-            json.put("method", "EncodeString");
-            json.put("text", "product=CC&bank_code=" + bank_code + "&device_type=android&cid=" +
-                    SessionManager.get_cibil_id(prefs) + "&mobile=" + SessionManager.get_mobile(prefs) +
-                    "&card_image=" + imagepath + "&card_name=" + strcardname);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL_Deal4Loans), json,
-                response -> {
-                    try {
-
-                        JSONObject jsonObject = new JSONObject(response.toString());
-                        if (jsonObject.getString("message").equalsIgnoreCase("Success")) {
-                            JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                            String url = "https://www.deal4loans.com/wfapppage.php?" + jsonObject1.getString("encoded_text");
-
-                            Intent intent = new Intent(CreditCardHistory.this, WebviewActivity.class);
-                            intent.putExtra("url", url);
-                            intent.putExtra("bank_code", bank_code);
-                            intent.putExtra("imagepath", imagepath);
-                            intent.putExtra("strcardname", strcardname);
-                            startActivity(intent);
-
-//                            Intent openUrlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//                            startActivity(openUrlIntent);
-                            progressDialog.dismiss();
-                        } else {
-                            Toast.makeText(CreditCardHistory.this, "" + jsonObject.getString("message"), Toast.LENGTH_LONG).show();
-
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }, Throwable::printStackTrace);
-        int socketTimeout = 30000;
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        jsonObjectRequest.setRetryPolicy(policy);
-        queue.add(jsonObjectRequest);
     }
 
     @Override

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "947338240817",
+    "project_id": "wishfin-credit-card",
+    "storage_bucket": "wishfin-credit-card.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947338240817:android:957a661f34d77003f4c610",
+        "android_client_info": {
+          "package_name": "com.wishfin_credit_card"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947338240817-s6qffke250anhrk677p5r97m65rb1pdt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcuuU-PR-DO1cs9sDceOMe4OtsxdKcxcY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "947338240817-s6qffke250anhrk677p5r97m65rb1pdt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

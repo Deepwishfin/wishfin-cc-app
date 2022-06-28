@@ -3,7 +3,6 @@
     <string name="dialogtext">Please Wait, Loading…</string>
 <!--    <string name="BASE_URL">https://api.wishfin.com</string>-->
         <string name="BASE_URL">https://apistage.wishfin.com</string>
-    <string name="BASE_URL_Deal4Loans">https://www.deal4loans.com/referfriend/api/v1/index</string>
     <string name="resend_otp">Resend OTP</string>
     <string name="terms_and_condition">Terms and Conditions</string>
     <string name="privacy_policy">Privacy Policy</string>

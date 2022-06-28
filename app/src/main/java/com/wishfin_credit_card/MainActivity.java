@@ -15,7 +15,7 @@ import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView signup, login;
+    TextView  login;
     SharedPreferences prefs;
 
     @Override

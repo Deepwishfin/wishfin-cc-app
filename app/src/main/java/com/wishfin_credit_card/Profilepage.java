@@ -58,7 +58,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
     LinearLayout line1, line2, line3, line5;
     ImageView back;
     LinearLayout referfriendrelative, termsandconditionrelative, privacypolicyrelative,
-            helpsupportrelative,contactusrelative, logoutrelative;
+            helpsupportrelative, contactusrelative, logoutrelative;
     Dialog dialog;
     SharedPreferences prefs;
     TextView heading, desc, checkcibil, refreshscore, cibilscore, cibildisplay;
@@ -67,11 +67,16 @@ public class Profilepage extends Activity implements View.OnClickListener {
     String IPaddress = "", multiplequestion = "false", singlequestion = "false";
     CustomPagerAdapter adapter;
     ExpandableListAdapter radio_question_list_adapter_expandable;
+    WishFinAnalytics wishFinAnalytics;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profilepage);
+
+        wishFinAnalytics = new WishFinAnalytics(this);
+
+        wishFinAnalytics.profilepage();
 
         line1 = findViewById(R.id.line1);
         line2 = findViewById(R.id.line2);
@@ -144,7 +149,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
                     public void onClick(View v) {
 
                         Intent intent = new Intent(Intent.ACTION_DIAL);
-                        intent.setData(Uri.parse("tel:+918882935454" ));
+                        intent.setData(Uri.parse("tel:+918882935454"));
                         startActivity(intent);
                         dialog.dismiss();
                     }
@@ -193,6 +198,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
                 if (progressDialog != null) {
                     progressDialog.show();
                 }
+                wishFinAnalytics.cibilPage();
                 get_cibil_fulfill_order();
 
 
@@ -301,6 +307,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
 
         helpsupportrelative.setOnClickListener(v -> {
 
+            wishFinAnalytics.rateapp();
             showRateAppFallbackDialog();
 
 //            Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
@@ -2557,7 +2564,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
 
     private void showRateAppFallbackDialog() {
         new MaterialAlertDialogBuilder(this)
-                .setTitle("Hello "+SessionManager.get_firstname(prefs))
+                .setTitle("Hello " + SessionManager.get_firstname(prefs))
                 .setMessage(getString(R.string.rateuspopup))
                 .setPositiveButton("Rate Us", (dialog, which) -> redirectToPlayStore())
                 .setNegativeButton("Not Now",

@@ -21,6 +21,8 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +33,7 @@ public class Splash extends Activity {
     boolean permission = false;
     int PERMISSION_ALL = 1;
     Dialog dialog;
+    WishFinAnalytics wishFinAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +49,11 @@ public class Splash extends Activity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
 
+        wishFinAnalytics = new WishFinAnalytics(this);
 
         if (isThereInternetConnection()) {
             checkforpermission();
-//            getdevicetoken();
+            getdevicetoken();
         } else {
 
             Objects.requireNonNull(dialog.getWindow()).setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
@@ -70,17 +74,21 @@ public class Splash extends Activity {
 
     }
 
-//    private void getdevicetoken() {
-//        FirebaseInstanceId.getInstance().getInstanceId()
-//                .addOnCompleteListener(task -> {
-//                    if (!task.isSuccessful()) {
-//                        SessionManager.save_device_token(prefs, "Not Found");
-//                        return;
-//                    }
-//                    SessionManager.save_device_token(prefs, Objects.requireNonNull(task.getResult()).getToken());
-//                });
-//
-//    }
+    private void getdevicetoken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        SessionManager.save_device_token(prefs, "Not Found");
+//                        Toast.makeText(Splash.this, "This : is not found", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Get new FCM registration token
+                        String token = task.getResult();
+                        SessionManager.save_device_token(prefs, token);
+//                        Toast.makeText(Splash.this, "This : " + token, Toast.LENGTH_SHORT).show();
+                    }
+
+                });
+    }
 
 
     private void checkforpermission() {
@@ -172,6 +180,9 @@ public class Splash extends Activity {
     private void checkForUpdate() {
         new Handler().postDelayed(() -> {
             if (SessionManager.get_login(prefs).equalsIgnoreCase("True")) {
+
+                wishFinAnalytics.openApp();
+
                 Intent intent = new Intent(Splash.this, Dashboard.class);
                 startActivity(intent);
                 finish();

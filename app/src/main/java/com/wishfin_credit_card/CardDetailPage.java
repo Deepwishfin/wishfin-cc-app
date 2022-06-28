@@ -28,10 +28,8 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -60,11 +58,14 @@ public class CardDetailPage extends Activity {
     Share_Adapter radio_question_list_adapter;
     Dialog dialog;
     RelativeLayout backbutton;
+    WishFinAnalytics wishFinAnalytics;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_detail_page);
+
+        wishFinAnalytics = new WishFinAnalytics(this);
 
         imageView = findViewById(R.id.imageView);
         cardname = findViewById(R.id.cardname);
@@ -163,7 +164,14 @@ public class CardDetailPage extends Activity {
             @Override
             public void onClick(View view) {
 
+                wishFinAnalytics.insta_apply_clicked();
+
                 if (isThereInternetConnection()) {
+//                    Intent intent = new Intent(CardDetailPage.this, WebviewActivity.class);
+//                    intent.putExtra("url", insta_apply_link);
+//                    intent.putExtra("bank_code", bank_code);
+//                    intent.putExtra("strcardname", strcardname);
+//                    startActivity(intent);
                     progressDialog.show();
                     get_encrypted_link();
                 } else {
@@ -174,17 +182,12 @@ public class CardDetailPage extends Activity {
             }
         });
 
-        if (status.equalsIgnoreCase("Pending") || status.equalsIgnoreCase("Applied")) {
-            instantapply.setText(status);
-            instantapply.setBackgroundResource(R.drawable.roundedbuttonpending);
-            instantapply.setTextColor(Color.parseColor("#6563FF"));
-            instantapply.setClickable(false);
-        } else if (status.equalsIgnoreCase("Approved")) {
-            instantapply.setText(status);
-            instantapply.setBackgroundResource(R.drawable.roundedbuttonapproved);
-            instantapply.setTextColor(Color.parseColor("#E2A300"));
-            instantapply.setClickable(false);
+        if (status.equalsIgnoreCase("NA")) {
+            progressDialog.show();
+            getstatus_data();
         }
+
+
     }
 
     public void get_card_list() {
@@ -203,7 +206,7 @@ public class CardDetailPage extends Activity {
                             JSONArray jsonArray = (jsonObject1.getJSONArray("bank-quote"));
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject objectnew2 = jsonArray.getJSONObject(i);
-                                Gettersetterforall pack = new Gettersetterforall();
+//                                Gettersetterforall pack = new Gettersetterforall();
 
                                 if (objectnew2.getString("name").equalsIgnoreCase(strcardname)) {
                                     cardname.setText(strcardname);
@@ -382,33 +385,51 @@ public class CardDetailPage extends Activity {
 
         final JSONObject json = new JSONObject();
         try {
-            json.put("auth_key", BuildConfig.oAuthdeal4loans);
-            json.put("method", "EncodeString");
-            json.put("text", "product=CC&bank_code=" + bank_code + "&device_type=android&cid=" +
-                    SessionManager.get_cibil_id(prefs) + "&mobile=" + SessionManager.get_mobile(prefs) +
-                    "&card_image=" + imagepath + "&card_name=" + strcardname);
+            json.put("cid", SessionManager.get_cibil_id(prefs));
+            json.put("mobile", SessionManager.get_mobile(prefs));
+            json.put("bank_code", bank_code);
+            json.put("card_name", strcardname);
+            json.put("card_image", imagepath);
+            json.put("device_type", "Android");
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL_Deal4Loans), json,
+        JsonObjectRequest getRequest = new JsonObjectRequest(
+                Request.Method.POST, getString(R.string.BASE_URL) + "/secure-encode", json,
                 response -> {
                     try {
 
                         JSONObject jsonObject = new JSONObject(response.toString());
-                        if (jsonObject.getString("message").equalsIgnoreCase("Success")) {
-                            JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                            String url = "https://www.deal4loans.com/wfapppage.php?" + jsonObject1.getString("encoded_text");
+                        if (jsonObject.getString("status").equalsIgnoreCase("Success")) {
+                            JSONObject jsonObject1 = jsonObject.getJSONObject("result");
+
+                            String prefixurl = "";
+
+                            if (bank_code.equalsIgnoreCase("036")) {
+                                prefixurl = "https://stage.wishfin.com/scb-lp/home?";
+//                                prefixurl = "https://stage.wishfin.com/scb-lp/home?";
+
+                            } else if (bank_code.equalsIgnoreCase("m005")) {
+                                prefixurl = "https://stage.wishfin.com/axis-credit-cards?";
+//                                prefixurl = "https://stage.wishfin.com/axis-credit-cards?";
+
+                            } else if (bank_code.equalsIgnoreCase("002")) {
+                                prefixurl = "https://stage.wishfin.com/scb-lp/home?";
+//                                prefixurl = "https://stage.wishfin.com/scb-lp/home?";
+
+                            } else if (bank_code.equalsIgnoreCase("m024")) {
+                                prefixurl = "https://stage.wishfin.com/scb-lp/home?";
+//                                prefixurl = "https://stage.wishfin.com/scb-lp/home?";
+
+                            }
+                            String url = prefixurl + "source=wishfin_android&view=" + jsonObject1.getString("hash");
 
                             Intent intent = new Intent(CardDetailPage.this, WebviewActivity.class);
                             intent.putExtra("url", url);
                             intent.putExtra("bank_code", bank_code);
                             intent.putExtra("strcardname", strcardname);
                             startActivity(intent);
-
-//                            Intent openUrlIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//                            startActivity(openUrlIntent);
                             progressDialog.dismiss();
                         } else {
                             Toast.makeText(CardDetailPage.this, "" + jsonObject.getString("message"), Toast.LENGTH_LONG).show();
@@ -416,13 +437,101 @@ public class CardDetailPage extends Activity {
                         }
 
                     } catch (Exception e) {
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
                         e.printStackTrace();
                     }
-                }, Throwable::printStackTrace);
-        int socketTimeout = 30000;
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        jsonObjectRequest.setRetryPolicy(policy);
-        queue.add(jsonObjectRequest);
+
+
+                },
+                error -> {
+
+                    try {
+                        int statusCode = error.networkResponse.statusCode;
+                        if (statusCode == 421) {
+                        }
+                        error.printStackTrace();
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> header = new HashMap<String, String>();
+                String bearer = "Bearer " + SessionManager.get_access_token(prefs);
+                header.put("Content-Type", "application/json; charset=utf-8");
+                header.put("Accept", "application/json");
+                header.put("Authorization", bearer);
+
+                return header;
+            }
+        };
+        queue.add(getRequest);
+    }
+
+    private void getstatus_data() {
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = getString(R.string.BASE_URL) + "/get-credit-card-status?mobile_number=" + SessionManager.get_mobile(prefs) + "&bank_code=" + bank_code;
+
+        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
+                response -> {
+                    // response
+
+                    try {
+
+                        progressDialog.dismiss();
+
+                        JSONObject jsonObject = new JSONObject(response);
+
+                        if (jsonObject.getString("status").equalsIgnoreCase("success")) {
+
+                            JSONObject jsonObject1 = jsonObject.getJSONObject("result");
+
+                            if (jsonObject1.getString("card_status").equalsIgnoreCase("Pending") || jsonObject1.getString("card_status").equalsIgnoreCase("Applied")) {
+                                instantapply.setText(status);
+                                instantapply.setBackgroundResource(R.drawable.roundedbuttonpending);
+                                instantapply.setTextColor(Color.parseColor("#6563FF"));
+                                instantapply.setClickable(false);
+                            } else if (jsonObject1.getString("card_status").equalsIgnoreCase("Approved")) {
+                                instantapply.setText(status);
+                                instantapply.setBackgroundResource(R.drawable.roundedbuttonapproved);
+                                instantapply.setTextColor(Color.parseColor("#E2A300"));
+                                instantapply.setClickable(false);
+                            }
+
+                        }
+
+                    } catch (Exception e) {
+//                        progressDialog.dismiss();
+
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    // TODO Auto-generated method stub
+//                    progressDialog.dismiss();
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                String bearer = "Bearer " + SessionManager.get_access_token(prefs);
+                params.put("Content-Type", "application/json; charset=utf-8");
+                params.put("Accept", "application/json");
+                params.put("Authorization", bearer);
+
+                return params;
+            }
+        };
+        queue.add(getRequest);
+
     }
 
 

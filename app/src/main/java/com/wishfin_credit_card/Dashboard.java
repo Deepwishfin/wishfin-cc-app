@@ -64,6 +64,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
     LinearLayout line1, line2, line3, line5, personalised;
     boolean doubleBackToExitPressedOnce = false;
     LinearLayout bestChoice, bestreward, lifetimefree, besttravel, bestfuel, bestcashback;
+    WishFinAnalytics wishFinAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,8 @@ public class Dashboard extends Activity implements View.OnClickListener {
 
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.dashboard);
+
+        wishFinAnalytics = new WishFinAnalytics(this);
 
         queue = Volley.newRequestQueue(Dashboard.this);
         prefs = PreferenceManager.getDefaultSharedPreferences(Dashboard.this);
@@ -400,40 +403,47 @@ public class Dashboard extends Activity implements View.OnClickListener {
 
             case R.id.line2:
             case R.id.exploremore:
+                wishFinAnalytics.history_page();
                 Intent intent1 = new Intent(Dashboard.this, CreditCardHistory.class);
                 startActivity(intent1);
 
                 break;
             case R.id.bestChoice:
+                wishFinAnalytics.best_cc_page();
                 Intent intent2 = new Intent(Dashboard.this, ExploreCreditCard.class);
                 intent2.putExtra("type", "Best");
                 startActivity(intent2);
 
                 break;
             case R.id.bestreward:
+                wishFinAnalytics.best_reward_cc_page();
                 Intent intent3 = new Intent(Dashboard.this, ExploreCreditCard.class);
                 intent3.putExtra("type", "Rewards");
                 startActivity(intent3);
                 break;
             case R.id.lifetimefree:
+                wishFinAnalytics.lifetime_free_cc_page();
                 Intent intent4 = new Intent(Dashboard.this, ExploreCreditCard.class);
                 intent4.putExtra("type", "Lifetime Free");
                 startActivity(intent4);
 
                 break;
             case R.id.besttravel:
+                wishFinAnalytics.best_travel_cc_page();
                 Intent intent5 = new Intent(Dashboard.this, ExploreCreditCard.class);
                 intent5.putExtra("type", "Travel");
                 startActivity(intent5);
 
                 break;
             case R.id.bestfuel:
+                wishFinAnalytics.best_fuel_cc_page();
                 Intent intent6 = new Intent(Dashboard.this, ExploreCreditCard.class);
                 intent6.putExtra("type", "Fuel");
                 startActivity(intent6);
 
                 break;
             case R.id.bestcashback:
+                wishFinAnalytics.best_cashback_cc_page();
                 Intent intent7 = new Intent(Dashboard.this, ExploreCreditCard.class);
                 intent7.putExtra("type", "Cashback");
                 startActivity(intent7);
