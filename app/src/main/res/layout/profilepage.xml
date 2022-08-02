@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
-                android:text="Profile"
+                android:text="@string/profile"
                 android:textColor="#2E384D"
                 android:textSize="20dp" />
 
@@ -133,7 +133,7 @@
                                 android:layout_marginStart="12dp"
                                 android:layout_toEndOf="@+id/imageView1"
                                 android:gravity="center|left"
-                                android:text="Share this App"
+                                android:text="@string/shareapp"
                                 android:textColor="#304258"
                                 android:textSize="12dp" />
 
@@ -172,7 +172,7 @@
                                     android:layout_marginStart="12dp"
                                     android:layout_toEndOf="@+id/imageView2"
                                     android:gravity="center|left"
-                                    android:text="Check Cibil"
+                                    android:text="@string/checkcibil"
                                     android:textColor="#304258"
                                     android:textSize="12dp"
                                     android:visibility="gone" />
@@ -184,7 +184,7 @@
                                     android:layout_marginStart="12dp"
                                     android:layout_toEndOf="@+id/imageView2"
                                     android:gravity="center|left"
-                                    android:text="Your Cibil Score"
+                                    android:text="@string/yourcibilscore"
                                     android:textColor="#304258"
                                     android:textSize="12dp"
                                     android:visibility="gone" />
@@ -197,7 +197,7 @@
                                     android:layout_marginStart="12dp"
                                     android:layout_toEndOf="@+id/imageView2"
                                     android:gravity="center|left"
-                                    android:text="Refresh Score"
+                                    android:text="@string/refreshscore"
                                     android:textColor="#304258"
                                     android:textSize="12dp" />
                             </LinearLayout>
@@ -256,7 +256,7 @@
                                 android:layout_marginStart="12dp"
                                 android:layout_toEndOf="@+id/imageView11"
                                 android:gravity="center|left"
-                                android:text="Term &amp; Conditions"
+                                android:text="@string/termsandconditions"
                                 android:textColor="#304258"
                                 android:textSize="12dp" />
 
@@ -292,7 +292,7 @@
                                 android:layout_marginStart="12dp"
                                 android:layout_toEndOf="@+id/imageView2"
                                 android:gravity="center|left"
-                                android:text="Privacy Policy"
+                                android:text="@string/privacy_policy"
                                 android:textColor="#304258"
                                 android:textSize="12dp" />
 
@@ -328,7 +328,7 @@
                                 android:layout_marginStart="12dp"
                                 android:layout_toEndOf="@+id/imageView2"
                                 android:gravity="center|left"
-                                android:text="Rate us"
+                                android:text="@string/rateus"
                                 android:textColor="#304258"
                                 android:textSize="12dp" />
 
@@ -364,7 +364,43 @@
                                 android:layout_marginStart="12dp"
                                 android:layout_toEndOf="@+id/imageView2"
                                 android:gravity="center|left"
-                                android:text="Contact us"
+                                android:text="@string/contactus"
+                                android:textColor="#304258"
+                                android:textSize="12dp" />
+
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/md_grey_300" />
+
+                        <LinearLayout
+                            android:id="@+id/languagerelative"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="20dp"
+                            android:visibility="visible">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="TODO"
+                                android:src="@drawable/ic_logout" />
+
+                            <com.wishfin_credit_card.FontClasses.PoppinsMedium
+                                android:id="@+id/changelanguage"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="12dp"
+                                android:layout_toEndOf="@+id/imageView2"
+                                android:gravity="center|left"
+                                android:text="@string/changeapplanguage"
                                 android:textColor="#304258"
                                 android:textSize="12dp" />
 
@@ -401,7 +437,7 @@
                                 android:layout_marginStart="12dp"
                                 android:layout_toEndOf="@+id/imageView2"
                                 android:gravity="center|left"
-                                android:text="Logout"
+                                android:text="@string/logout"
                                 android:textColor="#304258"
                                 android:textSize="12dp" />
 

@@ -29,7 +29,7 @@
         <com.wishfin_credit_card.FontClasses.PopinsSemibold
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enable the Full Power of Your "
+            android:text="@string/enable_full_power"
             android:textSize="16dp" />
 
         <com.wishfin_credit_card.FontClasses.PopinsSemibold
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:text="Credit Card"
+            android:text="@string/credit_card"
             android:textSize="24dp" />
 
 

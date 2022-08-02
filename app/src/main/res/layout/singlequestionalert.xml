@@ -15,7 +15,7 @@
         android:padding="5dp"
         android:background="@color/primary"
         android:gravity="left"
-        android:text="CIBIL needs some more information to ensure your security and the accuracy of your score.You'll be done in few seconds!" />
+        android:text="@string/cibl_question_heading" />
 
 
     <TextView
@@ -56,7 +56,7 @@
             android:layout_weight="1"
             android:background="@drawable/roundedbutton"
             android:clickable="true"
-            android:text="Submit"
+            android:text="@string/submit"
             android:textColor="#fff"
             android:textStyle="bold" />
 
@@ -68,7 +68,7 @@
             android:layout_weight="1"
             android:background="@drawable/roundedbutton"
             android:clickable="true"
-            android:text="Resend"
+            android:text="@string/resend"
             android:textColor="#fff"
             android:textStyle="bold" />
     </LinearLayout>

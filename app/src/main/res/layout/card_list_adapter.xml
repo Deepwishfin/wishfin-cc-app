@@ -63,7 +63,7 @@
                 <com.wishfin_credit_card.FontClasses.PoppinsRegular
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Joining Fees"
+                    android:text="@string/joiningfees"
                     android:textColor="#64748B"
                     android:textSize="12dp" />
 
@@ -89,7 +89,7 @@
                 <com.wishfin_credit_card.FontClasses.PoppinsRegular
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Annual Fees"
+                    android:text="@string/annualfees"
                     android:textColor="#64748B"
                     android:textSize="12dp" />
 
@@ -120,7 +120,7 @@
                     android:background="@drawable/roundedbuttonapplynow"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="View Details"
+                    android:text="@string/viewdetails"
                     android:textColor="@color/primary"
                     android:textSize="10dp" />
             </LinearLayout>

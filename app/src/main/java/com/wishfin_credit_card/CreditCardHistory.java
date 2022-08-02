@@ -1,5 +1,6 @@
 package com.wishfin_credit_card;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,18 +22,14 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.RetryPolicy;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -122,7 +119,7 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
     public void get_card_list() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL)+"/track-card-details?mobile_number="+SessionManager.get_mobile(prefs);
+        String url= BuildConfig.BASE_URL + "/track-card-details?mobile_number=" + SessionManager.get_mobile(prefs);
 
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
@@ -147,6 +144,7 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                                 pack.setImage(objectnew2.getString("card_image"));
                                 pack.setAnnualfees(objectnew2.getString("latest_date_created"));
                                 pack.setJoiningfees(objectnew2.getString("total_clicked"));
+                                pack.setId(objectnew2.getString("card_id"));
 
                                 list1.add(pack);
 
@@ -248,7 +246,7 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
         }
 
         @Override
-        public void onBindViewHolder(Share_Adapter.MyViewHolder holder, final int position) {
+        public void onBindViewHolder(Share_Adapter.MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
             holder.tv1.setText(list_car.get(position).getName());
             holder.tv2.setText(list_car.get(position).getId());
@@ -261,7 +259,7 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                     .into(holder.reli);
 
             holder.applynow.setVisibility(View.VISIBLE);
-            holder.applynow.setText("Current Status");
+            holder.applynow.setText(getString(R.string.current_status));
 
 //            if (list_car.get(position).getCard_state().equalsIgnoreCase("Pending") || list_car.get(position).getCard_state().equalsIgnoreCase("Applied")) {
 //                holder.applynow.setVisibility(View.GONE);
@@ -287,7 +285,7 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                     intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
                     intent.putExtra("status", "NA");
                     intent.putExtra("cardname", "" + list_car.get(position).getName());
-//                            intent.putExtra("imagepath", "" + list_car.get(position).getImage());
+                    intent.putExtra("card_id", "" + list_car.get(position).getId());
 //                            intent.putExtra("features", "" + list_car.get(position).getFeauters());
 //                            intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
 //                            intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
@@ -307,11 +305,12 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                     intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
                     intent.putExtra("status", "NA");
                     intent.putExtra("cardname", "" + list_car.get(position).getName());
+                    intent.putExtra("card_id", "" + list_car.get(position).getId());
 //                            intent.putExtra("imagepath", "" + list_car.get(position).getImage());
 //                            intent.putExtra("features", "" + list_car.get(position).getFeauters());
 //                            intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
 //                            intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
-                            intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
+                    intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
                     startActivity(intent);
                 }
             });
@@ -323,11 +322,12 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
                     intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
                     intent.putExtra("status", "NA");
                     intent.putExtra("cardname", "" + list_car.get(position).getName());
+                    intent.putExtra("card_id", "" + list_car.get(position).getId());
 //                            intent.putExtra("imagepath", "" + list_car.get(position).getImage());
 //                            intent.putExtra("features", "" + list_car.get(position).getFeauters());
 //                            intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
 //                            intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
-                            intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
+                    intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
                     startActivity(intent);
                 }
             });
@@ -379,7 +379,7 @@ public class CreditCardHistory extends Activity implements View.OnClickListener 
     public void get_cibil_history() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL) + "/historic-score?mobile=" + SessionManager.get_mobile(prefs);
+        String url = BuildConfig.BASE_URL + "/historic-score?mobile=" + SessionManager.get_mobile(prefs);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // response

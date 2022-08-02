@@ -1,51 +1,24 @@
+plugins {
+    id "com.google.secrets_gradle_plugin" version "0.6.1"
+}
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "29.0.3"
+    compileSdk 32
 
     defaultConfig {
         applicationId "com.wishfin_credit_card"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 7
-        versionName "1.7"
+        targetSdkVersion 32
+        versionCode 12
+        versionName "1.12"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         debug {
-//            ///////////////////////Live///////////////////////////////////
-//            buildConfigField "String", "scburl", '"https://wishfin.com/scb-lp/home?"'
-//            buildConfigField "String", "axisurl", '"https://wishfin.com/axis-credit-cards?"'
-//            buildConfigField "String", "idfcurl", '""'
-//            buildConfigField "String", "sbiurl", '""'
-//            buildConfigField "String", "oAuthdeal4loans", '"Cq6dTSr4n5btSKS3JRyC"'
-//            buildConfigField "String", "oAuthUserName", '"wfexpenseapp"'
-//            buildConfigField "String", "oAuthPassword", '"8aNKX7vDu758R6Vu"'
-//            buildConfigField "String", "oAuthClientId", '"wfexpenseapp"'
-//            buildConfigField "String", "oAuthGrantType", '"password"'
-//            buildConfigField "String", "MTUZO_CLIENT_KEY", '"43839730215012758965"'
-//            buildConfigField "String", "MTUZO_CLIENT_PASS", '"44360934289618915328"'
-//            buildConfigField "String", "MTUZO_API_KEY", '"tNTD3HeREVn4mLKqG8QVZMz8Byh9RwYljRYmzced8Bhvn1V4aLZ9yzi97ziY"'
-//            buildConfigField "String", "PLACES_API_KEY", '"FD6E9A42AD0C9147B42489D29FF9496335F97EE509F54097B4EC9AFC907B2CB3A3F26FAD5AE77092579E4C935AF45810"'
-
-//          /////////////////////////////////////Debug///////////////////////
-            buildConfigField "String", "scburl", '"https://stage.wishfin.com/scb-lp/home?"'
-            buildConfigField "String", "axisurl", '"https://stage.wishfin.com/axis-credit-cards?"'
-            buildConfigField "String", "idfcurl", '""'
-            buildConfigField "String", "sbiurl", '""'
-            buildConfigField "String", "oAuthdeal4loans", '"Cq6dTSr4n5btSKS3JRyC"'
-            buildConfigField "String", "oAuthUserName", '"wishfin"'
-            buildConfigField "String", "oAuthPassword", '"wfStageApiSTG"'
-            buildConfigField "String", "oAuthClientId", '"wishfin"'
-            buildConfigField "String", "oAuthGrantType", '"password"'
-            buildConfigField "String", "MTUZO_CLIENT_KEY", '"43839730215012758965"'
-            buildConfigField "String", "MTUZO_CLIENT_PASS", '"44360934289618915328"'
-            buildConfigField "String", "MTUZO_API_KEY", '"tNTD3HeREVn4mLKqG8QVZMz8Byh9RwYljRYmzced8Bhvn1V4aLZ9yzi97ziY"'
-            buildConfigField "String", "PLACES_API_KEY", '"FD6E9A42AD0C9147B42489D29FF9496335F97EE509F54097B4EC9AFC907B2CB3A3F26FAD5AE77092579E4C935AF45810"'
 
             debuggable true
             minifyEnabled true
@@ -53,19 +26,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
-            buildConfigField "String", "scburl", '"https://wishfin.com/scb-lp/home?"'
-            buildConfigField "String", "axisurl", '"https://wishfin.com/axis-credit-cards?"'
-            buildConfigField "String", "idfcurl", '""'
-            buildConfigField "String", "sbiurl", '""'
-            buildConfigField "String", "oAuthdeal4loans", '"Cq6dTSr4n5btSKS3JRyC"'
-            buildConfigField "String", "oAuthUserName", '"wfexpenseapp"'
-            buildConfigField "String", "oAuthPassword", '"8aNKX7vDu758R6Vu"'
-            buildConfigField "String", "oAuthClientId", '"wfexpenseapp"'
-            buildConfigField "String", "oAuthGrantType", '"password"'
-            buildConfigField "String", "MTUZO_CLIENT_KEY", '"43839730215012758965"'
-            buildConfigField "String", "MTUZO_CLIENT_PASS", '"44360934289618915328"'
-            buildConfigField "String", "MTUZO_API_KEY", '"tNTD3HeREVn4mLKqG8QVZMz8Byh9RwYljRYmzced8Bhvn1V4aLZ9yzi97ziY"'
-            buildConfigField "String", "PLACES_API_KEY", '"FD6E9A42AD0C9147B42489D29FF9496335F97EE509F54097B4EC9AFC907B2CB3A3F26FAD5AE77092579E4C935AF45810"'
+
 
             debuggable false
             minifyEnabled true
@@ -75,9 +36,10 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
+    buildToolsVersion '33.0.0'
 }
 
 dependencies {
@@ -99,5 +61,6 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.2.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-inappmessaging-display'
+    implementation "com.google.android.play:core:1.10.3"
 
 }

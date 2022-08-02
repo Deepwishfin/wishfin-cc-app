@@ -463,7 +463,7 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "oauth", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/oauth", json,
                 response -> {
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
@@ -498,7 +498,7 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
         }
         progressDialog.show();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/v1/get-otp-data", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/v1/get-otp-data", json,
                 response -> {
                     if (progressDialog != null && progressDialog.isShowing()) {
                         progressDialog.dismiss();
@@ -597,7 +597,7 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
         }
         progressDialog.show();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/v1/otp-verify", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/v1/otp-verify", json,
                 response -> {
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
@@ -685,7 +685,7 @@ public class Signuppage extends Activity implements SMSReceiver.OTPReceiveListen
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/v1/signup", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/v1/signup", json,
                 response -> {
                     if (progressDialog != null && progressDialog.isShowing()) {
                         progressDialog.dismiss();

@@ -143,7 +143,7 @@ public class EligibleCardDetailPage extends Activity {
         }
 
         if (appliedstatus.equalsIgnoreCase("true")) {
-            instantapply.setText("Already Applied");
+            instantapply.setText(getString(R.string.alreadyapplied));
             instantapply.setBackgroundResource(R.drawable.roundedbuttonlightgrey);
             instantapply.setTextColor(Color.parseColor("#000000"));
         }
@@ -221,7 +221,7 @@ public class EligibleCardDetailPage extends Activity {
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/select-opted-bank", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/select-opted-bank", json,
                 response -> {
                     if (progressDialog != null && progressDialog.isShowing()) {
                         progressDialog.dismiss();

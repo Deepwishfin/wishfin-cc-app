@@ -4,6 +4,7 @@
     package="com.wishfin_credit_card">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -22,7 +23,10 @@
         android:roundIcon="@drawable/cclogo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Wishfin_Credit_Card">
-        <activity android:name=".Splash">
+        <activity
+            android:name=".Splash"
+            android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -94,6 +98,7 @@
             android:name=".CreditCardHistory"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Wishfin_Credit_Card.NoActionBar" />
+
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">

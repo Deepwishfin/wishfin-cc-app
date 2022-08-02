@@ -7,6 +7,8 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -15,6 +17,7 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -25,6 +28,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -58,7 +63,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
     LinearLayout line1, line2, line3, line5;
     ImageView back;
     LinearLayout referfriendrelative, termsandconditionrelative, privacypolicyrelative,
-            helpsupportrelative, contactusrelative, logoutrelative;
+            helpsupportrelative, contactusrelative, logoutrelative, languagerelative;
     Dialog dialog;
     SharedPreferences prefs;
     TextView heading, desc, checkcibil, refreshscore, cibilscore, cibildisplay;
@@ -94,6 +99,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
         termsandconditionrelative = findViewById(R.id.termsandconditionrelative);
         privacypolicyrelative = findViewById(R.id.privacypolicyrelative);
         helpsupportrelative = findViewById(R.id.helpsupportrelative);
+        languagerelative = findViewById(R.id.languagerelative);
         logoutrelative = findViewById(R.id.logoutrelative);
         checkcibil = findViewById(R.id.checkcibil);
         refreshscore = findViewById(R.id.refreshscore);
@@ -320,6 +326,68 @@ public class Profilepage extends Activity implements View.OnClickListener {
 
         });
 
+        languagerelative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Objects.requireNonNull(dialog.getWindow()).setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+                dialog.setContentView(R.layout.language);
+                dialog.show();
+                TextView cancle = dialog.findViewById(R.id.cancle);
+                TextView ok = dialog.findViewById(R.id.ok);
+                RadioButton rgenglish = dialog.findViewById(R.id.rgenglish);
+                RadioButton rghindi = dialog.findViewById(R.id.rghindi);
+                RadioButton rgtamil = dialog.findViewById(R.id.rgtamil);
+
+                if (SessionManager.get_app_lang(prefs).equalsIgnoreCase("") || SessionManager.get_app_lang(prefs).equalsIgnoreCase("en")) {
+                    rgenglish.setChecked(true);
+                } else if (SessionManager.get_app_lang(prefs).equalsIgnoreCase("hi")) {
+                    rghindi.setChecked(true);
+                } else if (SessionManager.get_app_lang(prefs).equalsIgnoreCase("ta")) {
+                    rgtamil.setChecked(true);
+                }
+
+
+                cancle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        if (rgenglish.isChecked()) {
+                            SessionManager.save_app_lang(prefs, "en");
+                        } else if (rghindi.isChecked()) {
+                            SessionManager.save_app_lang(prefs, "hi");
+                        } else if (rgtamil.isChecked()) {
+                            SessionManager.save_app_lang(prefs, "ta");
+
+                        }
+
+                        dialog.dismiss();
+                        Locale myLocale;
+                        myLocale = new Locale("" + SessionManager.get_app_lang(prefs));
+                        Resources res = getResources();
+                        DisplayMetrics dm = res.getDisplayMetrics();
+                        Configuration conf = res.getConfiguration();
+                        conf.locale = myLocale;
+                        res.updateConfiguration(conf, dm);
+                        Intent intent1 = new Intent(Profilepage.this, Dashboard.class);
+                        startActivity(intent1);
+                        finish();
+
+                    }
+                });
+
+
+            }
+        });
+
         logoutrelative.setOnClickListener(v -> {
 
             Objects.requireNonNull(dialog.getWindow()).setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
@@ -458,7 +526,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/v1/cibil-fulfill-order", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/v1/cibil-fulfill-order", json,
                 response -> {
 
                     try {
@@ -1028,7 +1096,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        String url = getString(R.string.BASE_URL) + "/v1/get-cibil-user-detail?master_user_id=" + SessionManager.get_masteruserid(prefs) + "&mf_user_id=" + SessionManager.get_mfuserid(prefs);
+        String url = BuildConfig.BASE_URL + "/v1/get-cibil-user-detail?master_user_id=" + SessionManager.get_masteruserid(prefs) + "&mf_user_id=" + SessionManager.get_mfuserid(prefs);
 //        String url = Constants.BASE_URL + "/v1/get-cibil-user-detail?master_user_id=2616097&mf_user_id=2613505";
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
@@ -1289,6 +1357,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
 
                                         int remainingdays = (int) (31 - differenceDates);
                                         Constants.refreshclick = "false";
+                                        Toast.makeText(getApplicationContext(), "Next score update will be in " + remainingdays + " Days", Toast.LENGTH_LONG).show();
                                         Constants.updateavailable = "Next score update will be in " + remainingdays + " Days";
                                         checkcibil.setVisibility(View.GONE);
                                         cibildisplay.setVisibility(View.VISIBLE);
@@ -1342,7 +1411,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
         RequestQueue queue = Volley.newRequestQueue(this);
 
 //        String url = Constants.BASE_URL + "/get-cibil-credit-factors/3061998";
-        String url = getString(R.string.BASE_URL) + "/get-cibil-credit-factors/" + SessionManager.get_cibil_id(prefs);
+        String url = BuildConfig.BASE_URL + "/get-cibil-credit-factors/" + SessionManager.get_cibil_id(prefs);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // response
@@ -1405,7 +1474,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
             progressDialog.show();
         }
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL) + "/v1/cibil-authentication-questions/" + SessionManager.get_cibil_id(prefs);
+        String url = BuildConfig.BASE_URL + "/v1/cibil-authentication-questions/" + SessionManager.get_cibil_id(prefs);
 //        String url = Constants.BASE_URL + "/v1/cibil-authentication-questions/438981";
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
@@ -1806,7 +1875,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/v1/cibil-customer-assets", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/v1/cibil-customer-assets", json,
                 response -> {
                     if (progressDialog != null && progressDialog.isShowing()) {
                         progressDialog.dismiss();
@@ -2105,7 +2174,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/v1/cibil-customer-assets", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/v1/cibil-customer-assets", json,
                 response -> {
                     if (progressDialog != null && progressDialog.isShowing()) {
                         progressDialog.dismiss();
@@ -2404,7 +2473,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
             progressDialog.show();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/v1/cibil-verify-answers", jsonstring,
+                Request.Method.POST, BuildConfig.BASE_URL + "/v1/cibil-verify-answers", jsonstring,
                 response -> {
                     singlequestion = "false";
                     multiplequestion = "false";
@@ -2493,7 +2562,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/oauth", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/oauth", json,
                 response -> {
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
@@ -2527,7 +2596,7 @@ public class Profilepage extends Activity implements View.OnClickListener {
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/update-last-login", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/update-last-login", json,
                 response -> {
 
                     try {
@@ -2564,10 +2633,10 @@ public class Profilepage extends Activity implements View.OnClickListener {
 
     private void showRateAppFallbackDialog() {
         new MaterialAlertDialogBuilder(this)
-                .setTitle("Hello " + SessionManager.get_firstname(prefs))
+                .setTitle(getString(R.string.hello) + " " + SessionManager.get_firstname(prefs))
                 .setMessage(getString(R.string.rateuspopup))
-                .setPositiveButton("Rate Us", (dialog, which) -> redirectToPlayStore())
-                .setNegativeButton("Not Now",
+                .setPositiveButton(getString(R.string.rateus), (dialog, which) -> redirectToPlayStore())
+                .setNegativeButton(getString(R.string.notnow),
                         (dialog, which) -> {
                         })
                 .show();

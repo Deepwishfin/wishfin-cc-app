@@ -19,26 +19,53 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="5dp"
-            android:text="@string/wantstologout"
+            android:text="@string/selectlanguage"
             android:textColor="#2E384D"
             android:textSize="14dp"
             android:textStyle="bold" />
 
-        <LinearLayout
+
+        <RadioGroup
+            android:id="@+id/rg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/heading"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/rgenglish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/english" />
+
+            <RadioButton
+                android:id="@+id/rghindi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hindi" />
+
+            <RadioButton
+                android:id="@+id/rgtamil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tamil" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rg"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:weightSum="2"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="2">
 
             <com.wishfin_credit_card.FontClasses.PopinsSemibold
                 android:id="@+id/cancle"
                 android:layout_width="0dp"
-                android:gravity="center"
                 android:layout_height="30dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="@string/cancel"
                 android:textColor="#2E384D"
                 android:textStyle="bold" />
@@ -46,9 +73,9 @@
             <com.wishfin_credit_card.FontClasses.PopinsSemibold
                 android:id="@+id/ok"
                 android:layout_width="0dp"
-                android:gravity="center"
                 android:layout_height="30dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="@string/yes"
                 android:textColor="#2E384D"
                 android:textStyle="bold" />

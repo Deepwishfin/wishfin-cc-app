@@ -116,36 +116,36 @@ public class PersonalisedCards extends Activity implements View.OnClickListener 
         });
 
         if (type.equalsIgnoreCase("ExploreAll")) {
-            heading_cc_list.setText("Special Cards For You " + SessionManager.get_firstname(prefs));
-            sub_heading_cc_list.setText("Get the Best Card in one minute");
+            heading_cc_list.setText(getString(R.string.special_cards)+" " + SessionManager.get_firstname(prefs));
+            sub_heading_cc_list.setText(getString(R.string.cards_in_minutes));
             heading_relative.setBackgroundColor(Color.parseColor("#FFFFFF"));
         } else if (type.equalsIgnoreCase("Best")) {
-            heading_cc_list.setText("Best Credit Cards");
-            sub_heading_cc_list.setText("Make Your Expenses Inexpensive by New Way of Payment");
+            heading_cc_list.setText(getString(R.string.bestcreditcard));
+            sub_heading_cc_list.setText(getString(R.string.bestccsubheading));
             heading_relative.setBackgroundColor(Color.parseColor("#FFEFF2"));
         } else if (type.equalsIgnoreCase("Rewards")) {
-            heading_cc_list.setText("Rewards Credit Cards");
-            sub_heading_cc_list.setText("Get Rewarded for Spending and Let Rewards do the Payments");
+            heading_cc_list.setText(getString(R.string.rewardcreditcard));
+            sub_heading_cc_list.setText(getString(R.string.rewardccsubheading));
             heading_relative.setBackgroundColor(Color.parseColor("#FFF5D9"));
         } else if (type.equalsIgnoreCase("Lifetime Free")) {
-            heading_cc_list.setText("Life Time Free Credit Cards");
-            sub_heading_cc_list.setText("The Best Things in Life are Free!");
+            heading_cc_list.setText(getString(R.string.lifetimefreecreditcard));
+            sub_heading_cc_list.setText(getString(R.string.lifetimeccsubheading));
             heading_relative.setBackgroundColor(Color.parseColor("#E8FBE5"));
         } else if (type.equalsIgnoreCase("Travel")) {
-            heading_cc_list.setText("Travel Credit Cards");
-            sub_heading_cc_list.setText("Always Fly! Never Compromise with Your Dreams");
+            heading_cc_list.setText(getString(R.string.travelcreditcard));
+            sub_heading_cc_list.setText(getString(R.string.besttravelsubheading));
             heading_relative.setBackgroundColor(Color.parseColor("#DFF9FF"));
         } else if (type.equalsIgnoreCase("Fuel")) {
-            heading_cc_list.setText("Best Fuel Credit Cards");
-            sub_heading_cc_list.setText("You can’t Save Drops but You Can Save Expenses on it");
+            heading_cc_list.setText(getString(R.string.bestfuelcreditcard));
+            sub_heading_cc_list.setText(getString(R.string.bestfuelccsubheading));
             heading_relative.setBackgroundColor(Color.parseColor("#F9F9FC"));
         } else if (type.equalsIgnoreCase("Cashback")) {
-            heading_cc_list.setText("Best Cashback Credit Cards");
-            sub_heading_cc_list.setText("Spend More, Earn More! Make Spending Your Habit");
+            heading_cc_list.setText(getString(R.string.bestcashbackcreditcard));
+            sub_heading_cc_list.setText(getString(R.string.bestcashbackcreditcardsubheading));
             heading_relative.setBackgroundColor(Color.parseColor("#FFEFF2"));
         } else {
-            heading_cc_list.setText("Explore All Credit Cards");
-            sub_heading_cc_list.setText("Get the Best Card in one minute");
+            heading_cc_list.setText(getString(R.string.exploreall));
+            sub_heading_cc_list.setText(getString(R.string.cards_in_minutes));
             heading_relative.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
 
@@ -194,7 +194,7 @@ public class PersonalisedCards extends Activity implements View.OnClickListener 
     public void get_card_list() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL) + "/v1/credit-card-all-quotes";
+        String url = BuildConfig.BASE_URL + "/v1/credit-card-all-quotes";
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // response
@@ -216,7 +216,7 @@ public class PersonalisedCards extends Activity implements View.OnClickListener 
                                     pack.setBank_code(objectnew2.getString("bank_code"));
                                     pack.setName(objectnew2.getString("name"));
                                     pack.setImage(objectnew2.getString("image_path"));
-                                    pack.setId(objectnew2.getString("id"));
+                                    pack.setId(objectnew2.getString("code_by_bank"));
                                     pack.setInsta_apply_link((objectnew2.getString("insta_apply_link")));
 
                                     pack.setFeauters((objectnew2.getJSONArray("feature")));
@@ -384,13 +384,15 @@ public class PersonalisedCards extends Activity implements View.OnClickListener 
 
                     Intent intent = new Intent(PersonalisedCards.this, CardDetailPage.class);
                     intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
-                    intent.putExtra("status", "Apply Now");
+                    intent.putExtra("status", "NA");
                     intent.putExtra("cardname", "" + list_car.get(position).getName());
+                    intent.putExtra("card_id", "" + list_car.get(position).getId());
+
 //                    intent.putExtra("imagepath", "" + list_car.get(position).getImage());
 //                    intent.putExtra("features", "" + list_car.get(position).getFeauters());
 //                    intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
 //                    intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
-//                    intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
+                    intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
                     startActivity(intent);
 
                 }
@@ -404,11 +406,13 @@ public class PersonalisedCards extends Activity implements View.OnClickListener 
                     intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
                     intent.putExtra("status", "Apply Now");
                     intent.putExtra("cardname", "" + list_car.get(position).getName());
+                    intent.putExtra("card_id", "" + list_car.get(position).getId());
+
 //                    intent.putExtra("imagepath", "" + list_car.get(position).getImage());
 //                    intent.putExtra("features", "" + list_car.get(position).getFeauters());
 //                    intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
 //                    intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
-//                    intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
+                    intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
                     startActivity(intent);
 
                 }
@@ -422,11 +426,13 @@ public class PersonalisedCards extends Activity implements View.OnClickListener 
                     intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
                     intent.putExtra("status", "Apply Now");
                     intent.putExtra("cardname", "" + list_car.get(position).getName());
+                    intent.putExtra("card_id", "" + list_car.get(position).getId());
+
 //                    intent.putExtra("imagepath", "" + list_car.get(position).getImage());
 //                    intent.putExtra("features", "" + list_car.get(position).getFeauters());
 //                    intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
 //                    intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
-//                    intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
+                    intent.putExtra("insta_apply_link", "" + list_car.get(position).getInsta_apply_link());
                     startActivity(intent);
 
                 }
@@ -453,7 +459,7 @@ public class PersonalisedCards extends Activity implements View.OnClickListener 
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/oauth", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/oauth", json,
                 response -> {
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
@@ -553,7 +559,7 @@ public class PersonalisedCards extends Activity implements View.OnClickListener 
     public void get_cibil_history() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL) + "/historic-score?mobile=" + SessionManager.get_mobile(prefs);
+        String url = BuildConfig.BASE_URL + "/historic-score?mobile=" + SessionManager.get_mobile(prefs);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // response

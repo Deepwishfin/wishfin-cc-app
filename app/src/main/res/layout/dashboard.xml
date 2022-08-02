@@ -115,7 +115,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
-                            android:text="CARDS ENABLED"
+                            android:text="@string/card_enabled"
                             android:textColor="#0F1A2A"
                             android:visibility="visible" />
 
@@ -125,7 +125,7 @@
                             android:layout_margin="10dp"
                             android:layout_marginTop="20dp"
                             android:layout_marginEnd="10dp"
-                            android:text="Get the best Credit Card in just minutes"
+                            android:text="@string/cards_in_minutes"
                             android:textColor="#0F1A2A"
                             android:textSize="14dp"
                             android:visibility="visible" />
@@ -153,7 +153,7 @@
                     android:background="@drawable/roundedbuttonlightgreen"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Explore All Cards"
+                    android:text="@string/exploreall"
                     android:textAllCaps="false"
                     android:textColor="#ffffff" />
 
@@ -170,7 +170,7 @@
                         android:layout_weight="1"
                         android:drawableLeft="@drawable/ic_fastandhassel"
                         android:drawablePadding="10dp"
-                        android:text="Fast &amp; Hassel free"
+                        android:text="@string/fastandhasel"
                         android:textColor="#0F1A2A"
                         android:textSize="10dp"
                         android:visibility="visible" />
@@ -181,7 +181,7 @@
                         android:layout_weight="1"
                         android:drawableLeft="@drawable/ic_secured"
                         android:drawablePadding="10dp"
-                        android:text="100% secured informations"
+                        android:text="@string/secure"
                         android:textColor="#0F1A2A"
                         android:textSize="10dp"
                         android:visibility="visible" />
@@ -207,7 +207,7 @@
                     <com.wishfin_credit_card.FontClasses.PopinsSemibold
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Wishfin Cards"
+                        android:text="@string/wishfin_cards"
                         android:textAllCaps="true"
                         android:textColor="@color/primary"
                         android:textSize="14dp"
@@ -216,7 +216,7 @@
                     <com.wishfin_credit_card.FontClasses.PopinsSemibold
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Choose best credit card by your choice"
+                        android:text="@string/choose_best_card"
                         android:textAllCaps="false"
                         android:textColor="@color/black"
                         android:textSize="12dp"
@@ -251,7 +251,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:text="Best"
+                                android:text="@string/best"
                                 android:textColor="#0F1A2A"
                                 android:textSize="12dp"
                                 android:textStyle="bold"
@@ -262,7 +262,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:text="Credit Cards"
+                                android:text="@string/credit_card"
                                 android:textColor="#0F1A2A"
                                 android:textSize="10dp"
                                 android:visibility="visible" />
@@ -291,7 +291,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:text="Best Rewards"
+                                android:text="@string/bestrewards"
                                 android:textColor="#0F1A2A"
                                 android:textSize="12dp"
                                 android:textStyle="bold"
@@ -302,7 +302,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:text="Credit Cards"
+                                android:text="@string/credit_card"
                                 android:textColor="#0F1A2A"
                                 android:textSize="10dp"
                                 android:visibility="visible" />
@@ -330,7 +330,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:text="Life Time Free"
+                                android:text="@string/lifetimefree"
                                 android:textColor="#0F1A2A"
                                 android:textSize="12dp"
                                 android:textStyle="bold"
@@ -341,7 +341,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:text="Credit Cards"
+                                android:text="@string/credit_card"
                                 android:textColor="#0F1A2A"
                                 android:textSize="10dp"
                                 android:visibility="visible" />
@@ -380,7 +380,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:text="Best Travel"
+                                android:text="@string/besttravel"
                                 android:textColor="#0F1A2A"
                                 android:textSize="12dp"
                                 android:textStyle="bold"
@@ -391,7 +391,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:text="Credit Cards"
+                                android:text="@string/credit_card"
                                 android:textColor="#0F1A2A"
                                 android:textSize="10dp"
                                 android:visibility="visible" />
@@ -419,7 +419,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:text="Best Fuel"
+                                android:text="@string/bestfuel"
                                 android:textColor="#0F1A2A"
                                 android:textSize="12dp"
                                 android:textStyle="bold"
@@ -430,7 +430,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:text="Credit Cards"
+                                android:text="@string/credit_card"
                                 android:textColor="#0F1A2A"
                                 android:textSize="10dp"
                                 android:visibility="visible" />
@@ -458,7 +458,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:text="Best Cashback"
+                                android:text="@string/bestcashback"
                                 android:textColor="#0F1A2A"
                                 android:textSize="12dp"
                                 android:textStyle="bold"
@@ -469,7 +469,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:text="Credit Cards"
+                                android:text="@string/credit_card"
                                 android:textColor="#0F1A2A"
                                 android:textSize="10dp"
                                 android:visibility="visible" />
@@ -478,6 +478,7 @@
 
 
                     </LinearLayout>
+
 
                     <LinearLayout
                         android:id="@+id/personalised"
@@ -502,7 +503,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:text="Special cards for you!"
+                                android:text="@string/special_cards"
                                 android:textColor="#0F1A2A"
                                 android:textSize="16dp"
                                 android:textStyle="bold"
@@ -513,7 +514,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:text="Personalized Cards"
+                                android:text="@string/personalisedcard"
                                 android:textColor="#0F1A2A"
                                 android:textSize="10dp"
                                 android:visibility="visible" />
@@ -532,8 +533,26 @@
                     <com.wishfin_credit_card.FontClasses.PopinsSemibold
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/special_articles"
+                        android:textAllCaps="true"
+                        android:textColor="@color/primary"
+                        android:textSize="14dp"
+                        android:visibility="visible" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/article_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:scrollbars="horizontal"
+                        android:visibility="visible" />
+
+                    <com.wishfin_credit_card.FontClasses.PopinsSemibold
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="35dp"
-                        android:text="Bank Credit Cards"
+                        android:text="@string/bank_credit_card"
                         android:textAllCaps="true"
                         android:textColor="@color/primary"
                         android:textSize="14dp"
@@ -542,7 +561,7 @@
                     <com.wishfin_credit_card.FontClasses.PopinsSemibold
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Our Banking Partner"
+                        android:text="@string/banking_partner"
                         android:textAllCaps="false"
                         android:textColor="@color/black"
                         android:textSize="12dp"
@@ -699,7 +718,7 @@
                 android:background="@drawable/roundedbuttonlightgrey"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Explore All Cards"
+                android:text="@string/exploreall"
                 android:textAllCaps="false"
                 android:textColor="#000"
                 android:visibility="gone" />

@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/drawable/roundedbuttonapplynow.xml" value="0.169" />
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/layout/article_list_adapter.xml" value="0.14" />
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/layout/card_detail_page.xml" value="0.18" />
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/layout/card_list_adapter.xml" value="0.1361111111111111" />
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/layout/dashboard.xml" value="0.15" />
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/layout/eligiblecardslisting.xml" value="0.1361111111111111" />
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/layout/explorecreditcard.xml" value="0.10075136612021858" />
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/layout/footer.xml" value="0.1" />
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/layout/footerexplorecreditcards.xml" value="0.1361111111111111" />
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/layout/footerprofile.xml" value="0.1361111111111111" />
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/layout/history_card_list_adapter.xml" value="0.1014344262295082" />
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/layout/language.xml" value="0.13541666666666666" />
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/layout/logout.xml" value="0.1361111111111111" />
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/layout/profilepage.xml" value="0.15" />
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/layout/singlequestionalert.xml" value="0.1361111111111111" />
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/layout/splashscreen.xml" value="0.1361111111111111" />
+        <entry key="..\:/Wishfin_Credit_Card/app/src/main/res/layout/thankyoupage.xml" value="0.1361111111111111" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

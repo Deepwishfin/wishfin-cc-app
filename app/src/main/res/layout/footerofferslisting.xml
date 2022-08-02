@@ -59,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Home"
+                    android:text="@string/home"
                     android:textColor="@color/enabletext"
                     android:textSize="10dp" />
             </LinearLayout>
@@ -96,7 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Explore"
+                    android:text="@string/explore"
                     android:textColor="@color/enabletext"
                     android:textSize="10dp" />
             </LinearLayout>
@@ -133,7 +133,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Offers"
+                    android:text="@string/offers"
                     android:textColor="@color/primary"
                     android:textSize="10dp" />
             </LinearLayout>
@@ -177,7 +177,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Profile"
+                    android:text="@string/profile"
                     android:textColor="@color/enabletext"
                     android:textSize="10dp" />
             </LinearLayout>

@@ -39,7 +39,7 @@
                     android:gravity="center"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:text="Login"
+                    android:text="@string/login"
                     android:textColor="#FFFFFF"
                     android:textSize="@dimen/headingbarfont" />
 
@@ -64,7 +64,7 @@
                 android:gravity="center"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="Welcome Enablers"
+                android:text="@string/welcomeenablers"
                 android:textColor="#0F2F4D"
                 android:textSize="@dimen/headingfont" />
 
@@ -100,7 +100,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
-                        android:text="Mobile Number"
+                        android:text="@string/mobilenumber"
                         android:textColor="#2E384D"
                         android:textSize="14dp" />
 
@@ -126,7 +126,7 @@
                         android:background="@drawable/roundedbutton"
                         android:gravity="center"
                         android:padding="15dp"
-                        android:text="Continue"
+                        android:text="@string/continu"
                         android:textAllCaps="true"
                         android:textColor="#ffffff" />
 
@@ -150,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:text="Enter OTP"
+                android:text="@string/enterotp"
                 android:textColor="#2E384D"
                 android:textSize="@dimen/headingfont" />
 
@@ -271,7 +271,7 @@
                         android:background="@drawable/roundedbutton"
                         android:gravity="center"
                         android:padding="15dp"
-                        android:text="Continue"
+                        android:text="@string/continu"
                         android:textAllCaps="true"
                         android:textColor="#ffffff" />
 
@@ -281,7 +281,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
                         android:gravity="center"
-                        android:text="Resend OTP"
+                        android:text="@string/resend_otp"
                         android:textColor="#FF922D"
                         android:textSize="14dp" />
 

@@ -232,7 +232,7 @@ public class PersonalInformationPage extends Activity {
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/credit-card", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/credit-card", json,
                 response -> {
                     if (progressDialog != null && progressDialog.isShowing()) {
                         progressDialog.dismiss();
@@ -359,7 +359,7 @@ public class PersonalInformationPage extends Activity {
     private void get_company_listing(String text) {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL) + "/company-list-credit-card?startsWith=" + text;
+        String url = BuildConfig.BASE_URL + "/company-list-credit-card?startsWith=" + text;
 
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
@@ -426,7 +426,7 @@ public class PersonalInformationPage extends Activity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        String url = getString(R.string.BASE_URL) + "/city-list";
+        String url = BuildConfig.BASE_URL + "/city-list";
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // response

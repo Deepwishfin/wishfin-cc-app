@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -19,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
@@ -34,12 +36,18 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.tasks.OnCompleteListener;
+import com.google.android.play.core.tasks.OnFailureListener;
+import com.google.android.play.core.tasks.Task;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.squareup.picasso.Picasso;
 import com.vorlonsoft.android.rate.AppRate;
-import com.vorlonsoft.android.rate.OnClickButtonListener;
 import com.vorlonsoft.android.rate.StoreType;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,19 +61,23 @@ import java.util.Map;
 
 public class Dashboard extends Activity implements View.OnClickListener {
 
-    RecyclerView card_list;
+    RecyclerView card_list,article_list;
+    ArrayList<Gettersetterforall> list1 = new ArrayList<>();
     KProgressHUD progressDialog;
     SharedPreferences prefs;
     RequestQueue queue;
-    ArrayList<Gettersetterforall> list1 = new ArrayList<>();
-    Share_Adapter radio_question_list_adapter;
     String logintype = "", IPaddress = "";
     TextView signupone, exploremore, name, goodmorning, bar5;
     LinearLayout line1, line2, line3, line5, personalised;
     boolean doubleBackToExitPressedOnce = false;
     LinearLayout bestChoice, bestreward, lifetimefree, besttravel, bestfuel, bestcashback;
     WishFinAnalytics wishFinAnalytics;
+    Share_Adapter radio_question_list_adapter;
+    //    private ReviewManager reviewManager;
+//    ReviewInfo reviewInfo;
+//    ReviewManager manager;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,11 +87,16 @@ public class Dashboard extends Activity implements View.OnClickListener {
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.dashboard);
 
+//        reviewManager = ReviewManagerFactory.create(this);
+//        manager = ReviewManagerFactory.create(this);
+
+
         wishFinAnalytics = new WishFinAnalytics(this);
 
         queue = Volley.newRequestQueue(Dashboard.this);
         prefs = PreferenceManager.getDefaultSharedPreferences(Dashboard.this);
 
+        // callback listener.
         AppRate.with(this)
                 .setStoreType(StoreType.GOOGLEPLAY) //default is GOOGLEPLAY (Google Play), other options are
                 //           AMAZON (Amazon Appstore) and
@@ -90,16 +107,11 @@ public class Dashboard extends Activity implements View.OnClickListener {
                 .setRemindLaunchTimes((byte) 2) // default 1 (each launch)
                 .setShowLaterButton(true) // default true
                 .setDebug(false)
-                .setTextRateNow("Rate Us")
-                .setTitle("Hello "+SessionManager.get_firstname(prefs))
+                .setTextRateNow(getString(R.string.rateus))
+                .setTitle(getString(R.string.hello)+" " + SessionManager.get_firstname(prefs))
                 .setMessage(getString(R.string.rateuspopup))// default false
                 //Java 8+: .setOnClickButtonListener(which -> Log.d(MainActivity.class.getName(), Byte.toString(which)))
-                .setOnClickButtonListener(new OnClickButtonListener() { // callback listener.
-                    @Override
-                    public void onClickButton(byte which) {
-                        Log.d(MainActivity.class.getName(), Byte.toString(which));
-                    }
-                })
+                .setOnClickButtonListener(which -> Log.d(MainActivity.class.getName(), Byte.toString(which)))
                 .monitor();
 
         if (AppRate.with(this).getStoreType() == StoreType.GOOGLEPLAY) {
@@ -121,8 +133,9 @@ public class Dashboard extends Activity implements View.OnClickListener {
                 .setAnimationSpeed(1)
                 .setDimAmount(0.5f);
 
-//        progressDialog.show();
+        progressDialog.show();
         getaouth();
+        get_article_list();
 //        get_card_list();
 
         if (SessionManager.get_lastccapplydate(prefs).equalsIgnoreCase("")) {
@@ -137,7 +150,12 @@ public class Dashboard extends Activity implements View.OnClickListener {
             String todaydate = dates.format(date1);
             date2 = dates.parse(todaydate);
             date3 = dates.parse(SessionManager.get_lastccapplydate(prefs));
-            long difference = Math.abs(date2.getTime() - date3.getTime());
+            long difference = 0;
+            if (date2 != null) {
+                if (date3 != null) {
+                    difference = Math.abs(date2.getTime() - date3.getTime());
+                }
+            }
             differenceDates = difference / (24 * 60 * 60 * 1000);
         } catch (Exception e) {
             System.out.println("" + e);
@@ -187,6 +205,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
 //            get_cibil_credit_factors();
 //        }
 
+        article_list = findViewById(R.id.article_list);
         card_list = findViewById(R.id.card_list);
         signupone = findViewById(R.id.signupone);
         exploremore = findViewById(R.id.exploremore);
@@ -200,64 +219,6 @@ public class Dashboard extends Activity implements View.OnClickListener {
         goodmorning = findViewById(R.id.goodmorning);
         personalised = findViewById(R.id.personalised);
         bar5 = findViewById(R.id.bar5);
-
-        personalised.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Dashboard.this, PersonalisedCards.class);
-                intent.putExtra("type", "ExploreAll");
-                startActivity(intent);
-            }
-        });
-
-        Calendar c = Calendar.getInstance();
-        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
-
-        String hellotext = SessionManager.get_firstname(prefs);
-
-        if (timeOfDay < 12) {
-            name.setText("Good Morning " + hellotext);
-//            goodmorning.setText(getString(R.string.good_morning));
-        } else if (timeOfDay < 16) {
-            name.setText("Good Afternoon " + hellotext);
-//            goodmorning.setText(getString(R.string.good_morning));
-        } else {
-            name.setText("Good Evening " + hellotext);
-//            goodmorning.setText(getString(R.string.good_morning));
-        }
-
-        exploremore.setOnClickListener(this);
-        bestChoice.setOnClickListener(this);
-        bestreward.setOnClickListener(this);
-        lifetimefree.setOnClickListener(this);
-        besttravel.setOnClickListener(this);
-        bestfuel.setOnClickListener(this);
-        bestcashback.setOnClickListener(this);
-
-        signupone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-//                if (SessionManager.get_lead_id(prefs).equalsIgnoreCase("")) {
-//                    Intent intent = new Intent(Dashboard.this, PersonalInformationPage.class);
-//                    startActivity(intent);
-//                } else {
-                Intent intent = new Intent(Dashboard.this, ExploreCreditCard.class);
-                intent.putExtra("type", "ExploreAll");
-                startActivity(intent);
-//                }
-            }
-        });
-
-        line1 = findViewById(R.id.line1);
-        line2 = findViewById(R.id.line2);
-        line3 = findViewById(R.id.line3);
-        line5 = findViewById(R.id.line5);
-
-        line1.setOnClickListener(this);
-        line2.setOnClickListener(this);
-        line3.setOnClickListener(this);
-        line5.setOnClickListener(this);
 
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(Dashboard.this) {
             @Override
@@ -276,17 +237,181 @@ public class Dashboard extends Activity implements View.OnClickListener {
 
         };
 
-        layoutManager1.setOrientation(LinearLayoutManager.VERTICAL);
-        card_list.addItemDecoration(new DividerItemDecoration(Dashboard.this, DividerItemDecoration.VERTICAL));
-        card_list.setLayoutManager(layoutManager1);
+        layoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
+//        card_list.addItemDecoration(new DividerItemDecoration(Dashboard.this, DividerItemDecoration.HORIZONTAL));
+        article_list.setLayoutManager(layoutManager1);
 
+        personalised.setOnClickListener(view -> {
+            Intent intent = new Intent(Dashboard.this, PersonalisedCards.class);
+            intent.putExtra("type", "ExploreAll");
+            startActivity(intent);
+        });
+
+        Calendar c = Calendar.getInstance();
+        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+
+        String hellotext = SessionManager.get_firstname(prefs);
+
+        if (timeOfDay < 12) {
+            name.setText(getString(R.string.good_morning_text)+" " + hellotext);
+//            goodmorning.setText(getString(R.string.good_morning));
+        } else if (timeOfDay < 16) {
+            name.setText(getString(R.string.good_afternoon_text)+" " + hellotext);
+//            goodmorning.setText(getString(R.string.good_morning));
+        } else {
+            name.setText(getString(R.string.good_evening_text)+" " + hellotext);
+//            goodmorning.setText(getString(R.string.good_morning));
+        }
+
+        exploremore.setOnClickListener(this);
+        bestChoice.setOnClickListener(this);
+        bestreward.setOnClickListener(this);
+        lifetimefree.setOnClickListener(this);
+        besttravel.setOnClickListener(this);
+        bestfuel.setOnClickListener(this);
+        bestcashback.setOnClickListener(this);
+
+        signupone.setOnClickListener(view -> {
+
+//                showRateApp();
+
+//                if (SessionManager.get_lead_id(prefs).equalsIgnoreCase("")) {
+//                    Intent intent = new Intent(Dashboard.this, PersonalInformationPage.class);
+//                    startActivity(intent);
+//                } else {
+            Intent intent = new Intent(Dashboard.this, ExploreCreditCard.class);
+            intent.putExtra("type", "ExploreAll");
+            startActivity(intent);
+//                }
+        });
+
+        line1 = findViewById(R.id.line1);
+        line2 = findViewById(R.id.line2);
+        line3 = findViewById(R.id.line3);
+        line5 = findViewById(R.id.line5);
+
+        line1.setOnClickListener(this);
+        line2.setOnClickListener(this);
+        line3.setOnClickListener(this);
+        line5.setOnClickListener(this);
+
+//        LinearLayoutManager layoutManager1 = new LinearLayoutManager(Dashboard.this) {
+//            @Override
+//            public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
+//                LinearSmoothScroller smoothScroller = new LinearSmoothScroller(Dashboard.this) {
+//                    private static final float SPEED = 4000f;
+//
+//                    @Override
+//                    protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+//                        return SPEED / displayMetrics.densityDpi;
+//                    }
+//                };
+//                smoothScroller.setTargetPosition(position);
+//                startSmoothScroll(smoothScroller);
+//            }
+//
+//        };
+//
+//        layoutManager1.setOrientation(LinearLayoutManager.VERTICAL);
+//        card_list.addItemDecoration(new DividerItemDecoration(Dashboard.this, DividerItemDecoration.VERTICAL));
+//        card_list.setLayoutManager(layoutManager1);
+
+
+    }
+
+        public void get_article_list() {
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = BuildConfig.BASE_URL + "/blog-post-details";
+        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
+                response -> {
+                    // response
+
+                    try {
+                        progressDialog.dismiss();
+                        JSONObject jsonObject = new JSONObject(response);
+                        list1 = new ArrayList<>();
+                        list1.clear();
+
+                        if (jsonObject.getString("status").equalsIgnoreCase("Success")) {
+
+                            JSONArray jsonArray = (jsonObject.getJSONArray("result"));
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject objectnew2 = jsonArray.getJSONObject(i);
+                                Gettersetterforall pack = new Gettersetterforall();
+                                pack.setBank_code(objectnew2.getString("content"));
+                                pack.setName(objectnew2.getString("title"));
+                                pack.setImage(objectnew2.getString("image_path"));
+                                pack.setId(objectnew2.getString("id"));
+
+                                list1.add(pack);
+                            }
+
+                            if (list1.size() > 0) {
+                                article_list.setVisibility(View.VISIBLE);
+
+                                radio_question_list_adapter = new Share_Adapter(Dashboard.this, list1);
+                                article_list.setAdapter(radio_question_list_adapter);
+
+                            } else {
+                                article_list.setVisibility(View.GONE);
+
+                            }
+
+
+                        } else if (jsonObject.getString("status").equalsIgnoreCase("failed")) {
+                            if (progressDialog != null && progressDialog.isShowing()) {
+                                progressDialog.dismiss();
+                            }
+                            Toast.makeText(Dashboard.this, "" + jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+
+                        }
+
+                    } catch (Exception e) {
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+                        e.printStackTrace();
+                    }
+
+
+                },
+                error -> {
+
+                    try {
+                        int statusCode = error.networkResponse.statusCode;
+                        if (statusCode == 421) {
+                            getaouth();
+                        }
+                        error.printStackTrace();
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> header = new HashMap<String, String>();
+                String bearer = "Bearer " + SessionManager.get_access_token(prefs);
+                header.put("Content-Type", "application/json; charset=utf-8");
+                header.put("Accept", "application/json");
+                header.put("Authorization", bearer);
+
+                return header;
+            }
+        };
+        queue.add(getRequest);
 
     }
 
 //    public void get_card_list() {
 //
 //        RequestQueue queue = Volley.newRequestQueue(this);
-//        String url = getString(R.string.BASE_URL) + "/v1/credit-card-all-quotes";
+//        String url = BuildConfig.BASE_URL + "/v1/credit-card-all-quotes";
 //        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
 //                response -> {
 //                    // response
@@ -396,6 +521,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
 //
 //    }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
 
@@ -464,91 +590,6 @@ public class Dashboard extends Activity implements View.OnClickListener {
 
     }
 
-    public class Share_Adapter extends RecyclerView.Adapter<Share_Adapter.MyViewHolder> {
-
-        private ArrayList<Gettersetterforall> list_car;
-        Activity context;
-
-        Share_Adapter(Activity mcontext, ArrayList<Gettersetterforall> list) {
-            this.list_car = list;
-            this.context = mcontext;
-        }
-
-        // method for filtering our recyclerview items.
-        public void filterList(ArrayList<Gettersetterforall> filterllist) {
-            // below line is to add our filtered
-            // list in our course array list.
-            list_car = filterllist;
-            // below line is to notify our adapter
-            // as change in recycler view data.
-            notifyDataSetChanged();
-        }
-
-        class MyViewHolder extends RecyclerView.ViewHolder {
-            TextView tv1, tv2, joiningfees, annualfees, viewdetails;
-            ImageView reli;
-            RelativeLayout relit;
-
-            MyViewHolder(View view) {
-                super(view);
-                tv1 = view.findViewById(R.id.textView);
-                tv2 = view.findViewById(R.id.textView2);
-                joiningfees = view.findViewById(R.id.joiningfees);
-                annualfees = view.findViewById(R.id.annualfees);
-                viewdetails = view.findViewById(R.id.viewdetails);
-                reli = view.findViewById(R.id.imageView);
-                relit = view.findViewById(R.id.relit);
-
-            }
-        }
-
-        @Override
-        public Share_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.card_list_adapter, parent, false);
-
-            return new Share_Adapter.MyViewHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(Share_Adapter.MyViewHolder holder, final int position) {
-
-            holder.tv1.setText(list_car.get(position).getName());
-            holder.tv2.setText(list_car.get(position).getId());
-            holder.joiningfees.setText(list_car.get(position).getJoiningfees());
-            holder.annualfees.setText(list_car.get(position).getAnnualfees());
-
-            Picasso.get()
-                    .load(list_car.get(position).getImage())
-                    .into(holder.reli);
-
-            holder.viewdetails.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    Intent intent = new Intent(Dashboard.this, CardDetailPage.class);
-                    intent.putExtra("bank_code", "" + list_car.get(position).getBank_code());
-                    intent.putExtra("status", "Apply Now");
-                    intent.putExtra("cardname", "" + list_car.get(position).getName());
-//                    intent.putExtra("imagepath", "" + list_car.get(position).getImage());
-//                    intent.putExtra("features", "" + list_car.get(position).getFeauters());
-//                    intent.putExtra("joining", "" + list_car.get(position).getJoiningfees());
-//                    intent.putExtra("annual", "" + list_car.get(position).getAnnualfees());
-                    startActivity(intent);
-
-
-                }
-            });
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return list_car.size();
-        }
-
-    }
-
     public void getaouth() {
         final JSONObject json = new JSONObject();
         try {
@@ -561,7 +602,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/oauth", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/oauth", json,
                 response -> {
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
@@ -591,13 +632,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
-            }
-        }, 2000);
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 
 
@@ -1065,7 +1100,7 @@ public class Dashboard extends Activity implements View.OnClickListener {
     public void get_cibil_history() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL) + "/historic-score?mobile=" + SessionManager.get_mobile(prefs);
+        String url = BuildConfig.BASE_URL + "/historic-score?mobile=" + SessionManager.get_mobile(prefs);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // response
@@ -1105,8 +1140,8 @@ public class Dashboard extends Activity implements View.OnClickListener {
                 }
         ) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
                 String bearer = "Bearer " + SessionManager.get_access_token(prefs);
                 params.put("Content-Type", "application/json; charset=utf-8");
                 params.put("Accept", "application/json");
@@ -1124,4 +1159,146 @@ public class Dashboard extends Activity implements View.OnClickListener {
         super.onResume();
         get_cibil_history();
     }
+
+//    public void showRateApp() {
+//        Task<ReviewInfo> request = reviewManager.requestReviewFlow();
+//        request.addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                // We can get the ReviewInfo object
+//                ReviewInfo reviewInfo = task.getResult();
+//
+//                Task<Void> flow = reviewManager.launchReviewFlow(this, reviewInfo);
+//                flow.addOnCompleteListener(task1 -> {
+//                    // The flow has finished. The API does not indicate whether the user
+//                    // reviewed or not, or even whether the review dialog was shown. Thus, no
+//                    // matter the result, we continue our app flow.
+//                });
+//            } else {
+//                // There was some problem, continue regardless of the result.
+//                // show native rate app dialog on error
+//                showRateAppFallbackDialog();
+//            }
+//        });
+//    }
+//    private void showRateAppFallbackDialog() {
+//        new MaterialAlertDialogBuilder(this)
+//                .setTitle(R.string.rate_app_title)
+//                .setMessage(R.string.rate_app_message)
+//                .setPositiveButton(R.string.rate_btn_pos, (dialog, which) -> redirectToPlayStore())
+//                .setNegativeButton(R.string.rate_btn_neg,
+//                        (dialog, which) -> {
+//                            // take action when pressed not now
+//                        })
+//                .setNeutralButton(R.string.rate_btn_nut,
+//                        (dialog, which) -> {
+//                            // take action when pressed remind me later
+//                        })
+//                .setOnDismissListener(dialog -> {
+//                })
+//                .show();
+//    }
+
+    // redirecting user to PlayStore
+//    public void redirectToPlayStore() {
+//        final String appPackageName = getPackageName();
+//        try {
+//            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+//        } catch (ActivityNotFoundException exception) {
+//            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+//        }
+//    }
+
+//    private void Review() {
+//        manager.requestReviewFlow().addOnCompleteListener(new OnCompleteListener<ReviewInfo>() {
+//            @Override
+//            public void onComplete(@NonNull Task<ReviewInfo> task) {
+//                if (task.isSuccessful()) {
+//                    reviewInfo = task.getResult();
+//                    manager.launchReviewFlow(Dashboard.this, reviewInfo).addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(Exception e) {
+//                            Toast.makeText(Dashboard.this, "Rating Failed", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<Void> task) {
+//                            Toast.makeText(Dashboard.this, "Review Completed, Thank You!", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                }
+//
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(Exception e) {
+//                Toast.makeText(Dashboard.this, "In-App Request Failed", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+
+    public class Share_Adapter extends RecyclerView.Adapter<Share_Adapter.MyViewHolder> {
+
+        private ArrayList<Gettersetterforall> list_car;
+        Activity context;
+
+        Share_Adapter(Activity mcontext, ArrayList<Gettersetterforall> list) {
+            this.list_car = list;
+            this.context = mcontext;
+        }
+
+        // method for filtering our recyclerview items.
+        public void filterList(ArrayList<Gettersetterforall> filterllist) {
+            // below line is to add our filtered
+            // list in our course array list.
+            list_car = filterllist;
+            // below line is to notify our adapter
+            // as change in recycler view data.
+            notifyDataSetChanged();
+        }
+
+        class MyViewHolder extends RecyclerView.ViewHolder {
+            ImageView imageView;
+            TextView textView,textView2;
+
+            MyViewHolder(View view) {
+                super(view);
+
+                imageView = view.findViewById(R.id.imageView);
+                textView = view.findViewById(R.id.textView);
+                textView2 = view.findViewById(R.id.textView2);
+
+            }
+        }
+
+        @Override
+        public Share_Adapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.article_list_adapter, parent, false);
+
+            return new Share_Adapter.MyViewHolder(itemView);
+        }
+
+        @SuppressLint("UseCompatLoadingForDrawables")
+        @Override
+        public void onBindViewHolder(Share_Adapter.MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+
+            holder.textView.setText(list_car.get(position).getName());
+            holder.textView2.setText(list_car.get(position).getBank_code());
+
+
+//            Picasso.get()
+//                    .load(list_car.get(position).getImage())
+//                    .error(getDrawable(R.drawable.cclogo))
+//                    .into(holder.imageView);
+
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return list_car.size();
+        }
+
+    }
+
 }

@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">Wishfin Credit Card</string>
     <string name="dialogtext">Please Wait, Loading…</string>
     <string name="rate_app_title">Rate App</string>
@@ -94,13 +95,13 @@
     <string name="cancel">Cancel</string>
     <string name="cibl_question_heading">CIBIL needs some more information to ensure your security and the accuracy of your score.You\'ll be done in few seconds!</string>
     <string name="notnow">Not Now</string>
-    <string name="wantstologout">Are you sure you want to Logout?</string>
-    <string name="yes">Yes</string>
+    <string name="wantstologout">நிச்சயமாக வெளியேற விரும்புகிறீர்களா?</string>
+    <string name="yes">ஆம்</string>
     <string name="processingrewuest">We are processing your application, usually it takes 2–3 working days</string>
-    <string name="changeapplanguage">Change App Language</string>
-    <string name="selectlanguage">Select Language</string>
-    <string name="english">English</string>
-    <string name="hindi">Hindi</string>
-    <string name="tamil">Tamil</string>
+    <string name="changeapplanguage">பயன்பாட்டு மொழியை மாற்றவும்</string>
+    <string name="selectlanguage">மொழியை தேர்ந்தெடுங்கள்</string>
+    <string name="english">ஆங்கிலம்</string>
+    <string name="hindi">ஹிந்தி</string>
+    <string name="tamil">தமிழ்</string>
     <string name="special_articles">Special Articles For You</string>
 </resources>

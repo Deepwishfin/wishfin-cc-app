@@ -108,7 +108,7 @@ public class Dynamicdisplaypage extends Activity {
         progressDialog.show();
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        String url = getString(R.string.BASE_URL) + "/page-setting-detail?page_name=" + detailid;
+        String url = BuildConfig.BASE_URL + "/page-setting-detail?page_name=" + detailid;
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // response
@@ -176,7 +176,7 @@ public class Dynamicdisplaypage extends Activity {
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/oauth", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/oauth", json,
                 response -> {
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());

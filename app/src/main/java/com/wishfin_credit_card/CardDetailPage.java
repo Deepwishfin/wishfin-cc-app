@@ -48,7 +48,7 @@ public class CardDetailPage extends Activity {
 
     ImageView imageView;
     TextView cardname, joiningfees, annualfees, instantapply;
-    String strcardname = "", bank_code = "", insta_apply_link = "", status = "";
+    String strcardname = "", bank_code = "", insta_apply_link = "", status = "", card_id = "";
     String imagepath = "";
     KProgressHUD progressDialog;
     SharedPreferences prefs;
@@ -104,35 +104,35 @@ public class CardDetailPage extends Activity {
                 strcardname = "";
                 status = "";
 //                imagepath = "";
-//                id = "";
+                card_id = "";
 //                features = "";
 //                strannualfees = "";
 //                strjoiningfees = "";
 //                lead_id = "";
-//                insta_apply_link = "";
+                insta_apply_link = "";
             } else {
                 bank_code = extras.getString("bank_code");
                 strcardname = extras.getString("cardname");
                 status = extras.getString("status");
 //                imagepath = extras.getString("imagepath");
-//                id = extras.getString("id");
+                card_id = extras.getString("card_id");
 //                features = extras.getString("features");
 //                strannualfees = extras.getString("annual");
 //                strjoiningfees = extras.getString("joining");
 //                lead_id = extras.getString("lead_id");
-//                insta_apply_link = extras.getString("insta_apply_link");
+                insta_apply_link = extras.getString("insta_apply_link");
             }
         } else {
             strcardname = (String) savedInstanceState.getSerializable("cardname");
             status = (String) savedInstanceState.getSerializable("status");
             bank_code = (String) savedInstanceState.getSerializable("bank_code");
 //            imagepath = (String) savedInstanceState.getSerializable("imagepath");
-//            id = (String) savedInstanceState.getSerializable("id");
+            card_id = (String) savedInstanceState.getSerializable("card_id");
 //            features = (String) savedInstanceState.getSerializable("features");
 //            strannualfees = (String) savedInstanceState.getSerializable("annual");
 //            strjoiningfees = (String) savedInstanceState.getSerializable("joining");
 //            lead_id = (String) savedInstanceState.getSerializable("lead_id");
-//            insta_apply_link = (String) savedInstanceState.getSerializable("insta_apply_link");
+            insta_apply_link = (String) savedInstanceState.getSerializable("insta_apply_link");
 
         }
 
@@ -182,7 +182,13 @@ public class CardDetailPage extends Activity {
             }
         });
 
-        if (status.equalsIgnoreCase("NA")) {
+        try {
+            if (status.equalsIgnoreCase("NA")) {
+                progressDialog.show();
+                getstatus_data();
+            }
+        }catch (Exception e)
+        {
             progressDialog.show();
             getstatus_data();
         }
@@ -193,7 +199,7 @@ public class CardDetailPage extends Activity {
     public void get_card_list() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL) + "/v1/credit-card-all-quotes?bankCode=" + bank_code;
+        String url = BuildConfig.BASE_URL + "/v1/credit-card-all-quotes?bankCode=" + bank_code;
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // response
@@ -207,6 +213,7 @@ public class CardDetailPage extends Activity {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject objectnew2 = jsonArray.getJSONObject(i);
 //                                Gettersetterforall pack = new Gettersetterforall();
+
 
                                 if (objectnew2.getString("name").equalsIgnoreCase(strcardname)) {
                                     cardname.setText(strcardname);
@@ -314,7 +321,7 @@ public class CardDetailPage extends Activity {
 
     }
 
-    public class Share_Adapter extends RecyclerView.Adapter<Share_Adapter.MyViewHolder> {
+    public static class Share_Adapter extends RecyclerView.Adapter<Share_Adapter.MyViewHolder> {
 
         private ArrayList<Gettersetterforall> list_car;
         Activity context;
@@ -334,7 +341,7 @@ public class CardDetailPage extends Activity {
             notifyDataSetChanged();
         }
 
-        class MyViewHolder extends RecyclerView.ViewHolder {
+        static class MyViewHolder extends RecyclerView.ViewHolder {
             TextView tv1;
 
             MyViewHolder(View view) {
@@ -349,7 +356,7 @@ public class CardDetailPage extends Activity {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.features_list_adapter, parent, false);
 
-            return new Share_Adapter.MyViewHolder(itemView);
+            return new MyViewHolder(itemView);
         }
 
         @Override
@@ -366,7 +373,6 @@ public class CardDetailPage extends Activity {
         }
 
     }
-
 
     protected boolean isThereInternetConnection() {
         boolean isConnected;
@@ -386,9 +392,13 @@ public class CardDetailPage extends Activity {
         final JSONObject json = new JSONObject();
         try {
             json.put("cid", SessionManager.get_cibil_id(prefs));
+            json.put("first_name", SessionManager.get_firstname(prefs));
+            json.put("last_name", SessionManager.get_lastname(prefs));
+            json.put("email", SessionManager.get_emailid(prefs));
             json.put("mobile", SessionManager.get_mobile(prefs));
             json.put("bank_code", bank_code);
             json.put("card_name", strcardname);
+            json.put("card_id", card_id);
             json.put("card_image", imagepath);
             json.put("device_type", "Android");
 
@@ -396,7 +406,7 @@ public class CardDetailPage extends Activity {
             e.printStackTrace();
         }
         JsonObjectRequest getRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/secure-encode", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/secure-encode", json,
                 response -> {
                     try {
 
@@ -404,26 +414,13 @@ public class CardDetailPage extends Activity {
                         if (jsonObject.getString("status").equalsIgnoreCase("Success")) {
                             JSONObject jsonObject1 = jsonObject.getJSONObject("result");
 
-                            String prefixurl = "";
-
-                            if (bank_code.equalsIgnoreCase("036")) {
-                                prefixurl = "https://stage.wishfin.com/scb-lp/home?";
-//                                prefixurl = "https://stage.wishfin.com/scb-lp/home?";
-
-                            } else if (bank_code.equalsIgnoreCase("m005")) {
-                                prefixurl = "https://stage.wishfin.com/axis-credit-cards?";
-//                                prefixurl = "https://stage.wishfin.com/axis-credit-cards?";
-
-                            } else if (bank_code.equalsIgnoreCase("002")) {
-                                prefixurl = "https://stage.wishfin.com/scb-lp/home?";
-//                                prefixurl = "https://stage.wishfin.com/scb-lp/home?";
-
-                            } else if (bank_code.equalsIgnoreCase("m024")) {
-                                prefixurl = "https://stage.wishfin.com/scb-lp/home?";
-//                                prefixurl = "https://stage.wishfin.com/scb-lp/home?";
-
-                            }
-                            String url = prefixurl + "source=wishfin_android&view=" + jsonObject1.getString("hash");
+                            String url = "";
+//                            if (bank_code.equalsIgnoreCase("m024")) {
+//                                url = insta_apply_link;
+//                            } else {
+//                                url = insta_apply_link + "&view=" + jsonObject1.getString("hash");
+//                            }
+                            url = insta_apply_link + "&view=" + jsonObject1.getString("hash");
 
                             Intent intent = new Intent(CardDetailPage.this, WebviewActivity.class);
                             intent.putExtra("url", url);
@@ -478,7 +475,8 @@ public class CardDetailPage extends Activity {
     private void getstatus_data() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL) + "/get-credit-card-status?mobile_number=" + SessionManager.get_mobile(prefs) + "&bank_code=" + bank_code;
+        String url = BuildConfig.BASE_URL + "/get-credit-card-status?mobile_number=" +
+                SessionManager.get_mobile(prefs) + "&bank_code=" + bank_code + "&card_id=" + card_id;
 
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
@@ -494,16 +492,28 @@ public class CardDetailPage extends Activity {
 
                             JSONObject jsonObject1 = jsonObject.getJSONObject("result");
 
-                            if (jsonObject1.getString("card_status").equalsIgnoreCase("Pending") || jsonObject1.getString("card_status").equalsIgnoreCase("Applied")) {
-                                instantapply.setText(status);
+                            if (jsonObject1.getString("card_status").equalsIgnoreCase("Pending") ||
+                                    jsonObject1.getString("card_status").equalsIgnoreCase("Applied")) {
+                                instantapply.setText(jsonObject1.getString("card_status"));
                                 instantapply.setBackgroundResource(R.drawable.roundedbuttonpending);
                                 instantapply.setTextColor(Color.parseColor("#6563FF"));
                                 instantapply.setClickable(false);
                             } else if (jsonObject1.getString("card_status").equalsIgnoreCase("Approved")) {
-                                instantapply.setText(status);
+                                instantapply.setText(jsonObject1.getString("card_status"));
                                 instantapply.setBackgroundResource(R.drawable.roundedbuttonapproved);
                                 instantapply.setTextColor(Color.parseColor("#E2A300"));
                                 instantapply.setClickable(false);
+                            } else if (jsonObject1.getString("card_status").equalsIgnoreCase("Not Applied")) {
+                                instantapply.setText(jsonObject1.getString("card_status"));
+                                instantapply.setBackgroundResource(R.drawable.roundedbuttonpending);
+                                instantapply.setTextColor(Color.parseColor("#6563FF"));
+                                instantapply.setClickable(true);
+                            } else {
+                                instantapply.setText(jsonObject1.getString("card_status"));
+                                instantapply.setBackgroundResource(R.drawable.roundedbuttonpending);
+                                instantapply.setTextColor(Color.parseColor("#6563FF"));
+                                instantapply.setClickable(false);
+
                             }
 
                         }

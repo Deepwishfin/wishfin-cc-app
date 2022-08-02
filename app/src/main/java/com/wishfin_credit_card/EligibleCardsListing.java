@@ -1,5 +1,6 @@
 package com.wishfin_credit_card;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -132,7 +133,7 @@ public class EligibleCardsListing extends Activity {
     public void get_card_list() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL) + "/credit-card-quotes/" + SessionManager.get_lead_id(prefs);
+        String url = BuildConfig.BASE_URL + "/credit-card-quotes/" + SessionManager.get_lead_id(prefs);
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // response
@@ -310,7 +311,7 @@ public class EligibleCardsListing extends Activity {
         }
 
         @Override
-        public void onBindViewHolder(EligibleCardsListing.Share_Adapter.MyViewHolder holder, final int position) {
+        public void onBindViewHolder(EligibleCardsListing.Share_Adapter.MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
             holder.tv1.setText(list_car.get(position).getName());
             holder.tv2.setText(list_car.get(position).getId());
@@ -318,11 +319,11 @@ public class EligibleCardsListing extends Activity {
             holder.annualfees.setText(list_car.get(position).getAnnualfees());
 
             if (list_car.get(position).getAppliedstatus().equalsIgnoreCase("true")) {
-                holder.viewdetails.setText("Already Applied");
+                holder.viewdetails.setText(getString(R.string.alreadyapplied));
                 holder.viewdetails.setBackgroundResource(R.drawable.roundedbuttonlightgrey);
                 holder.viewdetails.setTextColor(Color.parseColor("#000000"));
             } else {
-                holder.viewdetails.setText("View Details");
+                holder.viewdetails.setText(getString(R.string.viewdetails));
                 holder.viewdetails.setBackgroundResource(R.drawable.roundedbutton);
                 holder.viewdetails.setTextColor(Color.parseColor("#FFFFFF"));
             }
@@ -373,7 +374,7 @@ public class EligibleCardsListing extends Activity {
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/oauth", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/oauth", json,
                 response -> {
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());

@@ -7,12 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -25,6 +28,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Splash extends Activity {
@@ -34,16 +38,28 @@ public class Splash extends Activity {
     int PERMISSION_ALL = 1;
     Dialog dialog;
     WishFinAnalytics wishFinAnalytics;
+    Locale myLocale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        prefs = PreferenceManager.getDefaultSharedPreferences(Splash.this);
 
+        if (SessionManager.get_app_lang(prefs).equalsIgnoreCase("")) {
+            myLocale = new Locale("en");
+        } else {
+            myLocale = new Locale("" + SessionManager.get_app_lang(prefs));
+        }
+
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.splashscreen);
-        prefs = PreferenceManager.getDefaultSharedPreferences(Splash.this);
 
         dialog = new Dialog(Splash.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

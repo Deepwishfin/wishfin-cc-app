@@ -62,7 +62,7 @@
                 <com.wishfin_credit_card.FontClasses.PoppinsRegular
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Viewed Count"
+                    android:text="@string/viewedcount"
                     android:textColor="#64748B"
                     android:textSize="10dp" />
 
@@ -70,8 +70,8 @@
                     android:id="@+id/joiningfees"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
                     android:maxLines="2"
+                    android:text=""
                     android:textColor="#0F1A2A"
                     android:textSize="10dp" />
 
@@ -88,7 +88,7 @@
                 <com.wishfin_credit_card.FontClasses.PoppinsRegular
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Last viewed"
+                    android:text="@string/lastviewed"
                     android:textColor="#64748B"
                     android:textSize="10dp" />
 
@@ -96,8 +96,8 @@
                     android:id="@+id/annualfees"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
                     android:maxLines="2"
+                    android:text=""
                     android:textColor="#0F1A2A"
                     android:textSize="10dp" />
 
@@ -117,11 +117,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/roundedbuttonapplynow"
-                    android:gravity="center"
-                    android:drawablePadding="5dp"
                     android:drawableEnd="@drawable/ic_greenarrow"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
                     android:padding="10dp"
-                    android:text="Apply Now"
+                    android:text="@string/applynow"
                     android:textColor="@color/primary"
                     android:textSize="10dp"
                     android:visibility="gone" />
@@ -135,7 +135,7 @@
                     android:drawablePadding="5dp"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Approved"
+                    android:text="@string/approved"
                     android:textColor="#E2A300"
                     android:textSize="10dp"
                     android:visibility="gone" />
@@ -145,11 +145,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/roundedbuttonpending"
-                    android:drawablePadding="5dp"
                     android:drawableEnd="@drawable/ic_clock"
+                    android:drawablePadding="5dp"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Pending"
+                    android:text="@string/pending"
                     android:textColor="#6563FF"
                     android:textSize="10dp"
                     android:visibility="gone" />

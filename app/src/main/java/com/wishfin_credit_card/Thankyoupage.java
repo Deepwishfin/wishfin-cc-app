@@ -92,7 +92,7 @@ public class Thankyoupage extends Activity {
     public void get_card_list() {
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = getString(R.string.BASE_URL) + "/v1/credit-card-all-quotes?bankCode=" + bank_code;
+        String url = BuildConfig.BASE_URL + "/v1/credit-card-all-quotes?bankCode=" + bank_code;
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     // response

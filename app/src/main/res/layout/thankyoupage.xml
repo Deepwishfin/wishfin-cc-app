@@ -36,7 +36,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"
-                        android:text="Thank You"
+                        android:text="@string/thankyou"
                         android:textColor="#000000"
                         android:textSize="24dp" />
 
@@ -46,7 +46,7 @@
                         android:layout_gravity="center"
                         android:layout_margin="10dp"
                         android:gravity="center"
-                        android:text="You request has been sumbitted successfully. We'll get back to you soon!"
+                        android:text="@string/requestsubmitted"
                         android:textColor="#27364B"
                         android:textSize="18dp" />
 
@@ -98,7 +98,7 @@
                             <com.wishfin_credit_card.FontClasses.PoppinsRegular
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Joining Fees"
+                                android:text="@string/joiningfees"
                                 android:textColor="#64748B"
                                 android:textSize="12dp" />
 
@@ -123,7 +123,7 @@
                             <com.wishfin_credit_card.FontClasses.PoppinsRegular
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Annual Fees"
+                                android:text="@string/annualfees"
                                 android:textColor="#64748B"
                                 android:textSize="12dp" />
 
@@ -169,7 +169,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_toEndOf="@+id/imageView1"
-                        android:text="We are processing your application, usually it takes 2-3 working days"
+                        android:text="@string/processingrewuest"
                         android:textColor="#0F1A2A"
                         android:textSize="@dimen/detailheaading" />
 
@@ -187,7 +187,7 @@
                 android:background="@color/primary"
                 android:gravity="center"
                 android:padding="15dp"
-                android:text="Explore More Cards"
+                android:text="@string/explore"
                 android:textAllCaps="true"
                 android:textColor="#ffffff"
                 tools:ignore="MissingConstraints" />

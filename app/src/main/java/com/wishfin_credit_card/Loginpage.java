@@ -2,11 +2,9 @@ package com.wishfin_credit_card;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -40,9 +38,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.credentials.Credential;
-import com.google.android.gms.auth.api.credentials.HintRequest;
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
 import com.google.android.gms.common.ConnectionResult;
@@ -74,8 +69,6 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
     int page = 1;
     private SMSReceiver smsReceiver;
     private boolean broadcast = true;
-    private int RESOLVE_HINT = 2;
-    GoogleApiClient mGoogleApiClient;
     String IPaddress;
 
 
@@ -103,11 +96,6 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
         otpfour = findViewById(R.id.otpfour);
         resentotp = findViewById(R.id.resentotp);
         lastmobiletext = findViewById(R.id.lastmobiletext);
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addApi(Auth.CREDENTIALS_API)
-                .build();
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -192,8 +180,6 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
 
 
         getaouth();
-
-        getHintPhoneNumber();
 
         if (strmobilenumber != null) {
             mobilenumber.setText(strmobilenumber);
@@ -335,7 +321,7 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/oauth", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/oauth", json,
                 response -> {
                     try {
                         JSONObject jsonObject = new JSONObject(response.toString());
@@ -371,7 +357,7 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
             e.printStackTrace();
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/v1/get-otp-data", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/v1/get-otp-data", json,
                 response -> {
                     if (progressDialog != null && progressDialog.isShowing()) {
                         progressDialog.dismiss();
@@ -476,7 +462,7 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
         }
         progressDialog.show();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/v1/login", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/v1/login", json,
                 response -> {
 
                     try {
@@ -628,12 +614,12 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
     private boolean validateNumber() {
         if (!mobilenumber.getText().toString().trim().matches("[5-9][0-9]{9}") || mobilenumber.getText().length() != 10) {
             mobilenumberhead.setTextColor(Color.parseColor("#FF0000"));
-            mobilenumberhead.setText("Enter 10 Digits Mobile Number");
+            mobilenumberhead.setText(getString(R.string.entermobile));
 //            Toast.makeText(getApplicationContext(),"Enter 10 Digits Mobile Number",Toast.LENGTH_SHORT).show();
             requestFocus(mobilenumber);
             return false;
         } else {
-            mobilenumberhead.setText("Mobile Number");
+            mobilenumberhead.setText(getString(R.string.mobilenumber));
             mobilenumberhead.setTextColor(Color.parseColor("#304258"));
         }
         return true;
@@ -671,7 +657,7 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
         }
         progressDialog.show();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST, getString(R.string.BASE_URL) + "/check-mobile-email-exist", json,
+                Request.Method.POST, BuildConfig.BASE_URL + "/check-mobile-email-exist", json,
                 response -> {
                     try {
 
@@ -824,35 +810,6 @@ public class Loginpage extends Activity implements SMSReceiver.OTPReceiveListene
         }
     }
 
-
-    public void getHintPhoneNumber() {
-        HintRequest hintRequest =
-                new HintRequest.Builder()
-                        .setPhoneNumberIdentifierSupported(true)
-                        .build();
-        PendingIntent mIntent = Auth.CredentialsApi.getHintPickerIntent(mGoogleApiClient, hintRequest);
-        try {
-            startIntentSenderForResult(mIntent.getIntentSender(), RESOLVE_HINT, null, 0, 0, 0);
-        } catch (IntentSender.SendIntentException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //Result if we want hint number
-        if (requestCode == RESOLVE_HINT) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (data != null) {
-                    Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
-                    // credential.getId();  <-- will need to process phone number string
-                    mobilenumber.setText(credential.getId().substring(3));
-                }
-
-            }
-        }
-    }
 
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);

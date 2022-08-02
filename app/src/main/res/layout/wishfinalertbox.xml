@@ -36,7 +36,7 @@
                 android:layout_centerInParent="true"
                 android:background="@drawable/roundedbutton"
                 android:gravity="center"
-                android:text="Retry"
+                android:text="@string/retry"
                 android:textColor="#fff"
                 android:textStyle="bold" />
         </RelativeLayout>
@@ -54,7 +54,7 @@
                 android:layout_centerInParent="true"
                 android:background="@drawable/roundedbutton"
                 android:gravity="center"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textColor="#fff"
                 android:textStyle="bold" />
         </RelativeLayout>

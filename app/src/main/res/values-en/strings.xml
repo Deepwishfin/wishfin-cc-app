@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">Wishfin Credit Card</string>
     <string name="dialogtext">Please Wait, Loading…</string>
     <string name="rate_app_title">Rate App</string>

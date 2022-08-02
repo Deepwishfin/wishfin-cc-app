@@ -52,7 +52,7 @@
             android:background="@drawable/roundedbutton"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Signin"
+            android:text="@string/signin"
             android:textAllCaps="true"
             android:textColor="#ffffff" />
 

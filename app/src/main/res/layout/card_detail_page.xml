@@ -79,7 +79,7 @@
                         <com.wishfin_credit_card.FontClasses.PoppinsRegular
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Joining Fees: "
+                            android:text="@string/joiningfees"
                             android:textColor="#64748B"
                             android:textSize="10dp" />
 
@@ -105,7 +105,7 @@
                         <com.wishfin_credit_card.FontClasses.PoppinsRegular
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Annual Fees: "
+                            android:text="@string/annualfees"
                             android:textColor="#64748B"
                             android:textSize="10dp" />
 
@@ -126,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
-                    android:text="Card Features"
+                    android:text="@string/cardfeatures"
                     android:textColor="@color/black"
                     android:textSize="16dp"
                     android:textStyle="bold" />
@@ -147,11 +147,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/roundedbuttonapplynow"
                 android:gravity="center"
                 android:padding="15dp"
-                android:text="Instant Apply"
+                android:text="@string/instantapply"
                 android:textColor="@color/primary"
                 tools:ignore="MissingConstraints" />
 

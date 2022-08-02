@@ -12,7 +12,7 @@
         android:background="@color/primary"
         android:gravity="left"
         android:padding="5dp"
-        android:text="CIBIL needs some more information to ensure your security and the accuracy of your score.You'll be done in few seconds!"
+        android:text="@string/cibl_question_heading"
         android:textColor="#fff" />
 
     <ExpandableListView
@@ -39,7 +39,7 @@
             android:layout_height="30dp"
             android:background="@drawable/roundedbutton"
             android:clickable="true"
-            android:text="Submit"
+            android:text="@string/submit"
             android:textColor="#fff"
             android:textStyle="bold" />
 
@@ -50,7 +50,7 @@
             android:layout_marginLeft="5dp"
             android:background="@drawable/roundedbutton"
             android:clickable="true"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textColor="#fff"
             android:textStyle="bold" />
     </LinearLayout>
